@@ -42,47 +42,73 @@ Tests, type/schema constraints, analyzers, linters, builds, CI checks, and scrip
 
 ### Human approval is defined by effect, not tool
 
-High-impact actions require explicit approval regardless of whether they are performed through Cursor, Claude Code, Codex, Antigravity, a CLI, an IDE, or another agent.
+High-impact actions require explicit approval regardless of whether they are performed through Cursor, Claude Code, Codex, Antigravity, a CLI, an IDE, or another agent. The exact approval boundary is defined in `AGENTS.md`.
+
+These files provide agent context, not hard enforcement. If an action must be technically impossible rather than merely prohibited by instruction, use the active tool's project-local permission, deny, or hook mechanism; that configuration stays outside this shared repository.
+
+## Quick adoption
+
+For a new project with no existing `AGENTS.md`, copy the shared files into the project root.
+
+```bash
+git clone --depth 1 https://github.com/BurakD/ai-engineering-harness /tmp/ai-engineering-harness
+cp /tmp/ai-engineering-harness/{AGENTS.md,MODEL_ROUTING.md,CLAUDE.md} .
+```
+
+`CLAUDE.md` is only needed when Claude Code is used. On systems without a POSIX shell, copy the same files by any normal file-copy method; no installer is required.
+
+Before committing anything, review the diff. Adoption should not change application behavior.
 
 ## Existing-project adoption
 
-The preferred adoption model is **inspect, preserve, then add or merge**.
+The preferred model is **inspect, preserve, then add**.
 
 1. Inspect the current branch and working-tree state before changing anything.
 2. Discover existing AI/project instructions and canonical documentation. Typical locations include `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.github/`, `CONTRIBUTING.md`, project docs, ADRs, tests, CI/release files, and deployment documentation.
-3. If the project does not have `AGENTS.md`, add the shared `AGENTS.md` from this repository.
-4. If the project already has `AGENTS.md`, preserve its project-specific content and merge the shared engineering baseline into it. Do not overwrite it.
-5. Add `MODEL_ROUTING.md` unless the project already has an equivalent policy. If it does, reconcile the policies instead of creating competing routing systems.
-6. If Claude Code is used, add the thin `CLAUDE.md` adapter. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add the `AGENTS.md` import/link rather than replacing it.
-7. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
-8. Review the final Git diff. Adoption should not alter application behavior.
-9. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
+3. Add `MODEL_ROUTING.md` unless the project already has an equivalent policy. If it does, reconcile the policies instead of creating competing routing systems.
+4. If Claude Code is used, add the thin `CLAUDE.md` adapter. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it.
+5. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
+6. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
 
-### Suggested prompt for an existing repository
+### If the project has no `AGENTS.md`
 
-```text
-Adapt the AI Engineering Harness from this repository into the current project.
+Copy `AGENTS.md` byte-for-byte from this repository. Do not summarize, rewrite, or regenerate it from the README.
 
-Follow the README adoption instructions. First inspect the repository, Git state, existing AGENTS.md / CLAUDE.md, repository-local AI rules, docs, ADRs, tests, and release/deployment conventions.
+### If the project already has `AGENTS.md`
 
-Preserve all existing project-specific value. Do not overwrite existing instructions. Add or merge only what is necessary for the shared engineering baseline, model routing, and thin tool adapter.
-
-Do not create a new framework, installer, orchestrator, manifest, skills directory, or project overlay unless the existing repository already requires one.
-
-Show the resulting diff and explain any conflicts or choices. Do not commit, push, deploy, publish, or change production.
-```
-
-## New-project adoption
-
-For a new project, the initial harness can be only:
+Do not rewrite or condense the existing file. Append the shared baseline as one clearly marked block:
 
 ```text
-AGENTS.md
-MODEL_ROUTING.md
-CLAUDE.md   # when Claude Code is used
+<!-- BEGIN shared engineering baseline — ai-engineering-harness @ YYYY-MM-DD -->
+[verbatim contents of this repository's AGENTS.md]
+<!-- END shared engineering baseline -->
 ```
 
-Add project-specific information to the project's normal documentation, rules, tests, ADRs, configuration, or code as real needs emerge. Do not grow a separate harness-specific project structure pre-emptively.
+Change nothing outside the markers. If the markers already exist, updating the harness means replacing only the content between them with the current shared `AGENTS.md` and updating the date. Do not create a sync script merely for this.
+
+Project-local rules remain authoritative even when the shared block appears later in the file.
+
+### Optional AI-assisted adoption prompt
+
+Use this only when a model is needed to inspect an existing project and perform the safe append/update path:
+
+```text
+Adapt the AI Engineering Harness from https://github.com/BurakD/ai-engineering-harness into the current project.
+
+First inspect the current Git state, existing AGENTS.md / CLAUDE.md, repository-local AI rules, docs, ADRs, tests, and release/deployment conventions.
+
+Preserve all existing project-specific content. Copy the shared files and shared AGENTS.md baseline verbatim; do not summarize, rewrite, or regenerate them from the README.
+
+If AGENTS.md already exists, change nothing outside the documented BEGIN/END shared-baseline markers. If the markers do not exist, append one marked shared-baseline block. If they already exist, replace only the content inside them.
+
+Do not create a new framework, installer, orchestrator, manifest, skills directory, or project overlay.
+
+Show the resulting diff and explain conflicts or choices. Do not commit, push, deploy, publish, or change production.
+```
+
+## New-project growth
+
+Start with only the shared files you actually use. Add project-specific information to the project's normal documentation, rules, tests, ADRs, configuration, or code as real needs emerge. Do not grow a separate harness-specific project structure pre-emptively.
 
 ## Model routing
 
@@ -93,47 +119,24 @@ Add project-specific information to the project's normal documentation, rules, t
 - **REASONING** — difficult, ambiguous, architectural, security-sensitive, compatibility-sensitive, or release-sensitive work.
 - **FRONTIER** — exceptional hardest cases; manual escalation only.
 
-Exact model catalogs and subscription economics change frequently. Tool mappings are therefore expressed in terms of current equivalents and stable aliases where practical instead of pinning the harness to version names that will quickly become stale.
+Exact model catalogs and subscription economics change frequently. Tool mappings are therefore expressed as capabilities rather than pinned model versions.
 
 Project-specific rules may raise the minimum tier for a sensitive area. Such overrides belong in that project, not in the shared harness.
 
 ## Durable learning from AI mistakes
 
-Repeated AI mistakes should reduce the chance of the same mistake recurring.
+The normative durable-learning rule is in `AGENTS.md`: when a correction is likely to matter again, prefer a durable test/check, code or schema invariant, linter/build/CI rule, or project-local rule/documentation improvement instead of relying on chat memory.
 
-When a correction is likely to matter again, prefer the smallest durable guard in roughly this order:
-
-1. deterministic test or check,
-2. type/schema/code invariant,
-3. linter/build/CI rule,
-4. project-local rule, ADR, or documentation clarification.
-
-Do not add a shared harness rule for a project-specific mistake. A shared rule is justified only when the lesson is genuinely tool-independent and reusable across projects.
-
-## Human-approval boundary
-
-At minimum, explicit approval for the exact action is required for:
-
-- production or store publication,
-- production/server mutation,
-- destructive or irreversible operations,
-- production data operations with meaningful risk,
-- secret or credential rotation,
-- release tagging when it triggers publication,
-- spend outside the agreed policy.
-
-Development success, green CI, a merged development branch, or a successful staging deployment is not production approval.
-
-Project-specific rules may require approval for additional actions.
+Project-specific mistakes stay project-specific. Do not grow the shared baseline from one product's local lessons.
 
 ## Maintenance
 
 Keep the stable process in `AGENTS.md` and the stable tier definitions in `MODEL_ROUTING.md`.
 
-When tools or models change, update only the small tool-mapping guidance that is actually stale. Avoid propagating model-version churn into every project.
+When tools or models change, update only guidance that is actually stale. Avoid propagating model-version churn into every project.
 
 ## Possible future extensions
 
-Earlier design work considered richer layers such as templates, project overlays, reusable skills, additional adapters, automated installation, and orchestration. Those remain valid options if repeated real-world adoption pain proves they are necessary.
+Earlier design work considered richer layers such as templates, project overlays, reusable skills, additional adapters, automated installation, and orchestration. Those remain valid options only if repeated real-world adoption pain proves they are necessary.
 
 They are intentionally **not implemented in v1**. Add them only when they remove a demonstrated recurring cost or risk that the current Markdown-only approach cannot solve cleanly.
