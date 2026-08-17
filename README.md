@@ -28,11 +28,13 @@ Contributions are welcome and are submitted under the Apache License 2.0 unless 
 
 ## Install / adopt in 3 steps
 
-For an existing project, the recommended path is AI-assisted adoption. You do **not** need a new branch, worktree, installer, framework, or project copy just to use the harness.
+For an existing project, the recommended path is **in-place AI-assisted adoption**.
 
-1. Open your existing project normally in a capable coding agent such as Cursor, Claude Code, Codex, or another agent that can inspect the repository and this GitHub repository.
-2. Paste the adoption prompt below.
-3. Review the resulting Git diff and backup locations before accepting or committing anything.
+1. Open the project exactly where you normally work, on the branch you normally intend to use.
+2. Paste the adoption prompt below into a capable coding agent.
+3. Review the resulting Git status, diff, and backup locations before accepting or committing anything.
+
+**Do not create a new branch, worktree, project copy, installer, or temporary clone of the target project merely to adopt this harness.** Use one only if the user explicitly asks for isolation or the target repository's own policy requires it.
 
 For the one-time adoption, prefer a capable/reasoning model because it must inspect and preserve existing project rules safely. After adoption, normal model routing applies.
 
@@ -41,11 +43,13 @@ For the one-time adoption, prefer a capable/reasoning model because it must insp
 ```text
 Adopt the current AI Engineering Harness from
 https://github.com/BurakD/ai-engineering-harness
-into this repository.
+into this repository, in place, on the current branch.
 
 First inspect this repository and the harness repository. Follow the harness README's existing-project adoption procedure exactly.
 
 Communicate with me in the same language I use in this chat, unless this repository has an explicit project-local communication-language rule.
+
+Do not create or switch to a new branch, worktree, project copy, or duplicate checkout merely for this adoption. Stay in the current working repository and branch unless I explicitly ask otherwise or this repository's own documented policy requires isolation.
 
 Before changing anything:
 - inspect the current branch and working-tree status;
@@ -63,7 +67,8 @@ Preserve all existing project-specific content, rules, skills, docs, tests, depl
 Apply the harness minimally:
 - if AGENTS.md does not exist, copy the harness AGENTS.md verbatim;
 - if AGENTS.md already exists, preserve it exactly outside the documented shared-baseline markers and append/update the shared harness AGENTS.md verbatim inside those markers;
-- add MODEL_ROUTING.md only if no equivalent routing policy already exists; reconcile rather than create competing policy;
+- MODEL_ROUTING.md must remain a verbatim copy of the harness MODEL_ROUTING.md. If the project already has local model/tool routing rules, preserve them where they are; do not copy, summarize, map, or duplicate those project-specific model names or policies into MODEL_ROUTING.md;
+- if existing project-local routing appears semantically incompatible with the shared tier policy, do not invent a reconciliation or mapping. Stop and report the conflict for human review;
 - if Claude Code is used, add the thin CLAUDE.md adapter; if CLAUDE.md already exists, preserve its existing value and add the shared AGENTS.md reference rather than replacing it.
 
 Do not copy, symlink, generate, or synchronize tool-native skills/rules merely to make them look portable across tools.
@@ -76,8 +81,9 @@ When finished:
 2. show the exact harness-related diff;
 3. list every file changed or added;
 4. list the backup path for every existing file you modified;
-5. explain what project-specific content/rules you preserved and any conflicts or reconciliation decisions;
-6. confirm that no unrelated file was changed.
+5. explain what project-specific content/rules you preserved and any conflicts;
+6. confirm that AGENTS.md shared content, MODEL_ROUTING.md, and the shared portion of CLAUDE.md follow the harness source as required;
+7. confirm that no unrelated file was changed and that no branch/worktree/project copy was created for the adoption.
 
 Stop after the adoption review and wait for human approval.
 ```
@@ -118,16 +124,17 @@ These files provide agent context, not hard enforcement. If an action must be te
 
 ## Existing-project adoption details
 
-The preferred model is **inspect, preserve, back up, then add**.
+The preferred model is **inspect, preserve, back up, then add — in place**.
 
-1. Inspect the current branch and working-tree state before changing anything.
-2. Discover existing AI/project instructions and canonical documentation. Typical locations include `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.cursor/skills/`, `.github/`, `CONTRIBUTING.md`, project docs, ADRs, tests, CI/release files, and deployment documentation.
-3. Before modifying an existing target file, make a byte-for-byte backup outside the repository and report its path. Do not place adoption backups in the project tree by default.
-4. Add or update `AGENTS.md` using the applicable case below.
-5. Add `MODEL_ROUTING.md` unless the project already has an equivalent policy. If it does, reconcile the policies instead of creating competing routing systems.
-6. If Claude Code is used, add the thin `CLAUDE.md` adapter. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it.
-7. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
-8. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
+1. Stay in the current project and current branch. Do not create a branch, worktree, or duplicate project merely for adoption unless the user explicitly requests it or repository policy requires it.
+2. Inspect the current branch and working-tree state before changing anything.
+3. Discover existing AI/project instructions and canonical documentation. Typical locations include `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.cursor/skills/`, `.github/`, `CONTRIBUTING.md`, project docs, ADRs, tests, CI/release files, and deployment documentation.
+4. Before modifying an existing target file, make a byte-for-byte backup outside the repository and report its path. Do not place adoption backups in the project tree by default.
+5. Add or update `AGENTS.md` using the applicable case below.
+6. Add `MODEL_ROUTING.md` as a verbatim shared policy file. Existing project-local model/tool routing rules remain where they are and authoritative for their local mechanics. Do not duplicate their model names, mappings, or tool policy into the shared file. If there is a real semantic conflict, stop and report it instead of inventing a mapping.
+7. If Claude Code is used, add the thin `CLAUDE.md` adapter. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it.
+8. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
+9. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
 
 ### If the project has no `AGENTS.md`
 
@@ -146,6 +153,14 @@ Do not rewrite or condense the existing file. Back it up first, then append the 
 Change nothing outside the markers. If the markers already exist, updating the harness means replacing only the content between them with the current shared `AGENTS.md` and updating the date. Do not create a sync script merely for this.
 
 Project-local rules remain authoritative even when the shared block appears later in the file.
+
+### MODEL_ROUTING.md and existing local routing rules
+
+`MODEL_ROUTING.md` is the shared, vendor-neutral capability-tier vocabulary and should remain verbatim.
+
+Projects may already have tool-specific routing rules, model names, subagent policies, or cost controls. Keep those project-local files unchanged and authoritative for their own runtime/tool mechanics. Do **not** mirror those details into `MODEL_ROUTING.md`, and do not mirror the shared tier definitions into the tool-specific files merely for adoption.
+
+If the two are compatible, no reconciliation artifact is needed. If they are genuinely incompatible, stop and ask for human review rather than creating a project-specific mapping section inside the shared file.
 
 ## Manual fallback
 
