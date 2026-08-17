@@ -32,9 +32,9 @@ Project-specific rules may raise the minimum model-routing tier or require addit
 
 - Never overwrite unrelated uncommitted work.
 - Never expose secrets.
-- Development success, green CI, a merged branch, or a successful staging deployment is not approval to release or deploy to production.
-- Production or store publication (including any push or merge that triggers production deployment or publication), production/server mutation, destructive or irreversible operations (for example force-push, history rewrite, hard reset, or branch deletion), risky production-data operations, secret or credential rotation, release tagging when it triggers publication, and spend outside the agreed policy require explicit human approval for that exact action.
-- Non-production stage/test deployment and ordinary non-production environment mutations follow the repository's project-local deployment and approval policy. If that policy is absent or genuinely ambiguous, do not invent an autonomy rule; report the ambiguity before performing the action.
+- Development success, green CI, a merged branch, or a successful non-production deployment is not approval to release or deploy to a production/live/customer-facing environment.
+- Production/live/customer-facing publication (including any push or merge that triggers such deployment or publication), production/server mutation, destructive or irreversible operations (for example force-push, history rewrite, hard reset, or branch deletion), risky production-data operations, secret or credential rotation, release tagging when it triggers publication, and spend outside the agreed policy require explicit human approval for that exact action.
+- Non-production environments may be named development, test, QA, staging, preview, sandbox, or something else, and a project may have none, one, or many of them. Actions that deploy to or mutate those environments follow the repository's project-local deployment and approval policy. If that policy is absent or genuinely ambiguous, do not invent an autonomy rule; report the ambiguity before performing the action.
 - Preserve supported-client, protocol, data, and public-contract compatibility by default unless the project explicitly decides otherwise.
 
 ## Durable handoff between models
