@@ -38,6 +38,8 @@ For an existing project, the recommended path is **in-place AI-assisted adoption
 
 For the one-time adoption, prefer a capable/reasoning model because it must inspect and preserve existing project rules safely. After adoption, normal model routing applies.
 
+If you want a specific communication language, prepend one short line such as `Respond in Turkish.` or `Respond in English.` to the prompt. This is more reliable than asking an agent to infer the user's language from a pasted English template.
+
 ### Copy/paste adoption prompt
 
 ```text
@@ -47,7 +49,7 @@ into this repository, in place, on the current branch.
 
 First inspect this repository and the harness repository. Follow the harness README's existing-project adoption procedure exactly.
 
-Communicate with me in the same language I use in this chat, unless this repository has an explicit project-local communication-language rule.
+Use the communication language explicitly requested by the user or already defined by this repository. If neither exists, continue in the language established in the surrounding conversation rather than inferring it from this pasted template.
 
 Do not create or switch to a new branch, worktree, project copy, or duplicate checkout merely for this adoption. Stay in the current working repository and branch unless I explicitly ask otherwise or this repository's own documented policy requires isolation.
 
@@ -69,7 +71,7 @@ Apply the harness minimally:
 - if AGENTS.md already exists, preserve it exactly outside the documented shared-baseline markers and append/update the shared harness AGENTS.md verbatim inside those markers;
 - MODEL_ROUTING.md must remain a verbatim copy of the harness MODEL_ROUTING.md. If the project already has local model/tool routing rules, preserve them where they are; do not copy, summarize, map, or duplicate those project-specific model names or policies into MODEL_ROUTING.md;
 - if existing project-local routing appears semantically incompatible with the shared tier policy, do not invent a reconciliation or mapping. Stop and report the conflict for human review;
-- if Claude Code is used, add the thin CLAUDE.md adapter; if CLAUDE.md already exists, preserve its existing value and add the shared AGENTS.md reference rather than replacing it.
+- add the thin CLAUDE.md adapter if Claude Code is used now or is intended to be used with this project. If CLAUDE.md already exists, preserve its existing value and add the shared AGENTS.md reference rather than replacing it. If Claude Code is definitely not used for this project, CLAUDE.md may be omitted.
 
 Do not copy, symlink, generate, or synchronize tool-native skills/rules merely to make them look portable across tools.
 Do not create .ai/, .agents/, installers, manifests, orchestration, project overlays, extra adapters, or unrelated process files.
@@ -132,7 +134,7 @@ The preferred model is **inspect, preserve, back up, then add — in place**.
 4. Before modifying an existing target file, make a byte-for-byte backup outside the repository and report its path. Do not place adoption backups in the project tree by default.
 5. Add or update `AGENTS.md` using the applicable case below.
 6. Add `MODEL_ROUTING.md` as a verbatim shared policy file. Existing project-local model/tool routing rules remain where they are and authoritative for their local mechanics. Do not duplicate their model names, mappings, or tool policy into the shared file. If there is a real semantic conflict, stop and report it instead of inventing a mapping.
-7. If Claude Code is used, add the thin `CLAUDE.md` adapter. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it.
+7. Add the thin `CLAUDE.md` adapter when Claude Code is used now or is expected to be used with the project. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it. If Claude Code is definitely not used, it may be omitted.
 8. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
 9. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
 
