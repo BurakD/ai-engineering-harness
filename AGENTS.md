@@ -14,10 +14,11 @@ Before non-trivial work:
 
 ## Development process
 
-- Small/mechanical work: implement directly and validate the affected area.
-- Normal work: understand the affected code, acceptance criteria, and project constraints before editing.
-- Difficult, architectural, security-sensitive, compatibility-sensitive, release-sensitive, or ambiguous work: plan when useful, use stronger reasoning, validate thoroughly, and use a fresh or independent review when it materially reduces risk.
+- Small/mechanical work (FAST): implement directly and validate the affected area.
+- Normal work (STANDARD): understand the affected code, acceptance criteria, and project constraints before editing.
+- Difficult, architectural, security-sensitive, compatibility-sensitive, release-sensitive, or ambiguous work (REASONING): plan when useful, use stronger reasoning, validate thoroughly, and use a fresh or independent review when it materially reduces risk.
 - Prefer deterministic tests, analyzers, linters, builds, CI checks, and scripts over model judgment when available.
+- Use the project's documented build, test, lint, and analysis commands. If relevant commands are not documented and cannot be safely inferred from repository configuration, ask before inventing them; after confirmation, record them in project-local instructions.
 - Report validation that was skipped or unavailable.
 - Do not add process artifacts unless they materially help the work.
 
@@ -31,8 +32,8 @@ Project-specific rules may raise the minimum model-routing tier or require addit
 
 - Never overwrite unrelated uncommitted work.
 - Never expose secrets.
-- Development or CI success is not release approval.
-- Production or store publication, production/server mutation, destructive or irreversible operations, risky production-data operations, secret or credential rotation, release tagging when it triggers publication, and spend outside the agreed policy require explicit human approval for that exact action.
+- Development success, green CI, a merged branch, or a successful staging deployment is not approval to release or deploy to production.
+- Production or store publication (including any push or merge that triggers deployment), production/server mutation, destructive or irreversible operations (for example force-push, history rewrite, hard reset, or branch deletion), risky production-data operations, secret or credential rotation, release tagging when it triggers publication, and spend outside the agreed policy require explicit human approval for that exact action.
 - Preserve supported-client, protocol, data, and public-contract compatibility by default unless the project explicitly decides otherwise.
 
 ## Durable handoff between models
