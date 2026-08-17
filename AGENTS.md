@@ -38,7 +38,7 @@ Project-specific rules may raise the minimum model-routing tier or require addit
 
 ## Durable handoff between models
 
-When work changes durable project truth, update the appropriate project documentation, test, ADR, rule, configuration, or code in the same work. A different model or agent should be able to reconstruct the current state from the repository without needing the previous model's chat history.
+When work changes durable project truth, update the appropriate project documentation, test, ADR, rule, configuration, or code in the same work. A different model or agent should be able to reconstruct the current state from the repository without needing the previous model's chat history or any single tool's native features.
 
 If the same mistake or correction is likely to recur, prefer the smallest durable guard: a deterministic test/check, code or schema invariant, linter/build/CI rule, or project-local rule/documentation improvement. Do not rely on chat memory.
 
