@@ -15,19 +15,16 @@ It intentionally stays small. The repository itself is the handoff mechanism; th
 - `MODEL_ROUTING.md` — FAST / STANDARD / REASONING / FRONTIER quality-cost routing policy.
 - `CLAUDE.md` — thin Claude Code adapter that points to `AGENTS.md`.
 - `README.md` — adoption and maintenance guidance.
-- `LICENSE` — noncommercial community-use license.
-- `CONTRIBUTING.md` — contribution terms and workflow.
+- `LICENSE` — Apache License 2.0.
+- `CONTRIBUTING.md` — contribution guidance.
 
-## Licensing
+## License
 
-This project uses a dual-licensing model.
+This project is open source under the **Apache License 2.0**.
 
-- **Noncommercial use:** permitted under the PolyForm Noncommercial License 1.0.0 in `LICENSE`. You may use, modify, and redistribute the project for permitted noncommercial purposes under those terms.
-- **Commercial use:** not granted by the public license. Commercial use requires a separate written commercial license from the repository owner. Commercial licenses may be paid and may have different terms.
+You may use, modify, redistribute, and use the project commercially under the license terms. Copyright, license, patent, trademark, and attribution obligations remain governed by `LICENSE`.
 
-This repository is therefore source-available rather than OSI open source.
-
-Contributions are welcome. By submitting a contribution, contributors agree to the terms in `CONTRIBUTING.md`, which are designed to let the project owner continue offering both the public noncommercial license and separate commercial licenses while contributors retain ownership of their own contributions.
+Contributions are welcome and are submitted under the Apache License 2.0 unless explicitly stated otherwise, as described in `CONTRIBUTING.md`.
 
 ## Core principles
 
