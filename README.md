@@ -65,7 +65,7 @@ git clone --depth 1 https://github.com/BurakD/ai-engineering-harness /tmp/ai-eng
 cp /tmp/ai-engineering-harness/{AGENTS.md,MODEL_ROUTING.md,CLAUDE.md} .
 ```
 
-`CLAUDE.md` is only needed when Claude Code is used. On systems without a POSIX shell, copy the same files by any normal file-copy method; no installer is required.
+`CLAUDE.md` is only needed when Claude Code is used. If your shell does not support brace expansion, or on Windows, copy the same files by any normal file-copy method; no installer is required.
 
 Before committing anything, review the diff. Adoption should not change application behavior.
 
@@ -75,10 +75,11 @@ The preferred model is **inspect, preserve, then add**.
 
 1. Inspect the current branch and working-tree state before changing anything.
 2. Discover existing AI/project instructions and canonical documentation. Typical locations include `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.github/`, `CONTRIBUTING.md`, project docs, ADRs, tests, CI/release files, and deployment documentation.
-3. Add `MODEL_ROUTING.md` unless the project already has an equivalent policy. If it does, reconcile the policies instead of creating competing routing systems.
-4. If Claude Code is used, add the thin `CLAUDE.md` adapter. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it.
-5. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
-6. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
+3. Add or update `AGENTS.md` using the applicable case below.
+4. Add `MODEL_ROUTING.md` unless the project already has an equivalent policy. If it does, reconcile the policies instead of creating competing routing systems.
+5. If Claude Code is used, add the thin `CLAUDE.md` adapter. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it.
+6. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
+7. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
 
 ### If the project has no `AGENTS.md`
 
