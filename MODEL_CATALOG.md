@@ -13,6 +13,7 @@ This file is the time-sensitive companion to `MODEL_ROUTING.md`.
 3. This catalog provides shared defaults and discovery guidance; it does not override project-specific risk, cost, compliance, or approval policy.
 4. Never claim a model switch, subagent call, or cross-tool delegation that the active runtime cannot actually perform.
 5. Prefer live discovery over stale catalog entries. If the live runtime contradicts this file, follow the runtime and report that the catalog may need refresh.
+6. If the **Last verified** date is no longer reasonably current for the decision at hand, treat concrete catalog entries as unverified until refreshed from current official sources or confirmed by live runtime discovery.
 
 ## Current recommended mappings
 
