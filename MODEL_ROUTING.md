@@ -11,7 +11,7 @@ Goal: keep quality high without paying high-model cost for every task, while all
 | Difficult / ambiguous / critical | REASONING | architecture, hard debugging, security-sensitive work, compatibility or protocol risk, release review |
 | Exceptional hardest case | FRONTIER | only when lower tiers are insufficient or explicitly requested |
 
-The tier definitions are stable policy. Exact model names and subscription economics are temporary implementation details.
+The tier definitions are stable policy. Exact model names and subscription economics are temporary implementation details. See `MODEL_CATALOG.md` for the current time-sensitive model/runtime catalog and recommended starting mappings.
 
 ## Tool mapping
 
@@ -22,7 +22,7 @@ Choose the closest current model, mode, or agent capability in the **active runt
 - **REASONING**: stronger reasoning model/mode for difficult, ambiguous, architectural, security-sensitive, compatibility-sensitive, or release-sensitive work.
 - **FRONTIER**: strongest available model/mode only when explicitly justified; manual escalation by default.
 
-A project may document current preferred mappings for the tools it actually uses when that is useful, but version-specific model names are guidance rather than durable policy.
+Use `MODEL_CATALOG.md` as current shared guidance when it covers the active runtime, but verify actual availability in the live runtime/session. A project may document current preferred mappings for the tools it actually uses when that is useful; project-local preferences remain authoritative for that project when compatible with this policy.
 
 ### Runtime capability rule
 
