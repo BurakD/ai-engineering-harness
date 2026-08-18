@@ -2,19 +2,21 @@
 
 A minimal, vendor-neutral baseline for AI-assisted software development.
 
-The harness is designed to solve two practical problems:
+The harness is designed to solve three practical problems:
 
 1. Keep project context and engineering discipline durable when switching between tools or models.
 2. Balance quality and cost by using stronger reasoning only when task complexity or risk justifies it.
+3. Keep model/runtime choices current without hard-coding short-lived vendor model names into the stable engineering policy.
 
 It intentionally stays small. The repository itself is the handoff mechanism; there is no required installer, orchestrator, model gateway, or project-specific framework.
 
 ## Files
 
 - `AGENTS.md` — shared engineering baseline used by compatible coding agents.
-- `MODEL_ROUTING.md` — FAST / STANDARD / REASONING / FRONTIER quality-cost routing policy.
+- `MODEL_ROUTING.md` — stable FAST / STANDARD / REASONING / FRONTIER quality-cost routing policy.
+- `MODEL_CATALOG.md` — time-sensitive model/runtime catalog and recommended current mappings.
 - `CLAUDE.md` — thin Claude Code adapter that points to `AGENTS.md`.
-- `README.md` — adoption and maintenance guidance.
+- `README.md` — adoption, update, testing, and maintenance guidance.
 - `LICENSE` — Apache License 2.0.
 - `CONTRIBUTING.md` — contribution guidance.
 
@@ -36,9 +38,9 @@ For an existing project, the recommended path is **in-place AI-assisted adoption
 
 **Do not create a new branch, worktree, project copy, installer, or temporary clone of the target project merely to adopt this harness.** Use one only if the user explicitly asks for isolation or the target repository's own policy requires it.
 
-For the one-time adoption, prefer a capable/reasoning model because it must inspect and preserve existing project rules safely. After adoption, normal model routing applies.
+For one-time adoption, prefer a capable/reasoning model because it must inspect and preserve existing project rules safely. After adoption, normal model routing applies.
 
-If you want a specific communication language, prepend one short line such as `Respond in Turkish.` or `Respond in English.` to the prompt. This is more reliable than asking an agent to infer the user's language from a pasted English template.
+If you want a specific communication language, prepend one short line such as `Respond in Turkish.` or `Respond in English.`.
 
 ### Copy/paste adoption prompt
 
@@ -47,7 +49,7 @@ Adopt the current AI Engineering Harness from
 https://github.com/BurakD/ai-engineering-harness
 into this repository, in place, on the current branch.
 
-First inspect this repository and the harness repository. Follow the harness README's existing-project adoption procedure exactly.
+First inspect this repository and the harness repository. Follow the harness README's current existing-project adoption procedure exactly.
 
 Use the communication language explicitly requested by the user or already defined by this repository. If neither exists, continue in the language established in the surrounding conversation rather than inferring it from this pasted template.
 
@@ -64,7 +66,7 @@ Do not ask me to restate facts that the repository already answers. Do not assum
 
 If repository evidence is missing, stale, contradictory, or genuinely ambiguous:
 - do not invent a deployment, release, approval, build/test, model-routing, or tool-native policy;
-- ask only the focused question(s) that are necessary when the ambiguity materially affects safe harness adoption itself;
+- ask only focused questions that materially affect safe harness adoption itself;
 - otherwise continue the minimal harness adoption without guessing, and report the unresolved item in the final Project readiness section for human follow-up.
 
 Backup requirement:
@@ -78,7 +80,9 @@ Preserve all existing project-specific content, rules, skills, docs, tests, depl
 Apply the harness minimally:
 - if AGENTS.md does not exist, copy the harness AGENTS.md verbatim;
 - if AGENTS.md already exists, preserve it exactly outside the documented shared-baseline markers and append/update the shared harness AGENTS.md verbatim inside those markers;
-- MODEL_ROUTING.md must remain a verbatim copy of the harness MODEL_ROUTING.md. If the project already has local model/tool routing rules, preserve them where they are; do not copy, summarize, map, or duplicate those project-specific model names or policies into MODEL_ROUTING.md;
+- MODEL_ROUTING.md must remain a verbatim copy of the harness MODEL_ROUTING.md when harness-owned;
+- MODEL_CATALOG.md must remain a verbatim copy of the shared current catalog when harness-owned; do not move project-local model preferences into it;
+- if the project already has local model/tool routing rules, preserve them where they are; do not copy, summarize, map, or duplicate those project-specific model names or policies into MODEL_ROUTING.md or MODEL_CATALOG.md;
 - if existing project-local routing appears semantically incompatible with the shared tier policy, do not invent a reconciliation or mapping. Stop and report the conflict for human review;
 - add the thin CLAUDE.md adapter if Claude Code is used now or is intended to be used with this project. If CLAUDE.md already exists, preserve its existing value and add the shared AGENTS.md reference rather than replacing it. If Claude Code is definitely not used for this project, CLAUDE.md may be omitted.
 
@@ -94,8 +98,8 @@ When finished:
 3. list every file changed or added;
 4. list the backup path for every existing file you modified;
 5. explain what project-specific content/rules you preserved and any conflicts;
-6. confirm that AGENTS.md shared content, MODEL_ROUTING.md, and the shared portion of CLAUDE.md follow the harness source as required;
-7. confirm that no unrelated file was changed and that no branch/worktree/project copy was created for the adoption;
+6. confirm that AGENTS.md shared content, MODEL_ROUTING.md, MODEL_CATALOG.md, and the shared portion of CLAUDE.md follow the harness source as required;
+7. confirm that no unrelated file was changed and that no branch/worktree/project copy was created for adoption;
 8. provide a Project readiness section covering, when applicable:
    - environment/deployment topology;
    - customer-facing/live publication boundary;
@@ -128,6 +132,14 @@ Tool-native rule and skill directories such as `.cursor/rules/`, `.cursor/skills
 
 Tool-native model names, subagent types, agent APIs, skills, and invocation syntax are also runtime-scoped. Another runtime may read them for context but must not claim it can invoke them unless that capability is actually available in the active session. Shared intent may be preserved using the closest real capability; fake cross-tool delegation is not allowed.
 
+### Stable policy, updateable catalog
+
+`MODEL_ROUTING.md` is stable policy. `MODEL_CATALOG.md` is deliberately time-sensitive.
+
+A change in model names, plan availability, pricing, runtime picker contents, or vendor releases should normally update `MODEL_CATALOG.md`, not the capability-tier definitions. The active runtime remains the ultimate source of truth for what it can actually invoke.
+
+Project-specific model preferences stay project-specific and may override catalog defaults when compatible with the shared routing policy.
+
 ### Project-specific knowledge stays project-specific
 
 Do not copy product names, business rules, architecture decisions, environment details, release procedures, language preferences, credentials, or domain knowledge into this shared harness repository.
@@ -157,26 +169,11 @@ The preferred model is **inspect, preserve, back up, then add — in place**.
 5. If a material fact needed for safe adoption is genuinely unresolved, ask only the focused question needed. Otherwise do not block adoption: preserve the ambiguity, report it in Project readiness, and recommend where the durable answer belongs project-locally.
 6. Before modifying an existing target file, make a byte-for-byte backup outside the repository and report its path. Do not place adoption backups in the project tree by default.
 7. Add or update `AGENTS.md` using the applicable case below.
-8. Add `MODEL_ROUTING.md` as a verbatim shared policy file. Existing project-local model/tool routing rules remain where they are and authoritative for their local mechanics. Do not duplicate their model names, mappings, or tool policy into the shared file. If there is a real semantic conflict, stop and report it instead of inventing a mapping.
+8. Add `MODEL_ROUTING.md` as a verbatim shared policy file and `MODEL_CATALOG.md` as the verbatim current shared catalog. Existing project-local model/tool routing rules remain where they are and authoritative for their local mechanics.
 9. Add the thin `CLAUDE.md` adapter when Claude Code is used now or is expected to be used with the project. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it. If Claude Code is definitely not used, it may be omitted.
 10. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
 11. Do not silently edit project-local policy files to make the adoption look conflict-free. Surface unresolved/stale policy, recommend the smallest canonical file(s) to update, and wait for explicit approval.
 12. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
-
-### Project readiness after adoption
-
-A successful file copy is not the whole acceptance check. The adoption report should say whether the repository gives a fresh agent enough durable information to work safely.
-
-When applicable, assess these areas as **clear**, **unresolved**, or **not applicable**:
-
-- environment/deployment topology and which environment(s), if any, are customer-facing/live;
-- branch/tag/release/action triggers and whether any of them deploy or publish automatically;
-- approval boundaries for those actions;
-- documented build/test/lint/analysis commands;
-- project-local model/subagent/cost rules and whether they are tool-specific;
-- stale or contradictory instructions that could change agent behavior.
-
-Do not ask the user questions for facts already established by the repository. For unresolved items, ask the smallest question that materially changes behavior. After the user answers, recommend updating the project's existing canonical rule/doc/config location rather than adding harness-specific project files. Do not make that additional project-local edit as part of adoption without explicit approval.
 
 ### If the project has no `AGENTS.md`
 
@@ -196,13 +193,15 @@ Change nothing outside the markers. If the markers already exist, updating the h
 
 Project-local rules remain authoritative even when the shared block appears later in the file.
 
-### MODEL_ROUTING.md and existing local routing rules
+### MODEL_ROUTING.md, MODEL_CATALOG.md, and local routing rules
 
-`MODEL_ROUTING.md` is the shared, vendor-neutral capability-tier vocabulary and should remain verbatim.
+`MODEL_ROUTING.md` is the shared, vendor-neutral capability-tier policy and should remain verbatim.
 
-Projects may already have tool-specific routing rules, model names, subagent policies, or cost controls. Keep those project-local files unchanged and authoritative for their own runtime/tool mechanics. Do **not** mirror those details into `MODEL_ROUTING.md`, and do not mirror the shared tier definitions into the tool-specific files merely for adoption.
+`MODEL_CATALOG.md` is the shared, time-sensitive catalog. It should also remain verbatim when installed as harness-owned content so that upstream catalog refreshes are reviewable and predictable.
 
-If the two are compatible, no reconciliation artifact is needed. If they are genuinely incompatible, stop and ask for human review rather than creating a project-specific mapping section inside the shared file.
+Projects may already have tool-specific routing rules, model names, subagent policies, or cost controls. Keep those project-local files unchanged and authoritative for their own runtime/tool mechanics. Do **not** mirror those details into either shared model file, and do not mirror shared tier definitions into tool-specific files merely for adoption.
+
+If the local policy and shared tier policy are genuinely incompatible, stop and ask for human review rather than inventing a mapping. If only a catalog entry is stale or unavailable, prefer the live runtime and report that the shared catalog may need refresh.
 
 ## Update an existing installation
 
@@ -214,12 +213,13 @@ Recommended update behavior:
 2. Record the upstream harness commit being applied.
 3. Back up every existing file that will be modified, byte-for-byte, outside the repository.
 4. If `AGENTS.md` contains the shared-baseline markers, replace only the content between the markers with the current upstream `AGENTS.md` verbatim and update the marker date. Preserve everything outside the markers exactly.
-5. Refresh `MODEL_ROUTING.md` from upstream verbatim when it is harness-owned. Do not copy project-local model names or tool-specific mappings into it.
-6. Refresh only the shared adapter portion of `CLAUDE.md` where applicable; preserve existing Claude-specific project value.
-7. Do not copy, translate, or synchronize tool-native rules/skills/model mappings between runtimes.
-8. Surface semantic conflicts or newly stale project-local rules instead of silently rewriting them.
-9. Review the exact diff and run the current installation tests, including the cross-tool runtime-capability test when multiple AI runtimes are used.
-10. Do not commit, push, deploy, publish, or change application code merely to update the harness.
+5. Refresh `MODEL_ROUTING.md` from upstream verbatim when it is harness-owned.
+6. Refresh `MODEL_CATALOG.md` from upstream verbatim when it is harness-owned. Do not rewrite project-local model preferences merely because the catalog changed; report stale local choices for human review.
+7. Refresh only the shared adapter portion of `CLAUDE.md` where applicable; preserve existing Claude-specific project value.
+8. Do not copy, translate, or synchronize tool-native rules/skills/model mappings between runtimes.
+9. Surface semantic conflicts or newly stale project-local rules instead of silently rewriting them.
+10. Review the exact diff and run the current installation tests, including the cross-tool runtime-capability test when multiple AI runtimes are used.
+11. Do not commit, push, deploy, publish, or change application code merely to update the harness.
 
 ### Copy/paste update prompt
 
@@ -233,8 +233,8 @@ Stay in this repository and on the current branch unless this repository's own d
 
 Before changing anything:
 - inspect the current branch and working-tree status;
-- inspect the currently installed AGENTS.md, MODEL_ROUTING.md, CLAUDE.md where present, existing shared-baseline markers, and relevant project-local/tool-native rules;
-- inspect current upstream AGENTS.md, MODEL_ROUTING.md, CLAUDE.md and README.md;
+- inspect the currently installed AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md where present, existing shared-baseline markers, and relevant project-local/tool-native rules;
+- inspect current upstream AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md and README.md;
 - record the exact upstream commit you are applying;
 - identify every existing file that would be modified.
 
@@ -245,10 +245,13 @@ Preserve all project-local content, rules, docs, skills, model mappings, uncommi
 Update only harness-owned shared content according to the current upstream README:
 - refresh only the shared AGENTS.md baseline inside its markers; preserve everything outside the markers exactly;
 - keep MODEL_ROUTING.md a verbatim upstream shared policy file when it is harness-owned;
+- keep MODEL_CATALOG.md a verbatim upstream current catalog when it is harness-owned; do not use catalog refreshes to overwrite project-local model preferences;
 - refresh only the shared CLAUDE.md adapter portion where applicable, preserving project-specific Claude instructions;
 - never copy, translate, synchronize, or treat another runtime's tool-native model names, agents, subagents, skills, rules, or invocation syntax as capabilities of the current runtime.
 
 If current project-local instructions conflict semantically with the new shared policy, do not invent a reconciliation. Stop before rewriting project-local policy and report the exact conflict for human review.
+
+If a project-local preferred model is no longer supported by the current catalog or live runtime, do not silently replace it. Report the stale preference and the closest current options for human review.
 
 Do not modify application code, project-local deployment/release policy, tool-native rules/skills, or project documentation merely to make the harness update look clean.
 Do not commit, push, merge, deploy, publish, or access production/live systems.
@@ -258,7 +261,7 @@ When finished:
 2. show the exact harness-related diff;
 3. report the upstream harness commit used;
 4. list every changed file and every backup path;
-5. identify any semantic conflicts or project-local instructions made stale by the new shared policy;
+5. identify any semantic conflicts, stale project-local model choices, or project-local instructions made stale by the new shared policy/catalog;
 6. confirm that unrelated and project-local content was preserved;
 7. run the README's current installation tests that are applicable, including the cross-tool runtime-capability test where multiple runtimes are used;
 8. stop for human review.
@@ -274,7 +277,7 @@ For a new project with no existing `AGENTS.md`:
 
 ```bash
 git clone --depth 1 https://github.com/BurakD/ai-engineering-harness /tmp/ai-engineering-harness
-cp /tmp/ai-engineering-harness/{AGENTS.md,MODEL_ROUTING.md,CLAUDE.md} .
+cp /tmp/ai-engineering-harness/{AGENTS.md,MODEL_ROUTING.md,MODEL_CATALOG.md,CLAUDE.md} .
 ```
 
 `CLAUDE.md` is only needed when Claude Code is used. If your shell does not support brace expansion, or on Windows, copy the same files by any normal file-copy method.
@@ -295,22 +298,23 @@ Do not change any files. Inspect this repository and report:
 - which repository-local instructions, rules, docs, tests and deployment/release conventions apply;
 - which environments/deployment targets exist, if any, which are customer-facing/live, and what repository actions trigger deployment or publication;
 - the model-routing tier for this read-only investigation and why;
+- the current model/runtime catalog guidance relevant to this active runtime, if any;
 - the documented build/test/lint/analysis commands you would use for a normal code change;
 - which actions would require explicit human approval;
 - any stale, contradictory, or unresolved project instructions that could materially change your behavior.
 ```
 
-A healthy installation should cause the agent to discover `AGENTS.md`, project-local rules and `MODEL_ROUTING.md`, respect dirty Git state, avoid assuming environment names or topology, identify approval boundaries, and surface material ambiguity without relying on the previous chat.
+A healthy installation should cause the agent to discover `AGENTS.md`, project-local rules, `MODEL_ROUTING.md`, and `MODEL_CATALOG.md`; respect dirty Git state; avoid assuming environment names or topology; identify approval boundaries; and surface material ambiguity without relying on the previous chat.
 
 ### 2. Real-task behavior test
 
 In another fresh session, give a normal non-trivial project request but explicitly ask for analysis only, for example:
 
 ```text
-I want to make a small but non-trivial change in this project. Do not edit files yet. Inspect the existing implementation and project rules first, then tell me whether the change is actually needed, what would be affected, the appropriate model-routing tier, risks, and how you would validate it.
+I want to make a small but non-trivial change in this project. Do not edit files yet. Inspect the existing implementation and project rules first, then tell me whether the change is actually needed, what would be affected, the appropriate model-routing tier, which currently available model/mode you would actually use in this runtime, risks, and how you would validate it.
 ```
 
-Replace the first sentence with a real project request. The useful signal is behavioral: the agent should inspect existing code before proposing work, notice relevant project rules and dirty files, avoid inventing undocumented commands, and avoid unnecessary implementation if the requested behavior already exists.
+The useful signal is behavioral: the agent should inspect existing code before proposing work, notice relevant project rules and dirty files, avoid inventing undocumented commands, and avoid unnecessary implementation if the requested behavior already exists.
 
 ### 3. Approval-boundary test
 
@@ -333,9 +337,10 @@ Do not change any files.
 
 Assume a medium-complexity development task has arrived. Based on the installed AI Engineering Harness and this repository:
 - describe the stages and model/agent roles you would actually use;
-- distinguish shared Harness policy from tool-native project instructions;
+- distinguish shared Harness policy/catalog guidance from tool-native project instructions;
 - name only models, agents, subagents, modes, or delegation mechanisms that this current runtime can actually use;
-- if another tool's native rule names a model or agent unavailable here, explain how you preserve its intent without pretending you can invoke it.
+- if another tool's native rule names a model or agent unavailable here, explain how you preserve its intent without pretending you can invoke it;
+- if MODEL_CATALOG.md conflicts with the live runtime's actual model availability, follow the live runtime and flag the catalog entry as potentially stale.
 
 Keep the answer concise.
 ```
@@ -345,38 +350,35 @@ Expected behavior:
 - The active runtime may use a named model or agent when that capability is genuinely available there, even if the same name also appears in another tool's configuration.
 - It must not claim that another runtime's model, subagent, skill, or invocation mechanism is available merely because a repository file names it.
 - It should preserve portable intent using the closest capability it can actually invoke, without inventing literal cross-vendor model equivalence.
+- It should treat `MODEL_CATALOG.md` as current guidance, not stronger evidence than the active runtime itself.
 - If no acceptable equivalent exists and the distinction matters, it should state the limitation rather than fake a delegation.
 
 Passing these smoke tests is evidence that the shared context is being discovered. It is not proof of hard enforcement; use the active tool's permission/deny/hook mechanisms when an operation must be technically impossible.
 
-## New-project growth
+## Model routing and catalog maintenance
 
-Start with only the shared files you actually use. Add project-specific information to the project's normal documentation, rules, tests, ADRs, configuration, or code as real needs emerge. Do not grow a separate harness-specific project structure pre-emptively.
-
-## Model routing
-
-`MODEL_ROUTING.md` defines stable capability tiers rather than making the project depend on model version names.
+`MODEL_ROUTING.md` defines stable capability tiers:
 
 - **FAST** — small/mechanical work.
 - **STANDARD** — normal implementation and bounded fixes.
 - **REASONING** — difficult, ambiguous, architectural, security-sensitive, compatibility-sensitive, or release-sensitive work.
 - **FRONTIER** — exceptional hardest cases; manual escalation only.
 
-Exact model catalogs and subscription economics change frequently. Tool mappings are therefore expressed as capabilities rather than pinned model versions.
+`MODEL_CATALOG.md` records current runtime-specific options and is expected to change more frequently. Its own maintenance section contains a copy/paste catalog-refresh prompt. Users and maintainers may update the shared catalog when vendor/runtime information changes; adopting projects receive those changes through the normal harness update procedure.
 
-Project-specific rules may raise the minimum tier for a sensitive area. Such overrides belong in that project, not in the shared harness. Tool-native model names and subagent mechanics remain scoped to the runtime that actually provides them.
+Project-specific rules may raise the minimum tier for a sensitive area or choose different current models. Such overrides belong in that project, not in the shared catalog.
 
 ## Durable learning from AI mistakes
 
-The normative durable-learning rule is in `AGENTS.md`: when a correction is likely to matter again, prefer a durable test/check, code or schema invariant, linter/build/CI rule, or project-local rule/documentation improvement instead of relying on chat memory.
+When a correction is likely to matter again, prefer a durable test/check, code or schema invariant, linter/build/CI rule, or project-local rule/documentation improvement instead of relying on chat memory.
 
 Project-specific mistakes stay project-specific. Do not grow the shared baseline from one product's local lessons.
 
 ## Maintenance
 
-Keep the stable process in `AGENTS.md` and the stable tier definitions in `MODEL_ROUTING.md`.
+Keep stable process in `AGENTS.md`, stable tier definitions in `MODEL_ROUTING.md`, and changing runtime/model information in `MODEL_CATALOG.md`.
 
-When tools or models change, update only guidance that is actually stale. Avoid propagating model-version churn into every project. For installed projects, use the current upstream **Update an existing installation** procedure and its copy/paste prompt rather than maintaining a separate synchronization mechanism.
+For installed projects, use the current upstream **Update an existing installation** procedure and its copy/paste prompt rather than maintaining a separate synchronization mechanism.
 
 ## Possible future extensions
 
