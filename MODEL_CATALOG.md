@@ -17,7 +17,7 @@ This file is the time-sensitive companion to `MODEL_ROUTING.md`.
 
 ## Current recommended mappings
 
-These are starting points, not literal cross-vendor equivalences.
+These are starting points, not literal cross-vendor equivalences. The table is a maintained set of useful runtime mappings, **not an exhaustive list of tools supported by the shared harness**; a runtime does not need a catalog row in order to consume the vendor-neutral policy.
 
 | Runtime / tool | FAST | STANDARD | REASONING | FRONTIER | Live discovery / notes |
 |---|---|---|---|---|---|
@@ -26,21 +26,23 @@ These are starting points, not literal cross-vendor equivalences.
 | **OpenAI Codex CLI / IDE** | GPT-5.6 Luna | GPT-5.6 Terra | GPT-5.6 Sol with an appropriate reasoning effort | GPT-5.6 Sol with the strongest reasoning setting actually exposed by the current Codex runtime | Current OpenAI guidance exposes Sol, Terra, and Luna in Codex according to plan. Do not assume every API reasoning mode is exposed identically in every Codex client/version. |
 | **Antigravity CLI (`agy`)** | Prefer the fastest/lowest-effort model shown by `agy models` that is adequate for the task | Prefer the balanced coding model shown by `agy models` | Prefer the strongest reasoning-capable model shown by `agy models` | Prefer the strongest model/effort actually shown by `agy models`; manual escalation | Run `agy models` before relying on a named model. Google's official codelab explicitly documents this command because the available model set is dynamic. |
 
-## Why Cursor Auto is not the catalog
+## Dynamic routers and auto-selection
 
-Cursor Auto / Router is useful, but it is a runtime router rather than a stable model mapping. Cursor documents that Auto chooses a model dynamically based on task fit, reliability/capacity and related signals, and the exact pool can change. When repeatability, model-specific evaluation, planner/worker separation, or cost predictability matters, choose a concrete model instead of treating Auto as a fixed tier-to-model mapping.
+Auto-selection or router modes can be useful, but they are runtime routers rather than stable model mappings. Their model pools and selection logic may change with task fit, reliability, capacity, product policy, or other runtime signals. Cursor Auto / Router is one concrete example. When repeatability, model-specific evaluation, planner/worker separation, or cost predictability matters, choose a concrete verified capability instead of treating any dynamic router as a fixed tier-to-model mapping.
 
 ## Planner / worker patterns
 
-A project may intentionally use a stronger planner/reviewer and a cheaper implementation worker when the active runtime supports that orchestration. For example, Cursor can support patterns such as **Fable 5 planning/review + Composer 2.5 implementation** when those models and the required agent/subagent mechanics are genuinely available in the current Cursor runtime.
+A project may intentionally use a stronger planner/reviewer and a cheaper implementation worker when the active runtime supports that orchestration. The portable pattern is the separation of roles, not any particular vendor model or subagent API.
 
-The same semantic pattern may be useful elsewhere, but the concrete model names and delegation mechanism must be re-selected from that runtime's real capabilities. Claude Code, Codex, Antigravity, or another tool must not pretend it can invoke Cursor-native subagents merely because a project file describes them.
+For example, Cursor can support patterns such as **Fable 5 planning/review + Composer 2.5 implementation** when those models and the required agent/subagent mechanics are genuinely available in the current Cursor runtime. In another runtime, preserve the same semantic intent only with capabilities that runtime actually exposes.
+
+Claude Code, Codex, Antigravity, or another tool must not pretend it can invoke Cursor-native subagents merely because a project file describes them.
 
 ## User and project overrides
 
 Do not edit this shared catalog merely to record one project's personal preference. Keep durable project-specific choices in that project's existing rules/docs/configuration, for example:
 
-- a preferred planner model for Cursor;
+- a preferred planner model for a particular runtime;
 - a cost ceiling;
 - a minimum tier for auth, payments, migrations, or release work;
 - a prohibition on a provider or model for privacy/compliance reasons.
