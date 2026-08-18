@@ -2,7 +2,7 @@
 
 A minimal, vendor-neutral baseline for AI-assisted software development.
 
-AI Engineering Harness is a portable AI-development policy pack built on the open, cross-tool `AGENTS.md` convention. In this project, **harness** means a repository-resident policy/context layer around coding agents — not an agent runtime, orchestrator, model gateway, installer, or execution framework.
+Switching between AI coding tools or models usually means losing the project's engineering context and re-explaining it. AI Engineering Harness is a small, portable policy and context layer that prevents that. It is not an agent runtime or orchestrator. Cursor, Claude Code, Codex, and Antigravity provide their own execution and orchestration capabilities; this repository is designed to sit alongside them, not replace them. When you switch tools or models, this is the layer that carries the project's shared engineering context, quality-and-cost routing policy, and operating constraints forward.
 
 The harness is designed to solve three practical problems:
 
