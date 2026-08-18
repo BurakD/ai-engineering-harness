@@ -51,4 +51,4 @@ When work changes durable project truth, update the appropriate project document
 
 If the same mistake or correction is likely to recur, prefer the smallest durable guard: a deterministic test/check, code or schema invariant, linter/build/CI rule, or project-local rule/documentation improvement. Do not rely on chat memory.
 
-See `MODEL_ROUTING.md` for the shared quality/cost model-routing policy.
+See `MODEL_ROUTING.md` for the shared quality/cost model-routing policy and `MODEL_CATALOG.md` for the current time-sensitive model/runtime catalog.
