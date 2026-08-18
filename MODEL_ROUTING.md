@@ -15,14 +15,23 @@ The tier definitions are stable policy. Exact model names and subscription econo
 
 ## Tool mapping
 
-Choose the closest current model or mode in the active tool that matches the requested tier. Prefer subscription-included or otherwise agreed capacity before paid escalation.
+Choose the closest current model, mode, or agent capability in the **active runtime** that matches the requested tier. Prefer subscription-included or otherwise agreed capacity before paid escalation.
 
 - **FAST**: inexpensive, fast coding model/mode suitable for low-risk mechanical work.
 - **STANDARD**: default general coding model/mode with a balanced quality/cost profile.
 - **REASONING**: stronger reasoning model/mode for difficult, ambiguous, architectural, security-sensitive, compatibility-sensitive, or release-sensitive work.
 - **FRONTIER**: strongest available model/mode only when explicitly justified; manual escalation by default.
 
-A project may document current preferred mappings for its actual tools when that is useful, but version-specific model names are guidance rather than durable policy.
+A project may document current preferred mappings for the tools it actually uses when that is useful, but version-specific model names are guidance rather than durable policy.
+
+### Runtime capability rule
+
+- A concrete model, agent, subagent, mode, or delegation mechanism may be selected only if the active runtime/session can actually invoke it.
+- Tool-native mappings are scoped to the runtime that provides them. A Cursor rule naming a Cursor model or subagent does not make that model or subagent available in Claude Code, Codex, Antigravity, or another runtime; the same principle applies in every direction.
+- Do not claim a delegation, model switch, or subagent call that the active runtime cannot perform.
+- When another tool's native rule expresses a useful portable intent, preserve the intent with the closest capability that is genuinely available in the active runtime. Examples include separating planning from implementation, using a cheaper worker for routine execution, or requesting an independent review.
+- Do not invent literal cross-vendor model equivalences. If the project requires a named model or mechanism that is unavailable in the active runtime and no acceptable equivalent is defined, state the limitation and ask for a decision when it materially affects the work.
+- If the same named model or mechanism is genuinely available in the active runtime, it may be used; availability must be established by the active runtime, not inferred from another tool's config files.
 
 ## Start low, escalate deliberately
 
@@ -43,6 +52,8 @@ Project-specific rules may raise the minimum tier or require additional review f
 
 Keep those overrides in the project repository's normal rules, docs, ADRs, tests, or configuration. Do not copy them into this shared harness.
 
+Tool-specific mappings may also remain in tool-native project rules when they are genuinely useful for that tool. They do not automatically bind other runtimes.
+
 ## Cross-model handoff
 
 A model switch should not require copying chat history. The next model should first read:
@@ -60,4 +71,4 @@ If the previous model made a durable decision, that decision belongs in the repo
 
 For high-risk work, a fresh-context review can be more valuable than simply increasing model size. When practical, use a separate model/session that reconstructs context from the repository and reviews the actual diff rather than inheriting the implementation conversation.
 
-This file is guidance. It does not itself switch models or spend money; the active tool/runtime and the human operator perform the actual selection.
+This file is guidance. It does not itself switch models, create subagents, or spend money; the active tool/runtime and the human operator perform the actual selection.
