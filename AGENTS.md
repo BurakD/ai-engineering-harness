@@ -21,6 +21,7 @@ Before non-trivial work:
 - Use the project's documented build, test, lint, and analysis commands. If relevant commands are not documented and cannot be safely inferred from repository configuration, ask before inventing them; after confirmation, record them in project-local instructions.
 - Report validation that was skipped or unavailable.
 - Do not add process artifacts unless they materially help the work.
+- **Discovery is not authorization.** If investigation reveals a problem, risk, inconsistency, stale rule, or improvement outside the requested scope, report it with impact and urgency. Do not remediate it merely because it was discovered unless the remediation is necessary to complete the requested task safely, is already authorized by repository-local policy, or the human explicitly approves that additional change.
 
 ## Runtime and tool capability boundaries
 
