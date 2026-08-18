@@ -41,6 +41,7 @@ Project-specific rules may raise the minimum model-routing tier or require addit
 ## Safety and human approval
 
 - Never overwrite unrelated uncommitted work.
+- If a file that must be modified for the requested task already has uncommitted changes, report the overlap and get explicit human approval before editing that file; leave unrelated dirty files untouched.
 - Never expose secrets.
 - Development success, green CI, a merged branch, or a successful non-production deployment is not approval to release or deploy to a production/live/customer-facing environment.
 - Production/live/customer-facing publication (including any push or merge that triggers such deployment or publication), mutation of a production/live/customer-facing environment or its infrastructure, destructive or irreversible operations (for example force-push, history rewrite, hard reset, or branch deletion), risky production-data operations, secret or credential rotation, release tagging when it triggers publication, and spend outside the agreed policy require explicit human approval for that exact action.
