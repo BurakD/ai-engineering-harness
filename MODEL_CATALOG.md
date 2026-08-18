@@ -21,7 +21,7 @@ These are starting points, not literal cross-vendor equivalences.
 | Runtime / tool | FAST | STANDARD | REASONING | FRONTIER | Live discovery / notes |
 |---|---|---|---|---|---|
 | **Cursor** | Composer 2.5 for inexpensive routine execution; Composer 2.5 Fast when latency matters more than token price | Composer 2.5 is a strong default for hands-on coding; Cursor Auto/Router is acceptable when exact model identity is not required | Claude Fable 5 at a suitable reasoning level when available; otherwise another strong reasoning model exposed by Cursor | Claude Fable 5 at the highest justified reasoning level when available | Use the model picker / current Cursor model list. Auto/Router is dynamic and does not provide a stable, auditable underlying-model mapping, so select explicitly when a workflow requires a known planner or reviewer. |
-| **Claude Code** | Claude Haiku 4.5 for small, latency/cost-sensitive work when available | Claude Sonnet 5 | Claude Sonnet 5 at higher effort or Claude Opus 4.8 when deeper reasoning is useful | Claude Fable 5 for the hardest quality-first work when the account/runtime exposes it | `claude --model <model>` selects a model for the session. Fable 5 and Sonnet 5 are officially available in Claude Code; account/credit availability can still vary. |
+| **Claude Code** | Claude Haiku 4.5 for small, latency/cost-sensitive work when available | Claude Sonnet 5 | **Claude Fable 5 when quality-first reasoning is justified and the account/runtime exposes it**; Claude Sonnet 5 at higher effort is the lower-cost default alternative, with Claude Opus 4.8 as another strong fallback where useful | Claude Fable 5 at the highest justified effort for the hardest long-horizon work | Fable 5 is Anthropic's most capable generally available Claude model and is officially supported in Claude Code. Availability can still depend on plan, credits, workspace policy, or temporary capacity. |
 | **OpenAI Codex CLI / IDE** | GPT-5.6 Luna | GPT-5.6 Terra | GPT-5.6 Sol with an appropriate reasoning effort | GPT-5.6 Sol with the strongest reasoning setting actually exposed by the current Codex runtime | Current OpenAI guidance exposes Sol, Terra, and Luna in Codex according to plan. Do not assume every API reasoning mode is exposed identically in every Codex client/version. |
 | **Antigravity CLI (`agy`)** | Prefer the fastest/lowest-effort model shown by `agy models` that is adequate for the task | Prefer the balanced coding model shown by `agy models` | Prefer the strongest reasoning-capable model shown by `agy models` | Prefer the strongest model/effort actually shown by `agy models`; manual escalation | Run `agy models` before relying on a named model. Google's official codelab explicitly documents this command because the available model set is dynamic. |
 
@@ -85,15 +85,13 @@ Show the exact diff and sources used. Do not modify application/project-specific
 Primary or first-party sources:
 
 - Cursor models / Auto: https://docs.cursor.com/models/
-- Cursor Composer 2.5: https://cursor.com/composer
+- Cursor Composer 2.5: https://cursor.com/blog/composer-2-5
 - Cursor model-economics research using Fable 5 + Composer 2.5: https://cursor.com/blog/agent-swarm-model-economics
-- Cursor Fable 5 availability confirmation: https://forum.cursor.com/t/claude-fable-5-out-now/162816/46
 - Anthropic Claude Fable 5: https://www.anthropic.com/claude/fable
 - Anthropic Fable 5 redeployment / Claude Code availability: https://www.anthropic.com/news/redeploying-fable-5
 - Anthropic Claude Sonnet 5: https://www.anthropic.com/news/claude-sonnet-5
 - Anthropic Claude Haiku 4.5: https://www.anthropic.com/claude/haiku
 - Anthropic model system cards (includes Opus 4.8): https://www.anthropic.com/system-cards
-- OpenAI GPT-5.6 guidance: https://developers.openai.com/api/docs/guides/latest-model
 - OpenAI GPT-5.6 / Codex availability: https://help.openai.com/en/articles/20001354-gpt-56-in-chatgpt/
 - Google Antigravity CLI model discovery: https://codelabs.developers.google.com/antigravity-cli-hands-on
 
