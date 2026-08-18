@@ -2,6 +2,8 @@
 
 A minimal, vendor-neutral baseline for AI-assisted software development.
 
+AI Engineering Harness is a portable AI-development policy pack built on the open, cross-tool `AGENTS.md` convention. In this project, **harness** means a repository-resident policy/context layer around coding agents — not an agent runtime, orchestrator, model gateway, installer, or execution framework.
+
 The harness is designed to solve three practical problems:
 
 1. Keep project context and engineering discipline durable when switching between tools or models.
@@ -19,6 +21,20 @@ It intentionally stays small. The repository itself is the handoff mechanism; th
 - `README.md` — adoption, update, testing, and maintenance guidance.
 - `LICENSE` — Apache License 2.0.
 - `CONTRIBUTING.md` — contribution guidance.
+
+### What this is — and is not
+
+The shared value is the policy content: repository-first context, model-routing tiers, fail-closed runtime-capability handling, effect-based human approval, scope discipline, durable handoff, and safe adoption/update behavior.
+
+It is **not** a spec-driven workflow engine, multi-agent framework, runtime, rule-sync generator, or replacement for tool-native rules and skills. Tool-native mechanisms remain useful for runtime-specific activation; the harness keeps portable policy and durable project truth from being trapped in any one tool.
+
+### Runtime compatibility and native bridges
+
+`AGENTS.md` is an external cross-tool convention rather than a format invented by this repository. Runtimes that consume it directly need no harness-specific adapter.
+
+Claude Code reads `CLAUDE.md`, so this repository includes only the minimal documented bridge: `CLAUDE.md` imports `@AGENTS.md`. That adapter exists for compatibility, not vendor preference.
+
+Antigravity-specific behavior such as `.agents/skills/` and `.agents/workflows/` remains tool-native and project-local. The harness does not copy, generate, or mirror those files. The same rule applies to other runtime-specific rule/skill systems: if a runtime needs its own documented project-context configuration, use that mechanism locally rather than adding shared adapters merely for symmetry.
 
 ## License
 
@@ -126,9 +142,9 @@ Project code, tests, documentation, ADRs, CI/release conventions, repository-loc
 
 The harness must adapt to an existing project instead of forcing the project into a new structure.
 
-Do not migrate or duplicate project-specific rules merely to fit the harness. Existing `.cursor/rules/`, repository instructions, documentation, ADRs, tests, skills, deployment conventions, and other local assets stay where they are unless the project independently decides to change them.
+Do not migrate or duplicate project-specific rules merely to fit the harness. Existing tool-native rules and skills (for example `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.agents/workflows/`, and `.claude/skills/`), repository instructions, documentation, ADRs, tests, deployment conventions, and other local assets stay where they are unless the project independently decides to change them.
 
-Tool-native rule and skill directories such as `.cursor/rules/`, `.cursor/skills/`, and `.claude/skills/` are runtime features of one tool, not shared project truth. The harness deliberately does not copy, symlink, generate, or synchronize them across tools: formats and invocation differ, and mirrored copies can go stale while still carrying authority. Durable project truth must therefore not live only inside one tool's skill or rule directory — keep it in docs, ADRs, tests, scripts, code/configuration, and `AGENTS.md`, where any tool or human can reconstruct it.
+Tool-native rule and skill directories such as `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.agents/workflows/`, and `.claude/skills/` are runtime features of one tool, not shared project truth. The harness deliberately does not copy, symlink, generate, or synchronize them across tools: formats and invocation differ, and mirrored copies can go stale while still carrying authority. Durable project truth must therefore not live only inside one tool's skill or rule directory — keep it in docs, ADRs, tests, scripts, code/configuration, and `AGENTS.md`, where any tool or human can reconstruct it.
 
 Tool-native model names, subagent types, agent APIs, skills, and invocation syntax are also runtime-scoped. Another runtime may read them for context but must not claim it can invoke them unless that capability is actually available in the active session. Shared intent may be preserved using the closest real capability; fake cross-tool delegation is not allowed.
 
@@ -164,7 +180,7 @@ The preferred model is **inspect, preserve, back up, then add — in place**.
 
 1. Stay in the current project and current branch. Do not create a branch, worktree, or duplicate project merely for adoption unless the user explicitly requests it or repository policy requires it.
 2. Inspect the current branch and working-tree state before changing anything.
-3. Discover existing AI/project instructions and canonical documentation. Typical locations include `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.cursor/skills/`, `.github/`, `CONTRIBUTING.md`, project docs, ADRs, tests, CI/release files, and deployment documentation.
+3. Discover existing AI/project instructions and canonical documentation. Typical locations include `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.agents/workflows/`, `.github/`, `CONTRIBUTING.md`, project docs, ADRs, tests, CI/release files, and deployment documentation.
 4. Reconstruct the project's environment/release topology and documented validation commands from repository evidence. Do not assume environment names, count, promotion flow, or deployment automation.
 5. If a material fact needed for safe adoption is genuinely unresolved, ask only the focused question needed. Otherwise do not block adoption: preserve the ambiguity, report it in Project readiness, and recommend where the durable answer belongs project-locally.
 6. Before modifying an existing target file, make a byte-for-byte backup outside the repository and report its path. Do not place adoption backups in the project tree by default.
@@ -280,7 +296,7 @@ git clone --depth 1 https://github.com/BurakD/ai-engineering-harness /tmp/ai-eng
 cp /tmp/ai-engineering-harness/{AGENTS.md,MODEL_ROUTING.md,MODEL_CATALOG.md,CLAUDE.md} .
 ```
 
-`CLAUDE.md` is only needed when Claude Code is used. If your shell does not support brace expansion, or on Windows, copy the same files by any normal file-copy method.
+`CLAUDE.md` is only needed when Claude Code is used. Other runtimes should use their documented project-context mechanisms when needed; do not add adapters solely for symmetry. If your shell does not support brace expansion, or on Windows, copy the same files by any normal file-copy method.
 
 For an existing project, do not blindly overwrite files. Follow the backup and preservation rules above.
 
