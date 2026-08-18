@@ -22,6 +22,14 @@ Before non-trivial work:
 - Report validation that was skipped or unavailable.
 - Do not add process artifacts unless they materially help the work.
 
+## Runtime and tool capability boundaries
+
+- Tool-native instructions — including a tool's rules, skills, agent definitions, model names, subagent types, or invocation syntax — are authoritative for that tool/runtime only. Other runtimes may read them for context, but must not pretend those native capabilities exist.
+- Before naming or promising a concrete model, agent, subagent, mode, or delegation mechanism, confirm that it is actually available in the active runtime/session. A model or agent name mentioned in another tool's configuration is not evidence that this runtime can invoke it.
+- If a tool-native instruction expresses a portable intent — for example separating planning from implementation, using cheaper workers for routine execution, or requiring an independent review — preserve that intent with the closest capability the active runtime actually supports, consistent with `MODEL_ROUTING.md`. If there is no equivalent, state the limitation rather than inventing a cross-tool mapping or fake delegation.
+- If the same named model or mechanism is genuinely available in the active runtime, it may be used; availability must come from the active runtime, not from another tool's configuration.
+- Behavior intended to bind every tool should live in shared or project-canonical locations, not only in one tool's native rule, skill, or agent directory.
+
 ## Preserve project-specific value
 
 Existing repository-local instructions, documentation, ADRs, CI/release conventions, dependency rules, protocol constraints, deployment procedures, skills, and other project guidance remain authoritative. Do not silently replace, weaken, duplicate, or generalize them merely to fit this harness.
