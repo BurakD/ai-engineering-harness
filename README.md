@@ -1,5 +1,9 @@
 # AI Engineering Harness
 
+**Languages:** **English** · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+
+> **English is the canonical README.** GitHub does not automatically select a repository README from the visitor's UI language, so localized READMEs are selected explicitly above. Each translation records the canonical source revision it was based on. Copy/paste operational prompts remain only in this English README so safety-critical instructions have a single source of truth.
+
 A minimal, vendor-neutral baseline for AI-assisted software development.
 
 Switching between AI coding tools or models usually means losing the project's engineering context and re-explaining it. AI Engineering Harness is a small, portable policy and context layer that prevents that. It is not an agent runtime or orchestrator. Cursor, Claude Code, Codex, and Antigravity provide their own execution and orchestration capabilities; this repository is designed to sit alongside them, not replace them. When you switch tools or models, this is the layer that carries the project's shared engineering context, quality-and-cost routing policy, and operating constraints forward.
