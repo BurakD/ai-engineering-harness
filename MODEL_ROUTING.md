@@ -17,6 +17,8 @@ The tier definitions are stable policy. Exact model names and subscription econo
 
 Choose the closest current model, mode, or agent capability in the **active runtime** that matches the requested tier. Prefer subscription-included or otherwise agreed capacity before paid escalation.
 
+If a preferred mapping would require additional paid credits, pay-as-you-go usage, or other spend that has not already been approved, treat that mapping as unavailable for automatic routing. Select the next-best **verified** capability that satisfies the tier within included or already-agreed capacity. Do not interrupt the user merely because the first-choice model is unavailable when an acceptable included fallback exists; ask only when no acceptable fallback exists or the downgrade would materially change quality, risk, or the requested outcome.
+
 - **FAST**: inexpensive, fast coding model/mode suitable for low-risk mechanical work.
 - **STANDARD**: default general coding model/mode with a balanced quality/cost profile.
 - **REASONING**: stronger reasoning model/mode for difficult, ambiguous, architectural, security-sensitive, compatibility-sensitive, or release-sensitive work.
