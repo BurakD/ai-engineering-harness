@@ -1,6 +1,6 @@
 # Model Catalog
 
-Last verified: **2026-08-18**
+Last verified: **2026-08-19**
 
 This file is the time-sensitive companion to `MODEL_ROUTING.md`.
 
@@ -14,6 +14,7 @@ This file is the time-sensitive companion to `MODEL_ROUTING.md`.
 4. Never claim a model switch, subagent call, or cross-tool delegation that the active runtime cannot actually perform.
 5. Prefer live discovery over stale catalog entries. If the live runtime contradicts this file, follow the runtime and report that the catalog may need refresh.
 6. If the **Last verified** date is no longer reasonably current for the decision at hand, treat concrete catalog entries as unverified until refreshed from current official sources or confirmed by live runtime discovery.
+7. **Included capacity comes before unapproved paid escalation.** If a preferred model requires extra credits, pay-as-you-go usage, or another spend path that is not already approved, use the next-best verified model that satisfies the tier within included or agreed capacity. Ask only when no acceptable fallback exists or the downgrade materially changes quality or risk.
 
 ## Current recommended mappings
 
@@ -21,10 +22,10 @@ These are starting points, not literal cross-vendor equivalences. The table is a
 
 | Runtime / tool | FAST | STANDARD | REASONING | FRONTIER | Live discovery / notes |
 |---|---|---|---|---|---|
-| **Cursor** | Composer 2.5 for inexpensive routine execution; Composer 2.5 Fast when latency matters more than token price | Composer 2.5 is a strong default for hands-on coding; Cursor Auto/Router is acceptable when exact model identity is not required | Claude Fable 5 at a suitable reasoning level when available; otherwise another strong reasoning model exposed by Cursor | Claude Fable 5 at the highest justified reasoning level when available | Use the model picker / current Cursor model list. Auto/Router is dynamic and does not provide a stable, auditable underlying-model mapping, so select explicitly when a workflow requires a known planner or reviewer. |
-| **Claude Code** | Claude Haiku 4.5 for small, latency/cost-sensitive work when available | Claude Sonnet 5 | **Claude Fable 5 when quality-first reasoning is justified and the account/runtime exposes it**; Claude Sonnet 5 at higher effort is the lower-cost default alternative, with Claude Opus 4.8 as another strong fallback where useful | Claude Fable 5 at the highest justified effort for the hardest long-horizon work | Fable 5 is Anthropic's most capable generally available Claude model and is officially supported in Claude Code. Availability can still depend on plan, credits, workspace policy, or temporary capacity. |
+| **Cursor** | Composer 2.5 for inexpensive routine execution; Composer 2.5 Fast when latency matters more than token price | Composer 2.5 is a strong default for hands-on coding; Cursor Auto/Router is acceptable when exact model identity is not required | Claude Fable 5 at a suitable reasoning level when available within included/agreed capacity; otherwise the strongest verified reasoning model available without unapproved spend | Strongest verified model/effort actually available within agreed spend; manual escalation before paid-only capacity | Use the model picker / current Cursor model list. Auto/Router is dynamic and does not provide a stable, auditable underlying-model mapping, so select explicitly when a workflow requires a known planner or reviewer. |
+| **Claude Code** | Claude Haiku 4.5 for small, latency/cost-sensitive work when available within included capacity | Claude Sonnet 5 is the default balanced choice when available within included capacity | Prefer the strongest verified reasoning-capable model available within included capacity. Claude Fable 5 is quality-first only when the account/session exposes it without unapproved extra spend; otherwise prefer Claude Sonnet 5 at higher effort, or another stronger included model actually shown by `/model` | Strongest verified model/effort actually available within included or already-approved capacity; manual escalation before paid-only usage | Run `/model` to see what the current account can actually use. Claude plan usage is pooled and model availability/limits can vary by plan and account. Usage credits are a separate pay-as-you-go path after included limits; the harness must not opt into that spend automatically. |
 | **OpenAI Codex CLI / IDE** | GPT-5.6 Luna | GPT-5.6 Terra | GPT-5.6 Sol with an appropriate reasoning effort | GPT-5.6 Sol with the strongest reasoning setting actually exposed by the current Codex runtime | Current OpenAI guidance exposes Sol, Terra, and Luna in Codex according to plan. Do not assume every API reasoning mode is exposed identically in every Codex client/version. |
-| **Antigravity CLI (`agy`)** | Prefer the fastest/lowest-effort model shown by `agy models` that is adequate for the task | Prefer the balanced coding model shown by `agy models` | Prefer the strongest reasoning-capable model shown by `agy models` | Prefer the strongest model/effort actually shown by `agy models`; manual escalation | Run `agy models` before relying on a named model. Google's official codelab explicitly documents this command because the available model set is dynamic. |
+| **Antigravity CLI (`agy`)** | Prefer the fastest/lowest-effort model shown by `agy models` that is adequate for the task | Prefer the balanced coding model shown by `agy models` | Prefer the strongest reasoning-capable model shown by `agy models` within included/agreed capacity | Prefer the strongest model/effort actually shown by `agy models`; manual escalation before new spend | Run `agy models` before relying on a named model. Google's official codelab explicitly documents this command because the available model set is dynamic. |
 
 ## Dynamic routers and auto-selection
 
@@ -34,7 +35,7 @@ Auto-selection or router modes can be useful, but they are runtime routers rathe
 
 A project may intentionally use a stronger planner/reviewer and a cheaper implementation worker when the active runtime supports that orchestration. The portable pattern is the separation of roles, not any particular vendor model or subagent API.
 
-For example, Cursor can support patterns such as **Fable 5 planning/review + Composer 2.5 implementation** when those models and the required agent/subagent mechanics are genuinely available in the current Cursor runtime. In another runtime, preserve the same semantic intent only with capabilities that runtime actually exposes.
+For example, Cursor can support patterns such as **Fable 5 planning/review + Composer 2.5 implementation** when those models and the required agent/subagent mechanics are genuinely available in the current Cursor runtime **within the user's included or already-approved spend capacity**. In another runtime, preserve the same semantic intent only with capabilities that runtime actually exposes.
 
 Claude Code, Codex, Antigravity, or another tool must not pretend it can invoke Cursor-native subagents merely because a project file describes them.
 
@@ -75,6 +76,7 @@ Requirements:
 - distinguish general API availability from actual availability in Cursor, Claude Code, Codex, Antigravity, or another runtime;
 - never infer that a model available in one runtime is callable from another;
 - prefer live-discovery commands or runtime model pickers when the available set is dynamic;
+- distinguish subscription-included/agreed capacity from extra-credit or pay-as-you-go usage; do not recommend unapproved paid escalation as an automatic fallback;
 - keep the catalog concise and current rather than exhaustive;
 - update the Last verified date;
 - preserve project-neutral wording;
@@ -83,18 +85,17 @@ Requirements:
 Show the exact diff and sources used. Do not modify application/project-specific files, publish a release, or change repository visibility.
 ```
 
-## Sources used for the 2026-08-18 verification
+## Sources used for the 2026-08-19 verification
 
 Primary or first-party sources:
 
 - Cursor models / Auto: https://docs.cursor.com/models/
 - Cursor Composer 2.5: https://cursor.com/blog/composer-2-5
 - Cursor model-economics research using Fable 5 + Composer 2.5: https://cursor.com/blog/agent-swarm-model-economics
-- Anthropic Claude Fable 5: https://www.anthropic.com/claude/fable
-- Anthropic Fable 5 redeployment / Claude Code availability: https://www.anthropic.com/news/redeploying-fable-5
-- Anthropic Claude Sonnet 5: https://www.anthropic.com/news/claude-sonnet-5
-- Anthropic Claude Haiku 4.5: https://www.anthropic.com/claude/haiku
-- Anthropic model system cards (includes Opus 4.8): https://www.anthropic.com/system-cards
+- Anthropic Claude pricing / plan model and usage information: https://claude.com/pricing
+- Anthropic Claude Code models, usage, limits, and `/model` discovery: https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code
+- Anthropic usage credits for paid Claude plans: https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans
+- Anthropic usage bundles: https://support.claude.com/en/articles/14246112-buy-usage-bundles
 - OpenAI GPT-5.6 / Codex availability: https://help.openai.com/en/articles/20001354-gpt-56-in-chatgpt/
 - Google Antigravity CLI model discovery: https://codelabs.developers.google.com/antigravity-cli-hands-on
 
