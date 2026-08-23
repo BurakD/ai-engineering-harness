@@ -1,70 +1,79 @@
+<!-- Based on README.md @ v2.0.0 -->
 # AI Engineering Harness
 
-**भाषाएँ:** [English](README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · **हिन्दी**
+**भाषाएँ:** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · **हिन्दी**
 
-<!-- Based on README.md @ 088ed75fe790d2b1626ab1c222b2623246966c9b -->
-
-AI-सहायित सॉफ़्टवेयर विकास के लिए एक न्यूनतम, vendor-neutral आधार।
-
-AI coding tools या models के बीच बदलने पर अक्सर project का engineering context खो जाता है और वही बातें फिर से समझानी पड़ती हैं। AI Engineering Harness एक छोटा, portable policy/context layer है जो इसे रोकता है। यह agent runtime या orchestrator नहीं है; Cursor, Claude Code, Codex और Antigravity अपनी execution और orchestration क्षमताएँ स्वयं प्रदान करते हैं।
-
-## यह किन समस्याओं को हल करता है
-
-1. Tool या model बदलते समय project context और engineering discipline को बनाए रखना।
-2. अधिक शक्तिशाली reasoning केवल तभी उपयोग करना जब complexity या risk इसकी आवश्यकता को उचित ठहराए, ताकि quality और cost में संतुलन रहे।
-3. Stable engineering policy में अल्पकालिक model names hard-code किए बिना model/runtime choices को वर्तमान रखना।
+AI-सहायित सॉफ़्टवेयर विकास के लिए एक छोटा, vendor-neutral baseline: portable policy/context layer के साथ पुनः उपयोग योग्य engineering procedures का सीमित सेट। यह agent runtime, orchestrator, installer या framework नहीं है।
 
 ## फ़ाइलें
 
-- `AGENTS.md` — compatible coding agents के लिए shared engineering baseline।
-- `MODEL_ROUTING.md` — स्थिर FAST / STANDARD / REASONING / FRONTIER policy।
-- `MODEL_CATALOG.md` — समय के साथ बदलने वाला model/runtime catalog और वर्तमान recommendations।
-- `CLAUDE.md` — Claude Code द्वारा `AGENTS.md` import करने के लिए minimal adapter।
-- `README.md` — adoption, update, testing और maintenance का मुख्य guide।
+- `AGENTS.md` — shared, always-on engineering baseline.
+- `MODEL_ROUTING.md` — स्थिर quality/cost और capability-tier policy.
+- `MODEL_CATALOG.md` — समय-संवेदनशील runtime/model catalog.
+- `CLAUDE.md` — Claude Code से `AGENTS.md` का पतला bridge.
+- `skills/` — Harness-owned canonical on-demand procedures.
+- `i18n/` — localized README summaries.
 
-## यह क्या है — और क्या नहीं है
+## Rules और skills: चार layers
 
-मुख्य value policy content में है: repository-first context, routing tiers, runtime capability की fail-closed verification, प्रभाव के आधार पर human approval, scope discipline, durable handoff और सुरक्षित adoption/update।
+| | Always-on | On-demand |
+| --- | --- | --- |
+| **Shared** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
+| **Project-specific** | प्रोजेक्ट का अपना rule/policy mechanism | प्रोजेक्ट के अपने skills |
 
-यह workflow engine, multi-agent framework, runtime, rule-sync generator या tool-native rules/skills का replacement नहीं है।
+Harness अलग `rules/` directory जानबूझकर नहीं देता। Shared always-on rule layer का canonical source पहले से `AGENTS.md` है और model-routing policy `MODEL_ROUTING.md` में है। दूसरा canonical always-on source duplication और conflict risk पैदा करेगा।
 
-## Compatibility
+Domain rules, environment/deployment topology, vendor/model preferences, product behavior, business rules और infrastructure paths project-local रहते हैं। नई guidance किस layer में होनी चाहिए, यह तय करने के लिए `continuous-improvement` skill में दिए “सबसे छोटा durable safeguard चुनें” दृष्टिकोण का उपयोग करें।
 
-`AGENTS.md` इस repository द्वारा बनाया गया निजी format नहीं, बल्कि एक बाहरी cross-tool convention है। जो runtimes इसे सीधे पढ़ते हैं उन्हें Harness-specific adapter की आवश्यकता नहीं होती। Claude Code `CLAUDE.md` उपयोग करता है, इसलिए repository केवल minimal `@AGENTS.md` bridge रखता है। Antigravity-specific `.agents/skills/` और `.agents/workflows/` जैसी व्यवस्थाएँ project-local रहती हैं।
+## Shared skills
 
-## किसी मौजूदा project में adoption
+Skills task-specific procedures हैं, always-on policy नहीं। सामान्यतः discovery के लिए केवल metadata उपलब्ध होनी चाहिए; पूरा `SKILL.md` body तभी load होना चाहिए जब वर्तमान task वास्तव में skill से मेल खाए।
 
-1. वर्तमान repository और branch में ही रहें।
-2. बदलाव से पहले किसी सक्षम agent से rules, docs, Git state, deployment topology और validation commands inspect कराएँ।
-3. किसी existing file को बदलने से पहले repository के बाहर उसका byte-for-byte backup बनाएँ।
-4. सभी project-specific content को सुरक्षित रखें और केवल shared Harness content जोड़ें।
-5. केवल Harness अपनाने के लिए branch, worktree, installer, manifest, adapter या sync mechanism न बनाएँ।
-6. Explicit approval के बिना commit, push, deploy या publish न करें।
+Harness-owned skills का canonical source `skills/` है। Ownership marker:
 
-**पूरा adoption prompt:** [English README](README.md#copypaste-adoption-prompt)
+```yaml
+metadata:
+  ai-engineering-harness: "2.0.0"
+```
 
-## Update
+इसी नाम का कोई skill यदि यह key नहीं रखता, तो वह Harness-owned नहीं है और adoption/update के दौरान उसे overwrite नहीं किया जाना चाहिए।
 
-Update केवल Harness-owned shared content को refresh करता है। `AGENTS.md`, `MODEL_ROUTING.md`, `MODEL_CATALOG.md` और `CLAUDE.md` के shared हिस्से upstream से update किए जाते हैं, जबकि project-local rules, models, skills, docs, code और uncommitted work सुरक्षित रहते हैं।
+v2 में 14 skills हैं:
 
-**पूरा update prompt:** [English README](README.md#copypaste-update-prompt)
+- `backup-and-recovery-review` — backup/restore/recovery readiness.
+- `interface-qa` — web, mobile, desktop, CLI और API interface validation.
+- `calculation-model-validation` — formulas और decision models का validation.
+- `change-review` — completed changes, regressions और risks का review.
+- `compatibility-and-rollout` — compatibility, migration, rollout और rollback.
+- `high-risk-change-review` — high-risk changes के लिए अतिरिक्त discipline.
+- `delegation-strategy` — verified delegation/parallelism का सुरक्षित उपयोग.
+- `dependency-change` — dependency add/remove/upgrade evaluation.
+- `documentation-sync` — durable documentation को वास्तविकता के साथ sync रखना.
+- `environment-release-safety` — release/deployment और approval-boundary safety.
+- `continuous-improvement` — recurring failures को durable safeguards में बदलना.
+- `root-cause-debug` — root cause पहचानना और प्रमाणित करना.
+- `secret-exposure-response` — secret/credential exposure response.
+- `cross-surface-consistency` — कई surfaces/channels में behavior consistency.
 
-## मुख्य सिद्धांत
+Shared set को लगभग **20 skills या उससे कम** रखा जाना चाहिए; हर `description` **300 characters या कम** होना चाहिए।
 
-- Repository की सच्चाई model या agent बदलने के बाद भी बनी रहनी चाहिए।
-- Replace नहीं, add करें: tool-native rules वहीं रहें जहाँ वे पहले से हैं।
-- `MODEL_ROUTING.md` स्थिर है; `MODEL_CATALOG.md` जानबूझकर time-sensitive है।
-- वास्तव में कौन से models/agents invoke किए जा सकते हैं, इस पर active runtime अंतिम authority है।
-- किसी problem को discover करना requested scope के बाहर उसे fix करने की authorization नहीं देता।
-- High-impact actions को tool या environment name के आधार पर नहीं, उनके वास्तविक प्रभाव के आधार पर human approval चाहिए।
-- यदि tests, linters, types, CI और अन्य deterministic safeguards वही rule विश्वसनीय रूप से enforce कर सकते हैं, तो उन्हें बार-बार होने वाले model judgment पर प्राथमिकता दें।
+Precedence: **project-local rules/policy > shared `AGENTS.md` baseline > shared skills**. कोई skill approval boundary, authorized scope, runtime capability या production/live safety को कमजोर नहीं कर सकता।
 
-## Installation testing
+## Adoption और update
 
-नई sessions में structural smoke test, real-task behavior test, approval-boundary test और cross-tool runtime-capability test चलाएँ। Agent को context सही तरह discover करना चाहिए और active runtime जिस capability को verify नहीं कर सकता उसका दावा नहीं करना चाहिए।
+Operational copy/paste prompts एक ही canonical source में रहते हैं और translate नहीं किए जाते:
 
-Exact prompts: [How to test an installation](README.md#how-to-test-an-installation)
+- [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
+- [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-## License
+Adoption runtimes को repository evidence से detect करता है; मशीन पर CLI installed होना अकेले पर्याप्त evidence नहीं है। Verified project-level skill paths: Cursor/Antigravity/Codex के लिए `.agents/skills/`, Claude Code के लिए `.claude/skills/`; Cursor `.claude/skills/` भी पढ़ सकता है। यदि एक verified root सभी detected runtimes को cover करता है, तो केवल एक copy उपयोग होती है। यदि native activation verify नहीं किया जा सके, neutral `harness/skills/` उपयोग होता है और native activation का दावा नहीं किया जाता।
 
-**Apache License 2.0** के तहत open source।
+किसी भी skill को लिखने से पहले सभी canonical names को सभी target roots में collisions के लिए scan किया जाता है। बदले जाने वाले managed files का repository के बाहर byte-for-byte backup लिया जाता है। Update existing skill placement को move नहीं करता; upstream से हटाया गया managed skill अपने-आप delete नहीं होता, उसे orphaned के रूप में report किया जाता है।
+
+## Removal और tests
+
+Automatic uninstaller नहीं है। केवल `metadata.ai-engineering-harness` वाले skills को Harness-owned removal candidate माना जाता है; project-local rules/skills untouched रहते हैं। देखें [Remove the shared skills](../README.md#remove-the-shared-skills)।
+
+यदि native skill activation verify नहीं की जा सके, agent को यह दावा नहीं करना चाहिए कि skill active है। किसी unrelated task में सभी skill bodies context में नहीं आने चाहिए; केवल discovery metadata दिखाई दे सकती है। देखें [How to test an installation](../README.md#how-to-test-an-installation)।
+
+`SKILL.md` files translate नहीं किए जाते; एक canonical English copy ही रखी जाती है। Detailed maintenance, adoption/update और scope boundaries के लिए [English README](../README.md) authoritative source है।

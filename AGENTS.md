@@ -38,6 +38,16 @@ Existing repository-local instructions, documentation, ADRs, CI/release conventi
 
 Project-specific rules may raise the minimum model-routing tier or require additional review for sensitive areas.
 
+## Shared skills
+
+Shared skills are task-specific procedures, not always-on policy. Harness-owned skills come only from the canonical `skills/` source and, when installed for native activation, are installed verbatim.
+
+Project-local skills and rules are not Harness-owned and must not be replaced, rewritten, mirrored, or synchronized by the Harness. Precedence is: **project-local rules and project policy > this shared `AGENTS.md` baseline > shared skills**. If a shared skill conflicts with higher-precedence project guidance, do not apply the conflicting skill instruction; report the conflict and ask for a human decision when it matters.
+
+A shared skill must never weaken approval boundaries, authorized scope, runtime-capability constraints, production/live safety, or other higher-precedence safeguards.
+
+If native skill activation cannot be verified, a neutral `harness/skills/` copy may be read on demand as repository guidance. Do not claim that such a skill is natively active in the runtime unless activation is actually verified.
+
 ## Safety and human approval
 
 - Never overwrite unrelated uncommitted work.

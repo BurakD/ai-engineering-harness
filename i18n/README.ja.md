@@ -1,70 +1,79 @@
+<!-- Based on README.md @ v2.0.0 -->
 # AI Engineering Harness
 
-**言語:** [English](README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+**言語:** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · **日本語** · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-<!-- Based on README.md @ 088ed75fe790d2b1626ab1c222b2623246966c9b -->
-
-AI支援ソフトウェア開発のための、最小構成でベンダー中立な基盤です。
-
-AIコーディングツールやモデルを切り替えると、プロジェクトのエンジニアリング文脈が失われ、同じ説明をやり直すことがよくあります。AI Engineering Harness はそれを防ぐための、小さく移植可能なポリシー／コンテキスト層です。Agent Runtime やオーケストレータではありません。Cursor、Claude Code、Codex、Antigravity はそれぞれ独自の実行・オーケストレーション機能を提供します。
-
-## 解決する課題
-
-1. ツールやモデルを切り替えても、プロジェクト文脈とエンジニアリング規律を維持する。
-2. 複雑さやリスクが正当化する場合にだけ強い reasoning を使い、品質とコストを両立する。
-3. 短命なモデル名を安定ポリシーへ固定せず、モデル/runtime 選択を最新に保つ。
+AI 支援ソフトウェア開発のための、最小かつベンダー中立な基盤です。ポータブルな policy/context 層と、小さな再利用可能な engineering procedures で構成されます。Agent runtime、orchestrator、installer、framework ではありません。
 
 ## ファイル
 
-- `AGENTS.md` — 互換 coding agent 向けの共有エンジニアリング基盤。
-- `MODEL_ROUTING.md` — 安定した FAST / STANDARD / REASONING / FRONTIER ポリシー。
-- `MODEL_CATALOG.md` — 時間依存のモデル/runtime カタログと現在の推奨。
-- `CLAUDE.md` — Claude Code が `AGENTS.md` を読み込むための最小アダプタ。
-- `README.md` — adoption、更新、テスト、保守の主要ガイド。
+- `AGENTS.md` — 共有 always-on engineering baseline。
+- `MODEL_ROUTING.md` — 安定した品質/コストと capability-tier policy。
+- `MODEL_CATALOG.md` — 時間とともに更新される runtime/model catalog。
+- `CLAUDE.md` — Claude Code から `AGENTS.md` への薄い bridge。
+- `skills/` — Harness-owned の canonical on-demand procedures。
+- `i18n/` — README のローカライズ要約。
 
-## これは何か／何ではないか
+## Rules と skills：4 つの層
 
-中心的な価値はポリシー内容です。repository-first の文脈、routing tier、runtime capability の fail-closed 検証、影響ベースの人間承認、scope 規律、持続可能な handoff、安全な adoption/update を提供します。
+| | Always-on | On-demand |
+| --- | --- | --- |
+| **Shared** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
+| **Project-specific** | プロジェクト独自の rule/policy mechanism | プロジェクト独自の skills |
 
-workflow engine、multi-agent framework、runtime、ルール同期ジェネレータではなく、各ツール固有の rules/skills を置き換えるものでもありません。
+Harness は別の `rules/` ディレクトリを配布しません。共有 always-on rules の canonical source はすでに `AGENTS.md` にあり、model routing policy は `MODEL_ROUTING.md` にあります。2 つ目の canonical always-on source を作ると、重複と矛盾の原因になります。
 
-## 互換性
+Domain rules、environment/deployment topology、vendor/model preferences、product behavior、business rules、infrastructure paths は project-local のままにします。新しい guidance をどの層に置くかは、`continuous-improvement` skill の「最小の durable safeguard を選ぶ」考え方を使って判断します。
 
-`AGENTS.md` はこの repository 独自の形式ではなく、外部の cross-tool convention です。直接読み込める runtime には Harness 固有アダプタは不要です。Claude Code は `CLAUDE.md` を使うため、最小の `@AGENTS.md` ブリッジだけを含めています。Antigravity 固有の `.agents/skills/` や `.agents/workflows/` は project-local のままです。
+## Shared skills
 
-## 既存プロジェクトへの導入
+Skills は task-specific procedures であり、always-on policy ではありません。通常、discovery では metadata のみを表示し、完全な `SKILL.md` body は現在のタスクに本当に適合した場合だけ読み込みます。
 
-1. 現在の repository と branch のまま作業する。
-2. 変更前に、適切な agent に rules、docs、Git 状態、deployment topology、validation コマンドを調査させる。
-3. 既存ファイルを変更する前に、repository 外へ byte-for-byte backup を作る。
-4. project-specific な内容をすべて保持し、Harness の shared content だけを追加する。
-5. Harness 導入だけを理由に branch、worktree、installer、manifest、adapter、sync 機構を作らない。
-6. 明示的な承認なしに commit、push、deploy、publish しない。
+Harness-owned skills の canonical source は `skills/` です。Ownership marker：
 
-**完全な adoption prompt:** [英語 README](README.md#copypaste-adoption-prompt)
+```yaml
+metadata:
+  ai-engineering-harness: "2.0.0"
+```
 
-## 更新
+同名 skill にこの key がなければ Harness-owned ではなく、adoption/update で上書きしてはいけません。
 
-更新対象は Harness-owned shared content のみです。`AGENTS.md`、`MODEL_ROUTING.md`、`MODEL_CATALOG.md`、`CLAUDE.md` の shared 部分を upstream から更新し、project-local rules、models、skills、docs、code、未コミット作業を保持します。
+v2 は 14 skills を含みます：
 
-**完全な update prompt:** [英語 README](README.md#copypaste-update-prompt)
+- `backup-and-recovery-review` — backup/restore/recovery readiness。
+- `interface-qa` — web、mobile、desktop、CLI、API interface validation。
+- `calculation-model-validation` — formula と decision-model validation。
+- `change-review` — 完了した変更の regression/risk review。
+- `compatibility-and-rollout` — compatibility、migration、rollout、rollback。
+- `high-risk-change-review` — 高リスク変更への追加 discipline。
+- `delegation-strategy` — 検証済み delegation/parallelism の安全な利用。
+- `dependency-change` — dependency の追加・削除・upgrade 評価。
+- `documentation-sync` — durable documentation を実態と同期。
+- `environment-release-safety` — release/deployment と approval boundary の安全性。
+- `continuous-improvement` — 繰り返す failure を durable safeguard に変換。
+- `root-cause-debug` — root cause を特定し証明。
+- `secret-exposure-response` — secret/credential exposure 対応。
+- `cross-surface-consistency` — 複数 surface/channel の挙動整合性。
 
-## 主要原則
+Shared set はおおむね **20 skills 以下**に保ち、各 `description` は **300 文字以下**にします。
 
-- Repository の真実はモデルや agent の切り替えを越えて残るべきです。
-- 置換ではなく追加。tool-native rules は元の場所に残します。
-- `MODEL_ROUTING.md` は安定、`MODEL_CATALOG.md` は意図的に時間依存です。
-- 実際に呼び出せるモデル/agent については active runtime が最終的な権威です。
-- 問題を発見したことは、依頼 scope 外の修正権限を意味しません。
-- High-impact 操作はツール名や環境名ではなく、その影響に基づいて人間承認を必要とします。
-- tests、linters、types、CI などの deterministic safeguard が同じルールを確実に enforce できるなら、繰り返しの model judgment より優先します。
+優先順位：**project-local rules/policy > shared `AGENTS.md` baseline > shared skills**。Skill は approval boundary、authorized scope、runtime capability、production/live safety を弱めてはいけません。
 
-## インストールのテスト
+## Adoption と update
 
-新しい session で structural smoke test、real-task behavior test、approval-boundary test、cross-tool runtime-capability test を行います。Agent は文脈を正しく発見し、active runtime が検証できない capability を決して主張してはいけません。
+運用用 copy/paste prompt は 1 つの canonical source に保ち、翻訳しません：
 
-正確な prompts: [How to test an installation](README.md#how-to-test-an-installation)
+- [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
+- [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-## ライセンス
+Adoption は repository evidence から実際に使われる runtimes を検出します。マシンに CLI がインストールされているだけでは証拠になりません。検証済み project-level skill paths は、Cursor/Antigravity/Codex が `.agents/skills/`、Claude Code が `.claude/skills/` です。Cursor は `.claude/skills/` も読めます。1 つの検証済み root で全 runtimes をカバーできるなら 1 コピーだけ使用します。Native activation を検証できない場合は neutral `harness/skills/` を使い、native activation 済みとは主張しません。
 
-**Apache License 2.0** の下でオープンソース公開されています。
+Skill を 1 つでも書き込む前に、すべての canonical skill names をすべての target roots で collision scan します。変更する managed file は repository 外に byte-for-byte backup を作成します。Update は既存の skill placement を移動しません。Upstream から削除された managed skill も自動削除せず、orphaned として報告します。
+
+## 削除とテスト
+
+自動 uninstaller はありません。`metadata.ai-engineering-harness` を持つ skills だけが Harness-owned として削除対象になり、project-local rules/skills は変更しません。詳細は [Remove the shared skills](../README.md#remove-the-shared-skills)。
+
+Native activation が検証できない runtime では、agent は skill が active だと主張してはいけません。無関係なタスクで全 skill body を context にロードしてはいけず、discovery metadata のみが見える状態を期待します。詳細は [How to test an installation](../README.md#how-to-test-an-installation)。
+
+`SKILL.md` は翻訳せず、canonical English copy を 1 つだけ維持します。詳細な maintenance、adoption/update、scope boundaries は [English README](../README.md) を参照してください。

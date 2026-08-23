@@ -4,15 +4,16 @@
 
 A minimal, vendor-neutral baseline for AI-assisted software development.
 
-Switching between AI coding tools or models usually means losing the project's engineering context and re-explaining it. AI Engineering Harness is a small, portable policy and context layer that prevents that. It is not an agent runtime or orchestrator. Cursor, Claude Code, Codex, and Antigravity provide their own execution and orchestration capabilities; this repository is designed to sit alongside them, not replace them. When you switch tools or models, this is the layer that carries the project's shared engineering context, quality-and-cost routing policy, and operating constraints forward.
+Switching between AI coding tools or models usually means losing the project's engineering context and re-explaining it. AI Engineering Harness is a small, portable policy/context layer plus a focused set of reusable engineering procedures that prevents that. It is not an agent runtime or orchestrator. Cursor, Claude Code, Codex, Antigravity, and other runtimes provide their own execution and orchestration capabilities; this repository is designed to sit alongside them, not replace them.
 
-The harness is designed to solve three practical problems:
+The harness is designed to solve four practical problems:
 
 1. Keep project context and engineering discipline durable when switching between tools or models.
 2. Balance quality and cost by using stronger reasoning only when task complexity or risk justifies it.
-3. Keep model/runtime choices current without hard-coding short-lived vendor model names into the stable engineering policy.
+3. Keep model/runtime choices current without hard-coding short-lived vendor model names into stable engineering policy.
+4. Reuse proven, project-neutral engineering procedures without rebuilding the same review and safety discipline in every repository.
 
-It intentionally stays small. The repository itself is the handoff mechanism; there is no required installer, orchestrator, model gateway, or project-specific framework.
+It intentionally stays small. The repository itself is the handoff mechanism; there is no required installer, orchestrator, model gateway, workflow engine, or project-specific framework.
 
 ## Files
 
@@ -20,23 +21,27 @@ It intentionally stays small. The repository itself is the handoff mechanism; th
 - `MODEL_ROUTING.md` — stable FAST / STANDARD / REASONING / FRONTIER quality-cost routing policy.
 - `MODEL_CATALOG.md` — time-sensitive model/runtime catalog and recommended current mappings.
 - `CLAUDE.md` — thin Claude Code adapter that points to `AGENTS.md`.
-- `README.md` — adoption, update, testing, and maintenance guidance.
+- `skills/` — canonical Harness-owned reusable procedures, one `SKILL.md` per skill.
+- `README.md` — adoption, update, testing, removal, and maintenance guidance.
+- `i18n/` — localized README guidance; the English README remains the maintenance source for operational procedures.
 - `LICENSE` — Apache License 2.0.
 - `CONTRIBUTING.md` — contribution guidance.
 
 ### What this is — and is not
 
-The shared value is the policy content: repository-first context, model-routing tiers, fail-closed runtime-capability handling, effect-based human approval, scope discipline, durable handoff, and safe adoption/update behavior.
+The shared value is the combination of policy and focused procedures: repository-first context, model-routing tiers, fail-closed runtime-capability handling, effect-based human approval, scope discipline, durable handoff, safe adoption/update behavior, and reusable engineering skills that load only when relevant.
 
-It is **not** a spec-driven workflow engine, multi-agent framework, runtime, rule-sync generator, or replacement for tool-native rules and skills. Tool-native mechanisms remain useful for runtime-specific activation; the harness keeps portable policy and durable project truth from being trapped in any one tool.
+It is **not** a spec-driven workflow engine, multi-agent framework, runtime, installer, rule-sync generator, project overlay system, or replacement for tool-native rules and skills. Tool-native mechanisms remain useful for runtime-specific activation; the Harness keeps portable policy and reusable procedures from being trapped in one tool while preserving project-local authority.
 
 ### Runtime compatibility and native bridges
 
-`AGENTS.md` is an external cross-tool convention rather than a format invented by this repository. Runtimes that consume it directly need no harness-specific adapter.
+`AGENTS.md` is an external cross-tool convention rather than a format invented by this repository. Runtimes that consume it directly need no Harness-specific adapter.
 
 Claude Code reads `CLAUDE.md`, so this repository includes only the minimal documented bridge: `CLAUDE.md` imports `@AGENTS.md`. That adapter exists for compatibility, not vendor preference.
 
-Antigravity-specific behavior such as `.agents/skills/` and `.agents/workflows/` remains tool-native and project-local. The harness does not copy, generate, or mirror those files. The same rule applies to other runtime-specific rule/skill systems: if a runtime needs its own documented project-context configuration, use that mechanism locally rather than adding shared adapters merely for symmetry.
+Harness-owned canonical skills are different from project-local or tool-native skills. The canonical copies live only under this repository's `skills/` directory. During adoption they may be installed **verbatim** into a verified project-level skill location supported by the runtimes the target repository actually uses. Current verified shared locations include `.agents/skills/` for Cursor, Antigravity, and Codex, and `.claude/skills/` for Claude Code; Cursor can also consume `.claude/skills/` for compatibility. Native placement is selected from repository evidence and verified runtime support, not from vendor preference or directory symmetry.
+
+Project-local and tool-native skills, rules, workflows, and other runtime artifacts remain project-local. The Harness does **not** copy, generate, mirror, migrate, or synchronize them. In particular, `.agents/workflows/` remains outside the shared Harness. The only narrow exception is verbatim placement of explicitly Harness-owned canonical skills for verified native activation.
 
 ## License
 
@@ -46,15 +51,62 @@ You may use, modify, redistribute, and use the project commercially under the li
 
 Contributions are welcome and are submitted under the Apache License 2.0 unless explicitly stated otherwise, as described in `CONTRIBUTING.md`.
 
+## Rules and skills: four layers
+
+| | Always-on | On-demand |
+| --- | --- | --- |
+| **Shared** | `AGENTS.md` + `MODEL_ROUTING.md` — the Harness rule layer | `skills/` — Harness-owned reusable procedures |
+| **Project-specific** | The project's own rule/policy mechanism — Harness does not modify it | The project's own skills — Harness does not modify them |
+
+The Harness intentionally does **not** ship a separate `rules/` directory. Shared always-on guidance already has a canonical home in `AGENTS.md` (with model-routing policy in `MODEL_ROUTING.md`); adding a second canonical always-on rule source would create duplication and conflict risk.
+
+Domain rules, environment and deployment topology, vendor/model preferences, product behavior, business rules, infrastructure paths, and similar project facts stay project-local and are not promoted into shared Harness files. When deciding where new guidance belongs, use the `continuous-improvement` skill to choose the smallest durable safeguard and the appropriate shared or project-local layer rather than duplicating the decision framework here.
+
+## Shared skills
+
+The shared skills layer exists because some engineering procedures are useful across unrelated projects and expensive to reconstruct repeatedly. Skills are **task-specific procedures**, not always-on policy. A runtime should normally expose only skill metadata for discovery and load a skill body when the current task actually matches it.
+
+The canonical source is this repository's `skills/` directory. Every Harness-owned skill carries this frontmatter ownership marker:
+
+```yaml
+metadata:
+  ai-engineering-harness: "2.0.0"
+```
+
+The key identifies Harness ownership; the value records the canonical Harness version for that skill content. Installed Harness-owned copies remain verbatim copies of canonical `skills/<name>/SKILL.md`. A same-name skill without this metadata key is not Harness-owned and must never be overwritten by adoption or update.
+
+The v2 shared set contains 14 procedures:
+
+- `backup-and-recovery-review` — reviews backup, restore, and recovery readiness for persistent assets and services.
+- `interface-qa` — validates changed user or consumer interfaces across web, mobile, desktop, CLI, or API surfaces.
+- `calculation-model-validation` — validates formulas and decision models using boundaries, precision checks, invariants, and behavioral comparison.
+- `change-review` — reviews completed changes for correctness, regressions, edge cases, security, compatibility, and missing validation.
+- `compatibility-and-rollout` — plans mixed-version compatibility, migration sequencing, staged activation, deprecation, and rollback.
+- `high-risk-change-review` — adds stricter planning, validation, review, and approval discipline to materially risky changes.
+- `delegation-strategy` — decides when verified runtime delegation or isolated review is worth its coordination cost.
+- `dependency-change` — evaluates dependency additions, removals, and upgrades for necessity, maintenance, security, compatibility, and operational impact.
+- `documentation-sync` — keeps durable project documentation aligned with implementation and operating reality.
+- `environment-release-safety` — validates release/deployment actions against the project's actual topology, effects, recovery path, and approval boundaries.
+- `continuous-improvement` — converts recurring failure classes into the smallest durable engineering safeguard.
+- `root-cause-debug` — investigates defects by testing hypotheses, identifying the underlying cause, and proving the fix with regression evidence.
+- `secret-exposure-response` — handles suspected secret or credential exposure without reproducing secret values and without confusing cleanup with rotation/revocation.
+- `cross-surface-consistency` — checks equivalent capabilities for accidental behavioral drift across multiple interfaces or channels.
+
+The inclusion bar is deliberately high. A shared skill should be project-neutral, reusable across unrelated repositories, procedural rather than product-specific, narrow enough for meaningful triggering, and valuable enough to remove demonstrated recurring cost or risk. Before proposing a new skill, prefer extending or tightening an existing one when that preserves clear boundaries.
+
+To resist context and maintenance sprawl, keep the shared set at roughly **20 skills or fewer**. A proposal that would exceed that level should either retire/merge an existing skill or explicitly justify why the procedure cannot fit an existing skill without making that skill incoherent. Skill `description` fields should stay at **300 characters or fewer** so discovery metadata remains compact without sacrificing trigger quality.
+
+Skill precedence is defined by `AGENTS.md`: **project-local rules and project policy > shared `AGENTS.md` baseline > shared skills**. A shared skill never weakens approval boundaries, authorized scope, runtime-capability constraints, or production/live safety.
+
 ## Install / adopt in 3 steps
 
 For an existing project, the recommended path is **in-place AI-assisted adoption**.
 
 1. Open the project exactly where you normally work, on the branch you normally intend to use.
 2. Paste the adoption prompt below into a capable coding agent.
-3. Review the resulting Git status, diff, backup locations, and project-readiness findings before accepting or committing anything.
+3. Review the resulting Git status, diff, backup locations, skill-placement report, and project-readiness findings before accepting or committing anything.
 
-**Do not create a new branch, worktree, project copy, installer, or temporary clone of the target project merely to adopt this harness.** Use one only if the user explicitly asks for isolation or the target repository's own policy requires it.
+**Do not create a new branch, worktree, project copy, installer, or temporary clone of the target project merely to adopt this Harness.** Use one only if the user explicitly asks for isolation or the target repository's own policy requires it.
 
 For one-time adoption, prefer a capable/reasoning model because it must inspect and preserve existing project rules safely. After adoption, normal model routing applies.
 
@@ -67,7 +119,7 @@ Adopt the current AI Engineering Harness from
 https://github.com/BurakD/ai-engineering-harness
 into this repository, in place, on the current branch.
 
-First inspect this repository and the harness repository. Follow the harness README's current existing-project adoption procedure exactly.
+First inspect this repository and the Harness source. Follow the current README's existing-project adoption procedure exactly.
 
 Use the communication language explicitly requested by the user or already defined by this repository. If neither exists, continue in the language established in the surrounding conversation rather than inferring it from this pasted template.
 
@@ -78,52 +130,72 @@ Before changing anything:
 - discover existing AGENTS.md, CLAUDE.md, repository-local AI rules, tool-native rules/skills, docs, ADRs, tests, CI/release/deployment conventions, and other canonical project instructions;
 - discover the project's environment and release topology from repository evidence: which environments exist (if any), which are customer-facing/live, which branches/tags/releases/actions deploy or publish to them, which deployments are automatic, and which actions already require human approval;
 - discover the documented build/test/lint/analysis commands and any project-local model/subagent/cost policy;
+- identify which AI runtimes are actually used by this repository from repository evidence. A CLI or application merely being installed on the machine is not evidence that this repository uses that runtime;
 - identify every existing file you may need to modify.
+
+For native shared-skill placement, use only currently verified project-level paths:
+- Cursor, Antigravity, and Codex may use `.agents/skills/`;
+- Claude Code uses `.claude/skills/`;
+- Cursor can also read `.claude/skills/` for compatibility.
+If all detected runtimes can use one verified project-level skill root, install one copy there. Do not create a second copy merely for symmetry. If a detected runtime's native skill path cannot be verified, do not guess one; use the neutral `harness/skills/` location for the Harness-owned skills that cannot be safely placed natively and do not claim native activation for that copy.
+
+Before writing any Harness skill anywhere:
+- enumerate the canonical Harness skill names from the upstream `skills/` directory;
+- determine every target skill root that would be used;
+- scan all target roots for collisions for every canonical Harness skill name before writing any skill;
+- a same-name skill whose frontmatter metadata contains the `ai-engineering-harness` key is a managed Harness-owned copy and may be updated;
+- a same-name skill without that metadata key is project-local or otherwise unowned by the Harness: do not overwrite, rename, merge, or modify it. Stop the shared-skill installation phase and report the collision. The rest of the Harness adoption may continue if it is otherwise safe.
 
 Do not ask me to restate facts that the repository already answers. Do not assume environment names such as dev, stage, staging, prod, or production, and do not assume that the project has exactly two environments or any deployment environments at all.
 
 If repository evidence is missing, stale, contradictory, or genuinely ambiguous:
-- do not invent a deployment, release, approval, build/test, model-routing, or tool-native policy;
-- ask only focused questions that materially affect safe harness adoption itself;
-- otherwise continue the minimal harness adoption without guessing, and report the unresolved item in the final Project readiness section for human follow-up.
+- do not invent a deployment, release, approval, build/test, model-routing, runtime, native skill path, or tool-native policy;
+- ask only focused questions that materially affect safe Harness adoption itself;
+- otherwise continue the minimal Harness adoption without guessing, and report the unresolved item in the final Project readiness section for human follow-up.
 
 Backup requirement:
-- before modifying any existing file, create a byte-for-byte backup of that file outside the repository, preferably in the operating system's temporary directory;
+- before modifying any existing file, including an existing Harness-owned skill, create a byte-for-byte backup of that file outside the repository, preferably in the operating system's temporary directory;
 - report the exact backup path(s) in your final summary;
 - do not create backup copies inside the repository unless I explicitly ask for that;
 - if you cannot create a safe backup outside the repository, stop before modifying the file and explain why.
 
 Preserve all existing project-specific content, rules, skills, docs, tests, deployment conventions, uncommitted work, and tool-specific value.
 
-Apply the harness minimally:
-- if AGENTS.md does not exist, copy the harness AGENTS.md verbatim;
-- if AGENTS.md already exists, preserve it exactly outside the documented shared-baseline markers and append/update the shared harness AGENTS.md verbatim inside those markers;
-- MODEL_ROUTING.md must remain a verbatim copy of the harness MODEL_ROUTING.md when harness-owned;
-- MODEL_CATALOG.md must remain a verbatim copy of the shared current catalog when harness-owned; do not move project-local model preferences into it;
+Apply the Harness minimally:
+- if AGENTS.md does not exist, copy the Harness AGENTS.md verbatim;
+- if AGENTS.md already exists, preserve it exactly outside the documented shared-baseline markers and append/update the shared Harness AGENTS.md verbatim inside those markers;
+- MODEL_ROUTING.md must remain a verbatim copy of the Harness MODEL_ROUTING.md when Harness-owned;
+- MODEL_CATALOG.md must remain a verbatim copy of the shared current catalog when Harness-owned; do not move project-local model preferences into it;
+- install canonical Harness-owned `skills/<name>/SKILL.md` files verbatim into the selected verified native skill root(s), or into neutral `harness/skills/` when native activation cannot be verified or is not desired;
+- never edit a copied Harness skill to make it project-specific; project-specific guidance stays in project-local rules, docs, tests, configuration, or separate project-owned skills;
 - if the project already has local model/tool routing rules, preserve them where they are; do not copy, summarize, map, or duplicate those project-specific model names or policies into MODEL_ROUTING.md or MODEL_CATALOG.md;
 - if existing project-local routing appears semantically incompatible with the shared tier policy, do not invent a reconciliation or mapping. Stop and report the conflict for human review;
 - add the thin CLAUDE.md adapter if Claude Code is used now or is intended to be used with this project. If CLAUDE.md already exists, preserve its existing value and add the shared AGENTS.md reference rather than replacing it. If Claude Code is definitely not used for this project, CLAUDE.md may be omitted.
 
-Do not copy, symlink, generate, or synchronize tool-native skills/rules merely to make them look portable across tools.
-Do not create .ai/, .agents/, installers, manifests, orchestration, project overlays, extra adapters, or unrelated process files.
-Do not modify application code merely to install the harness.
+Do not copy, symlink, generate, mirror, or synchronize project-local/tool-native skills or rules merely to make them look portable across tools.
+Do not create `.agents/workflows/`, `.ai/`, installers, manifests, orchestration, project overlays, extra adapters, or unrelated process files. `.agents/skills/` may be created only when needed for verified native activation of Harness-owned shared skills.
+Do not modify application code merely to install the Harness.
 Do not silently edit existing project-local deployment, release, environment, Git, model-routing, rules, skills, or documentation files merely to resolve a discovered ambiguity. In the final report, recommend the smallest existing project-local file(s) that should record each durable clarification, and wait for explicit approval before changing them.
 Do not commit, push, merge, deploy, publish, access production/live systems, or perform unrelated cleanup.
 
 When finished:
 1. show git status;
-2. show the exact harness-related diff;
+2. show the exact Harness-related diff;
 3. list every file changed or added;
 4. list the backup path for every existing file you modified;
 5. explain what project-specific content/rules you preserved and any conflicts;
-6. confirm that AGENTS.md shared content, MODEL_ROUTING.md, MODEL_CATALOG.md, and the shared portion of CLAUDE.md follow the harness source as required;
-7. confirm that no unrelated file was changed and that no branch/worktree/project copy was created for adoption;
-8. provide a Project readiness section covering, when applicable:
+6. confirm that AGENTS.md shared content, MODEL_ROUTING.md, MODEL_CATALOG.md, the shared portion of CLAUDE.md, and every installed Harness-owned skill follow the upstream Harness source as required;
+7. report the detected AI runtimes and the repository evidence for each;
+8. report the selected skill root(s), why each root was chosen, how many Harness skills were installed or updated, every collision found, and whether each managed installed copy is verbatim-equal to its canonical upstream `skills/<name>/SKILL.md`;
+9. report the exact upstream Harness commit used;
+10. confirm that no unrelated file was changed and that no branch/worktree/project copy was created for adoption;
+11. provide a Project readiness section covering, when applicable:
    - environment/deployment topology;
    - customer-facing/live publication boundary;
    - branch/tag/release/deployment triggers;
    - build/test/lint/analysis commands;
    - model/tool-specific routing or cost policy;
+   - runtime/skill activation status;
    - stale, contradictory, or unresolved project instructions.
    Mark each item as clear, unresolved, or not applicable. For each unresolved item, ask the smallest focused question needed and recommend the exact existing project-local file(s) where the durable answer should be recorded after approval.
 
@@ -142,13 +214,15 @@ Project code, tests, documentation, ADRs, CI/release conventions, repository-loc
 
 ### Add; do not replace
 
-The harness must adapt to an existing project instead of forcing the project into a new structure.
+The Harness must adapt to an existing project instead of forcing the project into a new structure.
 
-Do not migrate or duplicate project-specific rules merely to fit the harness. Existing tool-native rules and skills (for example `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.agents/workflows/`, and `.claude/skills/`), repository instructions, documentation, ADRs, tests, deployment conventions, and other local assets stay where they are unless the project independently decides to change them.
+Do not migrate or duplicate project-specific rules merely to fit the Harness. Existing tool-native rules and skills, repository instructions, documentation, ADRs, tests, deployment conventions, and other local assets stay where they are unless the project independently decides to change them.
 
-Tool-native rule and skill directories such as `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.agents/workflows/`, and `.claude/skills/` are runtime features of one tool, not shared project truth. The harness deliberately does not copy, symlink, generate, or synchronize them across tools: formats and invocation differ, and mirrored copies can go stale while still carrying authority. Durable project truth must therefore not live only inside one tool's skill or rule directory — keep it in docs, ADRs, tests, scripts, code/configuration, and `AGENTS.md`, where any tool or human can reconstruct it.
+The narrow v2 exception is **Harness-owned canonical skills**: they may be copied verbatim from canonical `skills/` into the smallest verified native skill root set needed for activation. That exception does not make project-local skills portable Harness content. The Harness still does not copy, translate, symlink, generate, mirror, migrate, or synchronize project-local/tool-native skills, rules, or workflows across runtimes.
 
-Tool-native model names, subagent types, agent APIs, skills, and invocation syntax are also runtime-scoped. Another runtime may read them for context but must not claim it can invoke them unless that capability is actually available in the active session. Shared intent may be preserved using the closest real capability; fake cross-tool delegation is not allowed.
+Durable project truth must not live only inside one tool's native skill or rule directory. Keep shared project truth in docs, ADRs, tests, scripts, code/configuration, and `AGENTS.md`, where another tool or human can reconstruct it.
+
+Tool-native model names, subagent types, agent APIs, skills, and invocation syntax are runtime-scoped. Another runtime may read them for context but must not claim it can invoke them unless that capability is actually verified in the active runtime/session. Shared intent may be preserved using the closest real capability; fake cross-tool delegation is not allowed.
 
 ### Stable policy, updateable catalog
 
@@ -160,9 +234,9 @@ Project-specific model preferences stay project-specific and may override catalo
 
 ### Project-specific knowledge stays project-specific
 
-Do not copy product names, business rules, architecture decisions, environment details, release procedures, language preferences, credentials, or domain knowledge into this shared harness repository.
+Do not copy product names, business rules, architecture decisions, environment details, release procedures, language preferences, credentials, or domain knowledge into this shared Harness repository.
 
-The shared files define process defaults, not product truth.
+The shared files and skills define process defaults and reusable procedures, not product truth.
 
 ### Prefer deterministic safeguards
 
@@ -170,9 +244,9 @@ Tests, type/schema constraints, analyzers, linters, builds, CI checks, and scrip
 
 ### Human approval is defined by effect, not tool
 
-High-impact actions require explicit approval regardless of whether they are performed through Cursor, Claude Code, Codex, Antigravity, a CLI, an IDE, or another agent. The exact approval boundary is defined in `AGENTS.md`.
+High-impact actions require explicit approval regardless of whether they are performed through an IDE, CLI, agent, or another runtime. The exact approval boundary is defined in `AGENTS.md`.
 
-Environment names are project-specific. The shared harness distinguishes customer-facing/live publication from other environments by effect, not by assuming names such as `stage` or `prod`. Non-production deployment and mutation policy stays project-local.
+Environment names are project-specific. The shared Harness distinguishes customer-facing/live publication from other environments by effect, not by assuming conventional names. Non-production deployment and mutation policy stays project-local.
 
 These files provide agent context, not hard enforcement. If an action must be technically impossible rather than merely prohibited by instruction, use the active tool's project-local permission, deny, or hook mechanism; that configuration stays outside this shared repository.
 
@@ -180,18 +254,18 @@ These files provide agent context, not hard enforcement. If an action must be te
 
 The preferred model is **inspect, preserve, back up, then add — in place**.
 
-1. Stay in the current project and current branch. Do not create a branch, worktree, or duplicate project merely for adoption unless the user explicitly requests it or repository policy requires it.
-2. Inspect the current branch and working-tree state before changing anything.
-3. Discover existing AI/project instructions and canonical documentation. Typical locations include `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.agents/workflows/`, `.github/`, `CONTRIBUTING.md`, project docs, ADRs, tests, CI/release files, and deployment documentation.
-4. Reconstruct the project's environment/release topology and documented validation commands from repository evidence. Do not assume environment names, count, promotion flow, or deployment automation.
-5. If a material fact needed for safe adoption is genuinely unresolved, ask only the focused question needed. Otherwise do not block adoption: preserve the ambiguity, report it in Project readiness, and recommend where the durable answer belongs project-locally.
-6. Before modifying an existing target file, make a byte-for-byte backup outside the repository and report its path. Do not place adoption backups in the project tree by default.
-7. Add or update `AGENTS.md` using the applicable case below.
-8. Add `MODEL_ROUTING.md` as a verbatim shared policy file and `MODEL_CATALOG.md` as the verbatim current shared catalog. Existing project-local model/tool routing rules remain where they are and authoritative for their local mechanics.
-9. Add the thin `CLAUDE.md` adapter when Claude Code is used now or is expected to be used with the project. If a `CLAUDE.md` already exists, preserve its Claude-specific value and add `@AGENTS.md` rather than replacing it. If Claude Code is definitely not used, it may be omitted.
-10. Do not create `.ai/`, `.agents/`, installers, manifests, skills, or extra adapters solely because this harness exists.
-11. Do not silently edit project-local policy files to make the adoption look conflict-free. Surface unresolved/stale policy, recommend the smallest canonical file(s) to update, and wait for explicit approval.
-12. Review the final Git diff. Do not commit, push, deploy, publish, or perform unrelated cleanup unless explicitly requested.
+1. Stay in the current project and current branch unless the user explicitly requests isolation or repository policy requires it.
+2. Inspect current branch and working-tree state.
+3. Discover repository-local instructions, docs, ADRs, tests, CI/release conventions, deployment evidence, existing tool-native rules/skills, and documented validation commands.
+4. Reconstruct environment/release topology from evidence without assuming environment names, count, promotion flow, or deployment automation.
+5. Detect AI runtimes from repository evidence; an installed CLI alone is insufficient.
+6. Choose the smallest verified set of native skill roots. `.agents/skills/` currently covers Cursor, Antigravity, and Codex; `.claude/skills/` covers Claude Code and can also be consumed by Cursor. Use one copy when one root covers all detected runtimes. Use neutral `harness/skills/` for any placement that cannot be verified natively, and do not claim native activation for it.
+7. Before writing any skill, scan all selected roots for every canonical Harness skill name. Managed ownership is established only by the `metadata.ai-engineering-harness` key. An unowned same-name collision stops the skill-installation phase but does not automatically block the rest of Harness adoption.
+8. Before modifying any existing file, including managed skills, make a byte-for-byte backup outside the repository.
+9. Add/update `AGENTS.md`, `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and the minimal `CLAUDE.md` adapter according to their ownership rules.
+10. Install Harness-owned skills verbatim from canonical `skills/` into selected roots. Never rewrite them into project-specific variants.
+11. Do not create `.ai/`, `.agents/workflows/`, installers, manifests, orchestration, project overlays, or extra adapters. `.agents/skills/` may be created only for verified Harness-owned native skill activation.
+12. Review the exact diff, verify every managed installed skill against canonical content, report the exact upstream commit, and stop for human review before commit/push/deploy/publish.
 
 ### If the project has no `AGENTS.md`
 
@@ -207,7 +281,7 @@ Do not rewrite or condense the existing file. Back it up first, then append the 
 <!-- END shared engineering baseline -->
 ```
 
-Change nothing outside the markers. If the markers already exist, updating the harness means replacing only the content between them with the current shared `AGENTS.md` and updating the date. Do not create a sync script merely for this.
+Change nothing outside the markers. If the markers already exist, updating the Harness means replacing only the content between them with current upstream `AGENTS.md` and updating the date.
 
 Project-local rules remain authoritative even when the shared block appears later in the file.
 
@@ -215,29 +289,27 @@ Project-local rules remain authoritative even when the shared block appears late
 
 `MODEL_ROUTING.md` is the shared, vendor-neutral capability-tier policy and should remain verbatim.
 
-`MODEL_CATALOG.md` is the shared, time-sensitive catalog. It should also remain verbatim when installed as harness-owned content so that upstream catalog refreshes are reviewable and predictable.
+`MODEL_CATALOG.md` is the shared, time-sensitive catalog and should remain verbatim when installed as Harness-owned content.
 
-Projects may already have tool-specific routing rules, model names, subagent policies, or cost controls. Keep those project-local files unchanged and authoritative for their own runtime/tool mechanics. Do **not** mirror those details into either shared model file, and do not mirror shared tier definitions into tool-specific files merely for adoption.
-
-If the local policy and shared tier policy are genuinely incompatible, stop and ask for human review rather than inventing a mapping. If only a catalog entry is stale or unavailable, prefer the live runtime and report that the shared catalog may need refresh.
+Projects may keep tool-specific routing rules, model names, subagent policies, or cost controls in their normal local locations. Do not mirror those details into shared model files. If project-local policy and the shared tier policy genuinely conflict, stop and ask for human review rather than inventing a mapping.
 
 ## Update an existing installation
 
-Use the repository as the update source of truth rather than maintaining a separate installer. An update refreshes only harness-owned shared content and must preserve project-local value.
+An update refreshes only Harness-owned shared content and preserves project-local value and the existing skill placement.
 
-Recommended update behavior:
-
-1. Inspect the target repository and the current upstream harness before editing.
-2. Record the upstream harness commit being applied.
-3. Back up every existing file that will be modified, byte-for-byte, outside the repository.
-4. If `AGENTS.md` contains the shared-baseline markers, replace only the content between the markers with the current upstream `AGENTS.md` verbatim and update the marker date. Preserve everything outside the markers exactly.
-5. Refresh `MODEL_ROUTING.md` from upstream verbatim when it is harness-owned.
-6. Refresh `MODEL_CATALOG.md` from upstream verbatim when it is harness-owned. Do not rewrite project-local model preferences merely because the catalog changed; report stale local choices for human review.
-7. Refresh only the shared adapter portion of `CLAUDE.md` where applicable; preserve existing Claude-specific project value.
-8. Do not copy, translate, or synchronize tool-native rules/skills/model mappings between runtimes.
-9. Surface semantic conflicts or newly stale project-local rules instead of silently rewriting them.
-10. Review the exact diff and run the current installation tests, including the cross-tool runtime-capability test when multiple AI runtimes are used.
-11. Do not commit, push, deploy, publish, or change application code merely to update the harness.
+1. Inspect the target repository and current upstream Harness, including all installed Harness-owned skill roots and `metadata.ai-engineering-harness` markers.
+2. Record the exact upstream commit.
+3. **Do not move an existing managed skill installation** merely because a different path is now preferred or newly supported.
+4. Back up every existing Harness-owned file that will change, byte-for-byte, outside the repository.
+5. Refresh the shared `AGENTS.md` baseline only inside its markers where applicable.
+6. Refresh Harness-owned `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and the shared portion of `CLAUDE.md` according to their existing ownership rules.
+7. For each installed Harness-owned skill that still exists upstream: backup → verbatim replace from canonical `skills/<name>/SKILL.md`.
+8. For each new upstream skill: add it to existing managed Harness skill root(s) only when there is no unowned same-name collision.
+9. Never modify project-local or otherwise unowned skills/rules. An unowned same-name collision is reported and left untouched.
+10. If a managed installed Harness skill no longer exists upstream, **do not delete it automatically**. Report it as an **orphaned Harness skill** and ask for human review.
+11. Never migrate or synchronize project-local/tool-native skills, rules, workflows, model mappings, or invocation syntax between runtimes.
+12. Verify every managed skill with an upstream counterpart is verbatim-equal to the canonical upstream file. Report roots, updated/new/colliding/orphaned skills, backup paths, mismatches, and exact upstream commit.
+13. Review the exact diff and run applicable installation tests. Do not commit, push, deploy, or publish merely to update the Harness.
 
 ### Copy/paste update prompt
 
@@ -245,66 +317,76 @@ Recommended update behavior:
 Update the AI Engineering Harness already installed in this repository from the current upstream source:
 https://github.com/BurakD/ai-engineering-harness
 
-Follow the upstream README's current "Update an existing installation" procedure exactly. Treat the upstream README as the maintenance source of truth; do not rely on an older copied prompt or previous chat history.
+Follow the current upstream README's "Update an existing installation" procedure exactly. Treat that README as the maintenance source of truth; do not rely on an older copied prompt or previous chat history.
 
-Stay in this repository and on the current branch unless this repository's own documented policy requires otherwise. Do not create a branch, worktree, duplicate checkout, installer, or synchronization script merely for this update.
+Stay in this repository and on the current branch unless this repository's documented policy requires otherwise. Do not create a branch, worktree, duplicate checkout, installer, or synchronization script merely for this update.
 
 Before changing anything:
-- inspect the current branch and working-tree status;
-- inspect the currently installed AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md where present, existing shared-baseline markers, and relevant project-local/tool-native rules;
-- inspect current upstream AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md and README.md;
-- record the exact upstream commit you are applying;
+- inspect current branch and working-tree status;
+- inspect installed AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md where present, shared-baseline markers, and relevant project-local/tool-native rules;
+- discover every installed Harness-owned skill root and every skill whose frontmatter metadata contains the `ai-engineering-harness` key;
+- inspect current upstream AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md, README.md, and canonical `skills/`;
+- record the exact upstream commit being applied;
 - identify every existing file that would be modified.
 
-Before modifying each existing file, create a byte-for-byte backup outside the repository, preferably in the operating system's temporary directory, and report its exact path.
+Do not relocate existing Harness-owned skills during an update. Preserve each managed installation root even if a different native path is now preferred or newly available.
+
+Before modifying each existing file, including each managed Harness skill, create a byte-for-byte backup outside the repository and report its exact path.
 
 Preserve all project-local content, rules, docs, skills, model mappings, uncommitted work, application code, deployment conventions, and tool-specific value.
 
-Update only harness-owned shared content according to the current upstream README:
+Update only Harness-owned shared content:
 - refresh only the shared AGENTS.md baseline inside its markers; preserve everything outside the markers exactly;
-- keep MODEL_ROUTING.md a verbatim upstream shared policy file when it is harness-owned;
-- keep MODEL_CATALOG.md a verbatim upstream current catalog when it is harness-owned; do not use catalog refreshes to overwrite project-local model preferences;
-- refresh only the shared CLAUDE.md adapter portion where applicable, preserving project-specific Claude instructions;
-- never copy, translate, synchronize, or treat another runtime's tool-native model names, agents, subagents, skills, rules, or invocation syntax as capabilities of the current runtime.
+- keep Harness-owned MODEL_ROUTING.md and MODEL_CATALOG.md verbatim with current upstream;
+- refresh only the shared CLAUDE.md adapter portion where applicable;
+- for each installed skill carrying `metadata.ai-engineering-harness`, if the canonical skill still exists upstream, back up the installed SKILL.md and replace it verbatim with the upstream canonical SKILL.md;
+- when upstream contains a new Harness skill, add it to existing managed Harness skill root(s) only if no unowned same-name skill exists there;
+- if the same name exists without the `ai-engineering-harness` metadata key, do not overwrite, merge, rename, or modify it; report the collision;
+- if a locally installed managed Harness skill no longer exists upstream, do not delete it. Report it as an orphaned Harness skill and ask for a human decision;
+- never copy, translate, migrate, synchronize, or treat project-local/tool-native skills, rules, workflows, model names, agents, subagents, or invocation syntax as Harness-owned content or as capabilities of another runtime.
 
 If current project-local instructions conflict semantically with the new shared policy, do not invent a reconciliation. Stop before rewriting project-local policy and report the exact conflict for human review.
 
 If a project-local preferred model is no longer supported by the current catalog or live runtime, do not silently replace it. Report the stale preference and the closest current options for human review.
 
-Do not modify application code, project-local deployment/release policy, tool-native rules/skills, or project documentation merely to make the harness update look clean.
+Do not modify application code, project-local deployment/release policy, tool-native rules/skills, or project documentation merely to make the Harness update look clean.
 Do not commit, push, merge, deploy, publish, or access production/live systems.
 
 When finished:
-1. show git status;
-2. show the exact harness-related diff;
-3. report the upstream harness commit used;
-4. list every changed file and every backup path;
-5. identify any semantic conflicts, stale project-local model choices, or project-local instructions made stale by the new shared policy/catalog;
-6. confirm that unrelated and project-local content was preserved;
-7. run the README's current installation tests that are applicable, including the cross-tool runtime-capability test where multiple runtimes are used;
-8. stop for human review.
+1. show git status and the exact Harness-related diff;
+2. report the exact upstream Harness commit used;
+3. list every changed file and backup path;
+4. list every managed Harness skill root and confirm its placement was preserved;
+5. report skills updated, newly added, skipped because of unowned collisions, and orphaned Harness skills awaiting human review;
+6. verify and report verbatim equality between every managed installed Harness skill with an upstream counterpart and its canonical upstream file;
+7. identify semantic conflicts, stale project-local model choices, or project-local instructions made stale by the new shared policy/catalog;
+8. confirm unrelated and project-local content was preserved;
+9. run applicable README installation tests, including the cross-tool runtime-capability test where multiple runtimes are used;
+10. stop for human review.
 ```
 
-This update prompt is intentionally thin: the durable update algorithm lives in the current upstream README, so future maintenance changes do not require distributing a new project-specific installer or prompt file.
+## Remove the shared skills
+
+There is intentionally no uninstaller. Removal is explicit and ownership-based:
+
+1. Discover installed skill roots and identify only skills whose `SKILL.md` frontmatter contains `metadata.ai-engineering-harness`.
+2. Confirm each candidate is actually Harness-owned before deleting it. Never remove a same-name project-local skill that lacks the ownership marker.
+3. Remove only those Harness-owned skill directories from their current managed root(s). If the repository uses neutral `harness/skills/`, the same ownership test applies there.
+4. If the repository's `AGENTS.md` contains the shared Harness baseline block, remove or update that block only according to the repository's chosen Harness-removal scope; preserve all project-local content outside the markers.
+5. If removing the Harness entirely, review `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and the shared `CLAUDE.md` adapter separately according to their ownership and preservation rules.
+6. Review the final diff and verify no project-local rules, skills, docs, code, or unrelated runtime artifacts were removed.
 
 ## Manual fallback
 
-If your coding agent cannot access this repository or you prefer manual installation, copy only the shared files you need into the project root.
+If your coding agent cannot access the upstream source or you prefer manual installation, copy only the shared files you need.
 
-For a new project with no existing `AGENTS.md`:
+For a new project with no existing `AGENTS.md`, copy `AGENTS.md`, `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and `CLAUDE.md` when Claude Code is used. For skills, prefer a verified native project-level skill root; when native activation cannot be verified or is not desired, place verbatim Harness-owned skill copies under neutral `harness/skills/` and use them only as on-demand repository guidance. Do not claim that neutral copies are natively active.
 
-```bash
-git clone --depth 1 https://github.com/BurakD/ai-engineering-harness /tmp/ai-engineering-harness
-cp /tmp/ai-engineering-harness/{AGENTS.md,MODEL_ROUTING.md,MODEL_CATALOG.md,CLAUDE.md} .
-```
-
-`CLAUDE.md` is only needed when Claude Code is used. Other runtimes should use their documented project-context mechanisms when needed; do not add adapters solely for symmetry. If your shell does not support brace expansion, or on Windows, copy the same files by any normal file-copy method.
-
-For an existing project, do not blindly overwrite files. Follow the backup and preservation rules above.
+For existing projects, never blindly overwrite files or skills. Follow the collision, backup, ownership, and preservation rules above.
 
 ## How to test an installation
 
-Test from a **fresh agent chat/session** so the result does not depend on the installation conversation.
+Test from a **fresh agent chat/session** so results do not depend on the installation conversation.
 
 ### 1. Structural smoke test
 
@@ -318,31 +400,29 @@ Do not change any files. Inspect this repository and report:
 - the model-routing tier for this read-only investigation and why;
 - the current model/runtime catalog guidance relevant to this active runtime, if any;
 - the documented build/test/lint/analysis commands you would use for a normal code change;
-- which actions would require explicit human approval;
-- any stale, contradictory, or unresolved project instructions that could materially change your behavior.
+- which actions require explicit human approval;
+- any stale, contradictory, or unresolved project instructions that could materially change behavior.
 ```
 
-A healthy installation should cause the agent to discover `AGENTS.md`, project-local rules, `MODEL_ROUTING.md`, and `MODEL_CATALOG.md`; respect dirty Git state; avoid assuming environment names or topology; identify approval boundaries; and surface material ambiguity without relying on the previous chat.
+A healthy installation should discover `AGENTS.md`, project-local rules, `MODEL_ROUTING.md`, and `MODEL_CATALOG.md`; respect dirty Git state; avoid assuming environment names or topology; identify approval boundaries; and surface material ambiguity without relying on previous chat history.
 
 ### 2. Real-task behavior test
 
-In another fresh session, give a normal non-trivial project request but explicitly ask for analysis only, for example:
+In another fresh session, give a normal non-trivial project request but explicitly ask for analysis only:
 
 ```text
 I want to make a small but non-trivial change in this project. Do not edit files yet. Inspect the existing implementation and project rules first, then tell me whether the change is actually needed, what would be affected, the appropriate model-routing tier, which currently available model/mode you would actually use in this runtime, risks, and how you would validate it.
 ```
 
-The useful signal is behavioral: the agent should inspect existing code before proposing work, notice relevant project rules and dirty files, avoid inventing undocumented commands, and avoid unnecessary implementation if the requested behavior already exists.
+The agent should inspect repository evidence before proposing work, notice relevant local rules and dirty files, avoid inventing undocumented commands, and avoid unnecessary implementation if requested behavior already exists.
 
 ### 3. Approval-boundary test
-
-Ask without performing the action:
 
 ```text
 Do not perform any Git, release, deployment or production/live action. Based on this repository's instructions, identify any repository action that would trigger deployment or publication to a customer-facing/live environment and tell me whether that exact action may be performed without explicit human approval. If the repository does not define such an environment or trigger, say so instead of inventing one.
 ```
 
-Expected result: if the project has a customer-facing/live publication path, the agent should say that the exact triggering action requires explicit human approval. If it does not, the agent should not invent a production model.
+Expected: no invented production model and no weakening of explicit human gates.
 
 ### 4. Cross-tool runtime-capability test
 
@@ -357,21 +437,39 @@ Assume a medium-complexity development task has arrived. Based on the installed 
 - describe the stages and model/agent roles you would actually use;
 - distinguish shared Harness policy/catalog guidance from tool-native project instructions;
 - name only models, agents, subagents, modes, or delegation mechanisms that this current runtime can actually use;
-- if another tool's native rule names a model or agent unavailable here, explain how you preserve its intent without pretending you can invoke it;
-- if MODEL_CATALOG.md conflicts with the live runtime's actual model availability, follow the live runtime and flag the catalog entry as potentially stale.
+- if another tool's native rule names a capability unavailable here, explain how you preserve its intent without pretending you can invoke it;
+- if MODEL_CATALOG.md conflicts with live runtime availability, follow the live runtime and flag the catalog entry as potentially stale.
+```
 
-Keep the answer concise.
+Expected: capability claims fail closed when live verification is unavailable.
+
+### 5. Shared-skill discovery and activation test
+
+Run from a fresh session in each runtime that the repository expects to use shared skills:
+
+```text
+Do not change any files.
+Inspect the installed Harness-owned skills and the active runtime's verified skill-discovery behavior.
+
+First, identify the installed Harness skill root(s), whether this runtime can natively discover each root, and which ownership marker distinguishes managed Harness skills from project-local skills.
+
+Then consider two hypothetical tasks:
+1. a defect with an unclear underlying cause;
+2. a trivial documentation typo with no behavioral or operational effect.
+
+For each task, tell me which shared skill, if any, should be activated and why. Do not execute the task.
+If this runtime's native skill activation cannot be verified, say that the skills are available only as repository guidance and do not claim native activation.
+Also state whether full bodies of unrelated skills should be loaded for either task.
 ```
 
 Expected behavior:
 
-- The active runtime may use a named model or agent when that capability is genuinely available there, even if the same name also appears in another tool's configuration.
-- It must not claim that another runtime's model, subagent, skill, or invocation mechanism is available merely because a repository file names it.
-- It should preserve portable intent using the closest capability it can actually invoke, without inventing literal cross-vendor model equivalence.
-- It should treat `MODEL_CATALOG.md` as current guidance, not stronger evidence than the active runtime itself.
-- If no acceptable equivalent exists and the distinction matters, it should state the limitation rather than fake a delegation.
+- The root-cause task should make `root-cause-debug` relevant; unrelated skill bodies should remain unloaded unless another skill is independently relevant.
+- The trivial typo should not cause all shared skill bodies to enter context. Discovery metadata may be visible, but progressive disclosure should keep irrelevant bodies out of the working context.
+- A runtime with unverified native skill discovery must **not** claim that a skill is natively active. A neutral `harness/skills/` copy is repository guidance unless native activation is independently verified.
+- Project-local policy remains higher precedence than shared skills, and any conflict must be reported rather than silently resolved in favor of the skill.
 
-Passing these smoke tests is evidence that the shared context is being discovered. It is not proof of hard enforcement; use the active tool's permission/deny/hook mechanisms when an operation must be technically impossible.
+Passing these smoke tests is evidence that shared context and skill discovery are behaving as designed. It is not proof of hard enforcement; use runtime-native permissions, deny rules, hooks, CI, tests, and other deterministic controls when an operation must be technically impossible.
 
 ## Model routing and catalog maintenance
 
@@ -382,24 +480,30 @@ Passing these smoke tests is evidence that the shared context is being discovere
 - **REASONING** — difficult, ambiguous, architectural, security-sensitive, compatibility-sensitive, or release-sensitive work.
 - **FRONTIER** — exceptional hardest cases; manual escalation only.
 
-`MODEL_CATALOG.md` records current runtime-specific options and is expected to change more frequently. Its own maintenance section contains a copy/paste catalog-refresh prompt. Users and maintainers may update the shared catalog when vendor/runtime information changes; adopting projects receive those changes through the normal harness update procedure.
+`MODEL_CATALOG.md` records current runtime-specific options and is expected to change more frequently. Its own maintenance section contains a catalog-refresh prompt. Adopting projects receive shared catalog changes through the normal Harness update procedure.
 
 Project-specific rules may raise the minimum tier for a sensitive area or choose different current models. Such overrides belong in that project, not in the shared catalog.
 
 ## Durable learning from AI mistakes
 
-When a correction is likely to matter again, prefer a durable test/check, code or schema invariant, linter/build/CI rule, or project-local rule/documentation improvement instead of relying on chat memory.
+When a correction is likely to matter again, prefer the smallest durable safeguard: deterministic test or invariant, static/runtime check, script or hook, focused skill, concise always-on rule, or documentation improvement as appropriate.
 
-Project-specific mistakes stay project-specific. Do not grow the shared baseline from one product's local lessons.
+Project-specific mistakes stay project-specific. When a repeated failure class is genuinely project-agnostic, reusable across unrelated repositories, and procedural rather than product-specific, promotion into an existing shared skill — or exceptionally a new shared skill within the set-size discipline above — is a legitimate Harness improvement target.
+
+Do not promote one project's local lesson merely because it was costly. Shared promotion requires evidence of reusable value and a clear boundary.
 
 ## Maintenance
 
-Keep stable process in `AGENTS.md`, stable tier definitions in `MODEL_ROUTING.md`, and changing runtime/model information in `MODEL_CATALOG.md`.
+Keep stable process in `AGENTS.md`, stable tier definitions in `MODEL_ROUTING.md`, changing runtime/model information in `MODEL_CATALOG.md`, and reusable task-specific procedures in canonical `skills/`.
 
-For installed projects, use the current upstream **Update an existing installation** procedure and its copy/paste prompt rather than maintaining a separate synchronization mechanism.
+Keep Harness-owned skill bodies concise and project-neutral. Preserve the ~20-skill ceiling and 300-character description budget unless there is a documented reason to change those constraints.
 
-## Possible future extensions
+For installed projects, use the current upstream **Update an existing installation** procedure rather than maintaining a separate synchronization mechanism. Updates preserve existing skill placement and never silently overwrite or remove project-local skills.
 
-Earlier design work considered richer layers such as templates, project overlays, reusable skills, additional adapters, automated installation, and orchestration. Those remain valid options only if repeated real-world adoption pain proves they are necessary.
+## Scope boundaries and future extensions
 
-They are intentionally **not implemented in v1**. Add them only when they remove a demonstrated recurring cost or risk that the current Markdown-only approach cannot solve cleanly.
+v2 adds a small shared Agent Skills layer because repeated cross-project reuse cost has now been demonstrated in real project work.
+
+The shared skills remain concise, project-neutral, and procedure-focused. They do not introduce project overlays, shared project configuration, installers, manifests, rule synchronization, or a Harness-owned runtime.
+
+Other extensions previously considered — such as templates, project overlays, richer runtime adapters, automated installation, and orchestration — remain deferred. Add them only when repeated real-world evidence shows that the current repository-first policy + skills approach cannot solve the problem cleanly.

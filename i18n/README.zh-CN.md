@@ -1,70 +1,79 @@
+<!-- Based on README.md @ v2.0.0 -->
 # AI Engineering Harness
 
-**语言：** [English](README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · **简体中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+**语言：** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · **简体中文** · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-<!-- Based on README.md @ 088ed75fe790d2b1626ab1c222b2623246966c9b -->
-
-一个用于 AI 辅助软件开发的最小化、厂商中立基础层。
-
-在不同 AI 编程工具或模型之间切换，往往会丢失项目的工程上下文并需要重新解释。AI Engineering Harness 是一个小型、可移植的策略与上下文层，用来避免这种情况。它不是 Agent Runtime，也不是编排器；Cursor、Claude Code、Codex 和 Antigravity 各自提供执行与编排能力。
-
-## 它解决什么问题
-
-1. 在切换工具或模型时保持项目上下文与工程纪律。
-2. 只在复杂度或风险值得时使用更强推理，从而平衡质量与成本。
-3. 在不把短生命周期模型名称写死进稳定策略的前提下，让模型/runtime 选择保持更新。
+这是一个面向 AI 辅助软件开发的最小化、供应商中立基线：便携的策略/上下文层，加上一小组可复用的工程流程。它不是 agent runtime、orchestrator、installer 或 framework。
 
 ## 文件
 
-- `AGENTS.md` — 供兼容 coding agent 使用的共享工程基线。
-- `MODEL_ROUTING.md` — 稳定的 FAST / STANDARD / REASONING / FRONTIER 策略。
-- `MODEL_CATALOG.md` — 随时间变化的模型/runtime 目录和当前建议。
-- `CLAUDE.md` — 让 Claude Code 导入 `AGENTS.md` 的最小适配器。
-- `README.md` — adoption、更新、测试和维护的主要说明。
+- `AGENTS.md` — 共享、始终生效的工程基线。
+- `MODEL_ROUTING.md` — 稳定的质量/成本与能力层级策略。
+- `MODEL_CATALOG.md` — 随时间变化的 runtime/model 目录。
+- `CLAUDE.md` — Claude Code 指向 `AGENTS.md` 的轻量桥接。
+- `skills/` — Harness-owned、按需加载的 canonical procedures。
+- `i18n/` — README 的本地化摘要。
 
-## 它是什么，也不是什么
+## Rules 与 skills：四层结构
 
-核心价值在策略内容：repository-first 上下文、routing tiers、runtime capability 的 fail-closed 验证、按影响定义的人类审批、scope 纪律、可持续 handoff 与安全更新。
+| | 始终生效 | 按需 |
+| --- | --- | --- |
+| **共享** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
+| **项目专属** | 项目自己的 rules/policy 机制 | 项目自己的 skills |
 
-它不是 workflow engine、multi-agent framework、runtime、规则同步生成器，也不会取代各工具自己的 rules/skills。
+Harness 不提供单独的 `rules/` 目录。共享 always-on 规则已经以 `AGENTS.md` 为 canonical source，模型路由策略位于 `MODEL_ROUTING.md`。再创建第二个 always-on canonical source 只会带来重复和冲突风险。
 
-## 兼容性
+领域规则、环境与部署拓扑、供应商/模型偏好、产品行为、业务规则和基础设施路径都应保留在项目本地。判断新的 guidance 应放在哪一层时，使用 `continuous-improvement` skill 中“选择最小、可长期维护 safeguard”的方法，而不是在这里重复一套决策框架。
 
-`AGENTS.md` 是外部的 cross-tool 约定。能直接读取它的 runtime 不需要 Harness 专用适配器。Claude Code 使用 `CLAUDE.md`，因此本仓库只包含最小的 `@AGENTS.md` 桥接。Antigravity 特有的 `.agents/skills/`、`.agents/workflows/` 等机制仍保持为 project-local。
+## 共享 skills
 
-## 接入现有项目
+Skills 是面向具体任务的 procedures，不是 always-on policy。通常 discovery 只暴露 metadata；完整 `SKILL.md` 内容仅在当前任务真正匹配时加载。
 
-1. 保持在当前 repository 和 branch。
-2. 修改前让合适的 agent 检查规则、docs、Git 状态、deployment 拓扑与 validation 命令。
-3. 修改任何现有文件前，在 repository 外创建 byte-for-byte backup。
-4. 保留所有 project-specific 内容，只添加 Harness 的 shared 内容。
-5. 不要仅为了采用 Harness 创建 branch、worktree、installer、manifest、adapter 或 sync 机制。
-6. 未经明确批准，不要 commit、push、deploy 或 publish。
+Harness-owned skills 的 canonical source 是 `skills/`。Ownership marker：
 
-**完整 adoption prompt：** [英文 README](README.md#copypaste-adoption-prompt)
+```yaml
+metadata:
+  ai-engineering-harness: "2.0.0"
+```
 
-## 更新
+同名 skill 如果没有这个 key，就不属于 Harness，adoption/update 时绝不能覆盖。
 
-更新只刷新 Harness-owned shared 内容。`AGENTS.md`、`MODEL_ROUTING.md`、`MODEL_CATALOG.md` 和 `CLAUDE.md` 的 shared 部分从 upstream 更新，同时保留项目本地 rules、models、skills、docs、code 和未提交工作。
+v2 包含 14 个 skills：
 
-**完整 update prompt：** [英文 README](README.md#copypaste-update-prompt)
+- `backup-and-recovery-review` — backup、restore 与 recovery readiness。
+- `interface-qa` — web、mobile、desktop、CLI 与 API 界面验证。
+- `calculation-model-validation` — 公式与决策模型验证。
+- `change-review` — 完成变更的回归与风险 review。
+- `compatibility-and-rollout` — compatibility、migration、rollout 与 rollback。
+- `high-risk-change-review` — 高风险变更的额外工程约束。
+- `delegation-strategy` — 安全使用已验证的 delegation/parallelism。
+- `dependency-change` — dependency 添加、删除与升级评估。
+- `documentation-sync` — 让长期文档与实际系统保持一致。
+- `environment-release-safety` — release/deployment 与 approval boundary 安全。
+- `continuous-improvement` — 将重复失败转化为持久 safeguards。
+- `root-cause-debug` — 找到并证明 root cause。
+- `secret-exposure-response` — secret/credential exposure 响应。
+- `cross-surface-consistency` — 多个 surface/channel 之间的行为一致性。
 
-## 关键原则
+共享集合应保持在约 **20 个 skills 或更少**；每个 `description` 应为 **300 个字符以内**。
 
-- Repository 中的事实应当跨模型和 agent 切换持续存在。
-- 只添加，不替换：tool-native 规则留在原处。
-- `MODEL_ROUTING.md` 稳定；`MODEL_CATALOG.md` 明确是时间敏感的。
-- 当前 runtime 对实际可调用的模型/agent 拥有最终权威。
-- 发现问题不等于获得修复超出 scope 问题的授权。
-- 高影响操作是否需要人工批准，按实际效果判断，而不是按工具或环境名称判断。
-- 如果 tests、linters、types、CI 等确定性机制能可靠执行同一规则，应优先于重复依赖模型判断。
+优先级：**project-local rules/policy > 共享 `AGENTS.md` baseline > shared skills**。任何 skill 都不能放宽 approval boundary、授权 scope、runtime capability 或 production/live safety。
 
-## 测试安装
+## Adoption 与 update
 
-请在新的 session 中执行：structural smoke test、real-task behavior test、approval-boundary test 和 cross-tool runtime-capability test。Agent 应正确发现上下文，并且绝不能声称当前 runtime 无法验证的能力。
+可复制的操作 prompt 只保留一个 canonical source，不做翻译：
 
-精确 prompts： [How to test an installation](README.md#how-to-test-an-installation)
+- [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
+- [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-## 许可证
+Adoption 根据 repository evidence 判断项目实际使用的 runtimes；机器上安装了 CLI 并不能单独作为证据。当前已验证的 project-level skill 路径：Cursor、Antigravity、Codex 使用 `.agents/skills/`；Claude Code 使用 `.claude/skills/`；Cursor 也能读取 `.claude/skills/`。如果一个已验证 root 能覆盖所有已检测 runtimes，只保存一份。无法验证 native activation 时，使用 neutral `harness/skills/`，并且不能宣称 native activation 已生效。
 
-基于 **Apache License 2.0** 开源。
+写入任何 skill 之前，必须对所有 canonical skill 名称在所有目标 roots 做 collision scan。任何要修改的 managed 文件都必须在 repository 外进行 byte-for-byte backup。Update 永不迁移现有 skill 安装位置；upstream 已删除的 managed skill 也不会自动删除，而是报告为 orphaned。
+
+## 删除与测试
+
+没有自动 uninstaller。只有包含 `metadata.ai-engineering-harness` 的 skills 才能作为 Harness-owned 内容删除；project-local rules/skills 保持不变。参见 [Remove the shared skills](../README.md#remove-the-shared-skills)。
+
+如果 native skill activation 无法验证，agent 不应声称 skill 已激活。与任务无关时，不应把所有 skill body 加入 context；只允许 discovery metadata 可见。参见 [How to test an installation](../README.md#how-to-test-an-installation)。
+
+`SKILL.md` 文件不翻译；只保留一份 canonical English 版本。详细 maintenance、adoption/update 和 scope boundaries 请以 [English README](../README.md) 为准。

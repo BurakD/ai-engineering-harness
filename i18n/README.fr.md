@@ -1,70 +1,79 @@
+<!-- Based on README.md @ v2.0.0 -->
 # AI Engineering Harness
 
-**Langues :** [English](README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · **Français** · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+**Langues :** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · **Français** · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-<!-- Based on README.md @ 088ed75fe790d2b1626ab1c222b2623246966c9b -->
-
-Une base minimale et indépendante des fournisseurs pour le développement logiciel assisté par IA.
-
-Changer d’outil ou de modèle de programmation IA fait souvent perdre le contexte d’ingénierie du projet et oblige à tout réexpliquer. AI Engineering Harness est une petite couche portable de politiques et de contexte conçue pour éviter cela. Ce n’est ni un runtime d’agents ni un orchestrateur ; Cursor, Claude Code, Codex et Antigravity fournissent leurs propres capacités d’exécution.
-
-## Problèmes résolus
-
-1. Conserver le contexte du projet et la discipline d’ingénierie lors des changements d’outil ou de modèle.
-2. Équilibrer qualité et coût en réservant le raisonnement le plus puissant aux tâches dont la complexité ou le risque le justifient.
-3. Garder les choix de modèle/runtime à jour sans figer des noms de modèles éphémères dans la politique stable.
+Une base minimale et indépendante des fournisseurs pour le développement logiciel assisté par IA : une couche portable de politiques/contexte, complétée par un petit ensemble de procédures réutilisables. Ce n'est ni un runtime d'agents, ni un orchestrateur, ni un installateur, ni un framework.
 
 ## Fichiers
 
-- `AGENTS.md` — base d’ingénierie partagée pour les agents compatibles.
-- `MODEL_ROUTING.md` — politique stable FAST / STANDARD / REASONING / FRONTIER.
-- `MODEL_CATALOG.md` — catalogue temporel des modèles/runtimes et recommandations actuelles.
-- `CLAUDE.md` — adaptateur minimal permettant à Claude Code d’importer `AGENTS.md`.
-- `README.md` — guide principal d’adoption, de mise à jour, de test et de maintenance.
+- `AGENTS.md` — base d'ingénierie partagée et toujours active.
+- `MODEL_ROUTING.md` — politique stable qualité/coût et niveaux de capacité.
+- `MODEL_CATALOG.md` — catalogue de runtimes/modèles sensible au temps.
+- `CLAUDE.md` — pont minimal de Claude Code vers `AGENTS.md`.
+- `skills/` — procédures canoniques, à la demande, appartenant au Harness.
+- `i18n/` — résumés README localisés.
 
-## Ce que c’est — et ce que ce n’est pas
+## Règles et skills : quatre couches
 
-La valeur principale réside dans les politiques : contexte centré sur le repository, tiers de routing, vérification fail-closed des capacités du runtime, approbation humaine selon l’impact, discipline de scope, handoff durable et mises à jour sûres.
+| | Toujours active | À la demande |
+| --- | --- | --- |
+| **Partagée** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
+| **Spécifique au projet** | Mécanisme de règles/politiques propre au projet | Skills propres au projet |
 
-Ce projet n’est ni un moteur de workflow, ni un framework multi-agents, ni un runtime, ni un générateur de synchronisation de règles, ni un remplacement des rules/skills natifs des outils.
+Le Harness ne fournit volontairement pas de répertoire `rules/` séparé : la source canonique de la couche partagée toujours active existe déjà dans `AGENTS.md`, avec la politique de routing dans `MODEL_ROUTING.md`. Une seconde source canonique créerait duplication et risques de contradiction.
 
-## Compatibilité
+Les règles métier/domaine, la topologie des environnements et déploiements, les préférences fournisseur/modèle, le comportement produit, les règles business et les chemins d'infrastructure restent propres au projet. Pour décider où placer une nouvelle guidance, utilisez le skill `continuous-improvement` et son principe du plus petit safeguard durable adapté.
 
-`AGENTS.md` est une convention externe et cross-tool. Les runtimes qui la lisent directement n’ont pas besoin d’adaptateur propre au Harness. Claude Code utilise `CLAUDE.md`, d’où la présence du seul pont minimal `@AGENTS.md`. Les mécanismes propres à Antigravity comme `.agents/skills/` et `.agents/workflows/` restent locaux au projet.
+## Skills partagés
 
-## Adoption dans un projet existant
+Les skills sont des procédures liées à une tâche, pas une politique toujours active. Normalement seule leur metadata doit être disponible pour la discovery ; le corps complet de `SKILL.md` est chargé uniquement quand la tâche correspond réellement.
 
-1. Rester dans le repository et la branche actuels.
-2. Faire inspecter avant toute modification les règles, docs, l’état Git, la topologie de déploiement et les commandes de validation.
-3. Avant de modifier un fichier existant, créer une sauvegarde byte-for-byte hors du repository.
-4. Préserver tout le contenu spécifique au projet et n’ajouter que le contenu partagé du Harness.
-5. Ne pas créer de branche, worktree, installer, manifeste, adaptateur ou synchroniseur uniquement pour adopter le Harness.
-6. Ne pas commit, push, deploy ou publish sans approbation explicite.
+La source canonique des skills appartenant au Harness est `skills/`. Marqueur d'ownership :
 
-**Prompt complet d’adoption :** [README anglais](README.md#copypaste-adoption-prompt)
+```yaml
+metadata:
+  ai-engineering-harness: "2.0.0"
+```
 
-## Mise à jour
+Un skill de même nom sans cette clé n'appartient pas au Harness et ne doit jamais être écrasé pendant l'adoption ou la mise à jour.
 
-Une mise à jour ne renouvelle que le contenu partagé appartenant au Harness. `AGENTS.md`, `MODEL_ROUTING.md`, `MODEL_CATALOG.md` et la partie partagée de `CLAUDE.md` sont rafraîchis depuis l’upstream tout en préservant les règles, modèles, skills, docs, code et travaux non commités du projet.
+Le jeu v2 contient 14 skills :
 
-**Prompt complet de mise à jour :** [README anglais](README.md#copypaste-update-prompt)
+- `backup-and-recovery-review` — préparation backup, restore et recovery.
+- `interface-qa` — validation d'interfaces web, mobile, desktop, CLI et API.
+- `calculation-model-validation` — validation de formules et modèles de décision.
+- `change-review` — revue des changements terminés, régressions et risques.
+- `compatibility-and-rollout` — compatibilité, migration, rollout et rollback.
+- `high-risk-change-review` — discipline renforcée pour les changements à fort impact.
+- `delegation-strategy` — usage sûr de la délégation/parallélisation vérifiée.
+- `dependency-change` — évaluation des ajouts, suppressions et upgrades de dépendances.
+- `documentation-sync` — alignement de la documentation durable avec la réalité.
+- `environment-release-safety` — sécurité release/deployment et limites d'approbation.
+- `continuous-improvement` — transformer les échecs récurrents en safeguards durables.
+- `root-cause-debug` — identifier et démontrer la cause racine.
+- `secret-exposure-response` — réponse à l'exposition de secrets/credentials.
+- `cross-surface-consistency` — cohérence comportementale entre plusieurs surfaces.
 
-## Principes clés
+Le jeu partagé doit rester autour de **20 skills ou moins** ; chaque `description` doit rester à **300 caractères maximum**.
 
-- La vérité du repository doit survivre aux changements de modèle ou d’agent.
-- Ajouter plutôt que remplacer : les règles natives des outils restent à leur place.
-- `MODEL_ROUTING.md` est stable ; `MODEL_CATALOG.md` est volontairement temporel.
-- Le runtime actif fait autorité sur les modèles/agents réellement invocables.
-- Découvrir un problème n’autorise pas à le corriger hors du scope demandé.
-- Les actions à fort impact exigent une approbation humaine selon leur effet, pas selon le nom de l’outil ou de l’environnement.
-- Tests, linters, types, CI et autres garde-fous déterministes sont préférables au jugement répété d’un modèle lorsqu’ils peuvent imposer la même règle de façon fiable.
+Priorité : **règles/politique du projet > baseline partagée `AGENTS.md` > skills partagés**. Un skill ne peut jamais assouplir une limite d'approbation, le scope autorisé, les capacités du runtime ou la sécurité production/live.
 
-## Tester l’installation
+## Adoption et mise à jour
 
-Tester dans des sessions neuves : structural smoke test, real-task behavior test, approval-boundary test et cross-tool runtime-capability test. L’agent doit découvrir correctement le contexte et ne jamais prétendre disposer de capacités que le runtime actif ne peut pas vérifier.
+Les prompts opérationnels copy/paste restent dans une source canonique unique et ne sont pas traduits :
 
-Prompts exacts : [How to test an installation](README.md#how-to-test-an-installation)
+- [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
+- [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-## Licence
+L'adoption détecte les runtimes à partir de preuves dans le repository ; la simple présence d'un CLI installé ne suffit pas. Chemins project-level vérifiés : `.agents/skills/` pour Cursor, Antigravity et Codex ; `.claude/skills/` pour Claude Code. Cursor sait aussi lire `.claude/skills/`. Si une seule racine vérifiée couvre tous les runtimes détectés, une seule copie est utilisée. Si l'activation native ne peut pas être vérifiée, `harness/skills/` sert d'emplacement neutre et aucune activation native n'est revendiquée.
 
-Open source sous **Apache License 2.0**.
+Avant toute écriture de skill, tous les noms canoniques sont vérifiés contre les collisions dans toutes les racines cibles. Tout fichier managed modifié est sauvegardé byte-for-byte hors du repository. Une mise à jour ne déplace jamais l'installation existante ; un skill managed supprimé upstream n'est pas effacé automatiquement, il est signalé comme orphaned.
+
+## Suppression et tests
+
+Il n'existe pas d'uninstaller automatique. Seuls les skills portant `metadata.ai-engineering-harness` sont considérés comme Harness-owned pour la suppression ; les règles et skills du projet restent intacts. Voir [Remove the shared skills](../README.md#remove-the-shared-skills).
+
+Si l'activation native ne peut pas être vérifiée, l'agent ne doit pas prétendre qu'un skill est actif. Pour une tâche sans rapport, les corps de tous les skills ne doivent pas entrer dans le contexte ; seule la metadata de discovery peut rester visible. Voir [How to test an installation](../README.md#how-to-test-an-installation).
+
+Les fichiers `SKILL.md` ne sont pas traduits ; une seule copie canonique anglaise est conservée. Pour les détails de maintenance, adoption/update et limites de scope, consultez le [README anglais](../README.md).
