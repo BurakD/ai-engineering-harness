@@ -1,156 +1,79 @@
+<!-- Based on README.md @ v2.0.0 -->
 # AI Engineering Harness
 
-**Diller:** [English](README.md) · **Türkçe** · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+**Diller:** [English](../README.md) · **Türkçe** · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-<!-- Based on README.md @ 088ed75fe790d2b1626ab1c222b2623246966c9b -->
-
-AI destekli yazılım geliştirme için minimal ve araçtan bağımsız bir temel.
-
-AI kodlama araçları veya modeller arasında geçiş yapmak çoğu zaman projenin mühendislik bağlamını kaybetmek ve aynı şeyleri yeniden anlatmak anlamına gelir. AI Engineering Harness bunu önlemek için küçük, taşınabilir bir politika ve bağlam katmanı sağlar. Bir agent runtime'ı veya orkestratör değildir. Cursor, Claude Code, Codex ve Antigravity kendi yürütme ve orkestrasyon yeteneklerini sağlar; bu repository onların yanında çalışmak için tasarlanmıştır.
-
-Harness üç pratik problemi çözmeyi amaçlar:
-
-1. Araç veya model değiştirirken proje bağlamını ve mühendislik disiplinini kalıcı tutmak.
-2. Daha güçlü reasoning'i yalnızca işin karmaşıklığı veya riski gerektirdiğinde kullanarak kalite ve maliyeti dengelemek.
-3. Kısa ömürlü vendor model adlarını kararlı mühendislik politikasına sabitlemeden model/runtime seçimlerini güncel tutmak.
-
-Yapı özellikle küçük tutulur. Zorunlu installer, orchestrator, model gateway veya projeye özel framework yoktur.
+AI destekli yazılım geliştirme için minimal, vendor-neutral bir politika/bağlam katmanı ve küçük bir yeniden kullanılabilir prosedür setidir. Bir agent runtime, orchestrator, installer veya framework değildir.
 
 ## Dosyalar
 
-- `AGENTS.md` — uyumlu coding agent'lar için ortak mühendislik temeli.
-- `MODEL_ROUTING.md` — kararlı FAST / STANDARD / REASONING / FRONTIER kalite-maliyet yönlendirme politikası.
-- `MODEL_CATALOG.md` — zamanla değişen model/runtime kataloğu ve güncel başlangıç önerileri.
-- `CLAUDE.md` — Claude Code'un `AGENTS.md` içeriğini kullanmasını sağlayan ince adapter.
-- `README.md` — kurulum, güncelleme, test ve bakım rehberi.
-- `LICENSE` — Apache License 2.0.
-- `CONTRIBUTING.md` — katkı rehberi.
+- `AGENTS.md` — paylaşılan always-on mühendislik tabanı.
+- `MODEL_ROUTING.md` — kararlı kalite/maliyet ve capability-tier politikası.
+- `MODEL_CATALOG.md` — zaman duyarlı runtime/model kataloğu.
+- `CLAUDE.md` — Claude Code için ince `AGENTS.md` köprüsü.
+- `skills/` — Harness-owned canonical on-demand prosedürler.
+- `i18n/` — yerelleştirilmiş README özetleri.
 
-## Bu nedir, ne değildir?
+## Rules ve skills: dört katman
 
-Asıl ortak değer dosya düzeni değil politika içeriğidir: repository-first bağlam, model-routing tier'ları, fail-closed runtime capability yaklaşımı, etkisine göre insan onayı, scope disiplini, kalıcı handoff ve güvenli adoption/update davranışı.
+| | Always-on | On-demand |
+| --- | --- | --- |
+| **Paylaşılan** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
+| **Projeye özel** | Projenin kendi rule/policy mekanizması | Projenin kendi skill'leri |
 
-Bu proje bir spec-driven workflow engine, multi-agent framework, runtime, rule-sync generator veya tool-native rule/skill mekanizmalarının yerine geçen bir sistem değildir. Tool-native özellikler runtime'a özel activation için kullanılmaya devam eder; Harness taşınabilir politikanın tek bir araca hapsolmasını önler.
+Harness ayrı bir `rules/` dizini sunmaz: paylaşılan always-on kural katmanının canonical kaynağı zaten `AGENTS.md`'dir; model yönlendirme politikası `MODEL_ROUTING.md`'dedir. İkinci bir always-on kaynak tekrar ve çelişki üretirdi.
 
-## Runtime uyumluluğu ve native köprüler
+Domain kuralları, ortam/deployment topolojisi, vendor/model tercihleri, ürün davranışı, iş kuralları ve altyapı yolları projeye özel kalır. Yeni bir rehberliğin hangi katmana ait olduğuna karar verirken `continuous-improvement` skill'indeki safeguard tercih yaklaşımını kullanın.
 
-`AGENTS.md`, bu repository'nin icat ettiği bir format değil, araçlar arasında kullanılabilen dış bir convention'dır. Doğrudan `AGENTS.md` okuyabilen runtime'lar Harness'a özel adapter gerektirmez.
+## Paylaşılan skills
 
-Claude Code `CLAUDE.md` kullandığı için repository yalnızca minimal köprüyü içerir: `CLAUDE.md`, `@AGENTS.md` dosyasını import eder.
+Skill'ler task-specific prosedürlerdir; always-on policy değildir. Normalde yalnız metadata discovery bağlamında görünür, tam `SKILL.md` gövdesi yalnız görev gerçekten eşleştiğinde yüklenir.
 
-Antigravity'ye özgü `.agents/skills/` ve `.agents/workflows/` gibi yapılar tool-native ve project-local kalır. Harness bunları kopyalamaz, üretmez veya başka araçlara mirror etmez.
+Harness-owned skill'lerin canonical kaynağı `skills/` dizinidir ve ownership marker'ı şudur:
 
-## Lisans
+```yaml
+metadata:
+  ai-engineering-harness: "2.0.0"
+```
 
-Proje **Apache License 2.0** ile açık kaynak olarak sunulur. Lisans koşulları çerçevesinde kullanabilir, değiştirebilir, yeniden dağıtabilir ve ticari olarak kullanabilirsiniz.
+Aynı isimli bir skill bu anahtarı taşımıyorsa Harness-owned değildir ve adoption/update sırasında üzerine yazılmaz.
 
-## 3 adımda mevcut projeye ekleme
+v2 seti 14 skill içerir:
 
-1. Projeyi normalde çalıştığınız repository ve branch üzerinde açın.
-2. İngilizce README'deki güncel adoption prompt'unu yetenekli bir coding agent'a verin.
-3. Her şeyi kabul veya commit etmeden önce Git status, diff, backup konumları ve project-readiness bulgularını inceleyin.
+- `backup-and-recovery-review` — backup/restore/recovery hazırlığı.
+- `interface-qa` — web, mobil, desktop, CLI ve API arayüz doğrulaması.
+- `calculation-model-validation` — formül ve karar modeli doğrulaması.
+- `change-review` — tamamlanmış değişikliklerin risk ve regresyon incelemesi.
+- `compatibility-and-rollout` — uyumluluk, migration, rollout ve rollback.
+- `high-risk-change-review` — yüksek etkili değişikliklerde ek disiplin.
+- `delegation-strategy` — doğrulanmış delegation/parallelism kullanımı.
+- `dependency-change` — dependency ekleme, kaldırma ve upgrade incelemesi.
+- `documentation-sync` — kalıcı dokümantasyonu gerçekle senkron tutma.
+- `environment-release-safety` — release/deployment etkisi ve approval güvenliği.
+- `continuous-improvement` — tekrarlanan hataları kalıcı safeguard'a dönüştürme.
+- `root-cause-debug` — belirti yerine kök nedeni bulup kanıtlama.
+- `secret-exposure-response` — secret/credential exposure müdahalesi.
+- `cross-surface-consistency` — çoklu yüzeylerde davranış tutarlılığı.
 
-Sırf Harness eklemek için yeni branch, worktree, proje kopyası, installer veya geçici clone oluşturmayın; yalnızca kullanıcı açıkça isterse veya repository politikası bunu gerektirirse izolasyon kullanın.
+Set yaklaşık **20 skill veya altında** tutulmalıdır; `description` alanları **300 karakter veya daha kısa** olmalıdır.
 
-**Tam copy/paste adoption prompt'u:** [English README](README.md#copypaste-adoption-prompt)
+Öncelik: **project-local rules/policy > paylaşılan `AGENTS.md` tabanı > shared skills**. Skill approval boundary, scope, runtime capability veya production/live safety kuralını gevşetemez.
 
-## Temel ilkeler
+## Adoption ve update
 
-### Model değişse de repository gerçeği yaşar
+Operasyonel copy/paste prompt'lar tek canonical kaynakta tutulur ve çevrilmez:
 
-Yeni bir model veya agent, önceki chat geçmişine bağımlı olmadan repository'den mevcut durumu yeniden kurabilmelidir. Kod, testler, dokümantasyon, ADR'ler, CI/release convention'ları, repository-local talimatlar ve güncel Git durumu source of truth'tur.
+- [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
+- [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-### Ekle; yerine geçme
+Adoption runtime kullanımını repository kanıtından tespit eder; makinede CLI kurulu olması tek başına yeterli değildir. Doğrulanmış project-level skill yolları: Cursor/Antigravity/Codex için `.agents/skills/`, Claude Code için `.claude/skills/`; Cursor ayrıca `.claude/skills/` okuyabilir. Tek doğrulanmış root tüm kullanılan runtime'ları kapsıyorsa tek kopya kullanılır. Doğrulanamayan native activation için neutral `harness/skills/` kullanılır ve native aktif olduğu iddia edilmez.
 
-Harness mevcut projeyi kendi yapısına zorlamaz. `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.agents/workflows/`, `.claude/skills/` ve benzeri tool-native varlıklar yerinde kalır. Shared truth yalnızca bir tool-native klasörde yaşamamalıdır; kalıcı bilgi docs, ADR, test, script, code/config ve `AGENTS.md` gibi herkesin okuyabildiği yerlere konmalıdır.
+Herhangi bir skill yazılmadan önce tüm canonical isimler tüm hedef root'larda collision açısından taranır. Managed mevcut skill değişecekse repo dışında byte-for-byte yedek alınır. Update mevcut skill yerleşimini taşımaz; upstream'den kaldırılmış managed skill otomatik silinmez, orphan olarak raporlanır.
 
-Bir runtime başka bir tool'un model/subagent/skill adını okuyabilir, ancak aktif session gerçekten desteklemiyorsa onu çağırabildiğini iddia edemez. Benzer niyeti mevcut gerçek capability ile korumak mümkündür; sahte cross-tool delegation yasaktır.
+## Kaldırma ve test
 
-### Kararlı politika, güncellenebilir katalog
+Otomatik uninstaller yoktur. Yalnız `metadata.ai-engineering-harness` marker'ı taşıyan managed skill'ler kaldırılır; project-local skill/rule'lara dokunulmaz. Ayrıntı için [Remove the shared skills](../README.md#remove-the-shared-skills).
 
-`MODEL_ROUTING.md` kararlı tier politikasını taşır. `MODEL_CATALOG.md` zaman duyarlıdır. Model adı, plan erişimi, fiyat, picker içeriği veya vendor sürümü değiştiğinde normalde katalog güncellenir; tier tanımları değiştirilmez. Aktif runtime gerçekte çağırabildiği şey konusunda son otoritedir.
+Kurulum testinde runtime native activation doğrulanamıyorsa agent aktif olduğunu söylememelidir. Alakasız bir görevde tüm skill gövdeleri context'e girmemeli; yalnız discovery metadata'sı görünmelidir. Ayrıntı için [How to test an installation](../README.md#how-to-test-an-installation).
 
-### Projeye özel bilgi projede kalır
-
-Ürün adları, iş kuralları, mimari kararlar, environment ayrıntıları, release prosedürleri, dil tercihleri, credentials ve domain bilgisi shared Harness repository'sine taşınmaz.
-
-### Deterministic korumaları tercih et
-
-Aynı kuralı güvenilir biçimde enforce edebiliyorsa test, type/schema constraint, analyzer, linter, build, CI check ve script'ler tekrar tekrar model yargısına tercih edilir.
-
-### İnsan onayı araca göre değil etkiye göre belirlenir
-
-Yüksek etkili işlemler Cursor, Claude Code, Codex, Antigravity, CLI, IDE veya başka bir agent üzerinden yapılmasına bakılmadan açık onay gerektirir. Environment isimleri varsayılmaz; customer-facing/live yayın sınırı işlemin etkisine göre değerlendirilir.
-
-## Mevcut projeye adoption ayrıntıları
-
-Önerilen yaklaşım: **incele, koru, backup al, sonra ekle — mevcut repository içinde**.
-
-1. Mevcut repository ve branch'te kal.
-2. Değişiklikten önce branch ve working-tree durumunu incele.
-3. `AGENTS.md`, `CLAUDE.md`, tool-native rules/skills, docs, ADR, test, CI/release ve deployment dokümanlarını keşfet.
-4. Environment/release topolojisini ve validation komutlarını repository kanıtından çıkar; isim veya akış uydurma.
-5. Harness adoption için gerçekten gerekli fakat çözülemeyen bir bilgi varsa yalnızca odaklı soruyu sor; diğer belirsizlikleri Project readiness bölümünde raporla.
-6. Değiştirilecek her mevcut dosyanın repository dışında byte-for-byte backup'ını al.
-7. `AGENTS.md` yoksa shared dosyayı verbatim kopyala; varsa yalnızca belgelenmiş shared marker bloğunu ekle/güncelle.
-8. Harness-owned `MODEL_ROUTING.md` ve `MODEL_CATALOG.md` dosyalarını upstream ile verbatim tut.
-9. Claude Code kullanılıyorsa ince `CLAUDE.md` adapter'ını ekle; mevcut Claude-specific değeri koru.
-10. Sırf Harness var diye `.ai/`, `.agents/`, installer, manifest, skill veya ekstra adapter oluşturma.
-11. Project-local policy conflict'lerini sessizce düzeltme; raporla ve onay bekle.
-12. Son diff'i incele; açık onay olmadan commit, push, deploy veya publish yapma.
-
-## Kurulu Harness'ı güncelleme
-
-Güncelleme yalnızca Harness-owned shared içeriği yeniler ve project-local değeri korur.
-
-1. Target repository ile güncel upstream Harness'ı incele.
-2. Uygulanan upstream commit'i kaydet.
-3. Değiştirilecek mevcut dosyaların repository dışında byte-for-byte backup'ını al.
-4. `AGENTS.md` shared marker'ları varsa yalnızca marker içini güncelle.
-5. Harness-owned `MODEL_ROUTING.md` ve `MODEL_CATALOG.md` içeriklerini upstream'den verbatim yenile.
-6. Catalog değişikliği nedeniyle project-local model tercihini otomatik değiştirme.
-7. Gerekiyorsa yalnızca `CLAUDE.md` shared adapter kısmını yenile.
-8. Runtime'lar arasında rule/skill/model mapping kopyalama veya senkronizasyon yapma.
-9. Semantic conflict veya stale local rule'ları otomatik düzeltmek yerine raporla.
-10. Exact diff'i incele ve uygulanabilir installation testlerini çalıştır.
-11. Sırf Harness update için application code, deploy/release policy değiştirme; commit/push/deploy/publish yapma.
-
-**Tam copy/paste update prompt'u:** [English README](README.md#copypaste-update-prompt)
-
-## Manuel alternatif
-
-Yeni bir projede `AGENTS.md` yoksa shared dosyalar normal dosya kopyalama yöntemiyle proje köküne alınabilir. `CLAUDE.md` yalnızca Claude Code kullanılacaksa gereklidir. Mevcut projede dosyaları körlemesine overwrite etmeyin; yukarıdaki backup ve preservation kurallarını uygulayın.
-
-## Kurulumu test etme
-
-Testleri önceki kurulum sohbetine bağımlı olmamak için **fresh agent session** üzerinde çalıştırın.
-
-1. **Structural smoke test:** Agent repository kurallarını, Git durumunu, deployment/release topolojisini, routing tier'ını, catalog guidance'ını, validation komutlarını ve approval boundary'lerini doğru keşfetmeli.
-2. **Real-task behavior test:** Küçük ama non-trivial bir işi önce yalnız analiz etmesini isteyin; mevcut implementasyonu ve kuralları incelemeden çözüm önermemeli.
-3. **Approval-boundary test:** Customer-facing/live yayını tetikleyen bir repository işlemi varsa bunun explicit human approval gerektirdiğini söylemeli; yoksa production modeli uydurmamalı.
-4. **Cross-tool runtime-capability test:** Her kullandığınız runtime'da fresh session açın. Agent yalnızca aktif runtime'ın gerçekten çağırabildiği model/agent/subagent/mode/delegation mekanizmalarını adlandırmalı; başka tool'un native mekanizmasını kendisininmiş gibi göstermemeli.
-
-Exact test prompt'ları için: [English README — How to test an installation](README.md#how-to-test-an-installation)
-
-## Model routing ve catalog bakımı
-
-`MODEL_ROUTING.md` dört kararlı capability tier tanımlar:
-
-- **FAST** — küçük/mekanik işler.
-- **STANDARD** — normal implementation ve sınırlı düzeltmeler.
-- **REASONING** — zor, belirsiz, mimari, security-sensitive, compatibility-sensitive veya release-sensitive işler.
-- **FRONTIER** — istisnai en zor durumlar; yalnızca manual escalation.
-
-`MODEL_CATALOG.md` runtime'a özgü güncel seçenekleri kaydeder ve daha sık değişmesi beklenir. Project-specific kurallar hassas bir alan için minimum tier'ı yükseltebilir veya başka güncel modeller seçebilir; bu override'lar shared catalog'da değil project-local olarak tutulur.
-
-## AI hatalarından kalıcı öğrenme
-
-Bir düzeltmenin tekrar önemli olması muhtemelse chat memory yerine kalıcı test/check, code/schema invariant, linter/build/CI rule veya project-local rule/documentation iyileştirmesi tercih edin.
-
-## Bakım
-
-Kararlı süreç `AGENTS.md` içinde, kararlı tier tanımları `MODEL_ROUTING.md` içinde, değişken runtime/model bilgisi `MODEL_CATALOG.md` içinde tutulur. Kurulu projeler ayrı bir sync mekanizması yerine upstream README'deki güncel update prosedürünü kullanır.
-
-## Olası gelecek genişletmeleri
-
-Templates, project overlays, reusable skills, additional adapters, automated installation ve orchestration ancak tekrar eden gerçek adoption maliyeti veya riski bunları gerekli kılarsa eklenmelidir. v1'de bilinçli olarak uygulanmamıştır.
+`SKILL.md` dosyaları çevrilmez; tek canonical İngilizce kopya korunur. Ayrıntılı bakım, adoption/update davranışı ve kapsam sınırları için [English README](../README.md) esas kaynaktır.
