@@ -3,40 +3,40 @@
 
 **اللغات:** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **العربية** · [हिन्दी](README.hi.md)
 
-خط أساس صغير ومحايد تجاه المورّد لتطوير البرمجيات بمساعدة الذكاء الاصطناعي: طبقة محمولة للسياسات/السياق مع مجموعة محدودة من الإجراءات الهندسية القابلة لإعادة الاستخدام. ليس runtime للوكلاء، ولا orchestrator، ولا installer، ولا framework.
+خط أساس صغير ومحايد تجاه المورّد لتطوير البرمجيات بمساعدة الذكاء الاصطناعي: طبقة محمولة للسياسات/السياق مع مجموعة محدودة من الإجراءات الهندسية القابلة لإعادة الاستخدام. ليس agent runtime — بيئة تشغيل للوكلاء، ولا orchestrator، ولا installer، ولا framework.
 
 ## الملفات
 
-- `AGENTS.md` — خط أساس هندسي مشترك يعمل دائماً.
-- `MODEL_ROUTING.md` — سياسة مستقرة للجودة/الكلفة ومستويات القدرة.
-- `MODEL_CATALOG.md` — كتالوج runtime/model يتغير مع الزمن.
+- `AGENTS.md` — خط أساس هندسي مشترك always-on — دائم التفعيل.
+- `MODEL_ROUTING.md` — سياسة مستقرة للجودة/الكلفة و capability-tier — مستوى القدرة.
+- `MODEL_CATALOG.md` — كتالوج runtime — بيئة التشغيل / model يتغير مع الزمن.
 - `CLAUDE.md` — جسر خفيف من Claude Code إلى `AGENTS.md`.
-- `skills/` — إجراءات canonical مملوكة للـ Harness وتُحمّل عند الحاجة.
+- `skills/` — إجراءات Harness-owned — مملوكة للـ Harness، و canonical — المرجع المعتمد، و on-demand — عند الحاجة.
 - `i18n/` — ملخصات README مترجمة.
 
-## القواعد والـ skills: أربع طبقات
+## القواعد و skills — المهارات: أربع طبقات
 
 | | Always-on | On-demand |
 | --- | --- | --- |
 | **مشتركة** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
 | **خاصة بالمشروع** | آلية rules/policy الخاصة بالمشروع | skills الخاصة بالمشروع |
 
-لا يوزّع Harness مجلد `rules/` منفصلاً عمداً. المصدر canonical للطبقة المشتركة always-on موجود بالفعل في `AGENTS.md`، بينما سياسة model routing في `MODEL_ROUTING.md`. إنشاء مصدر canonical ثانٍ للقواعد سيؤدي إلى التكرار واحتمال التعارض.
+لا يوزّع Harness مجلد `rules/` منفصلاً عمداً. المصدر canonical للطبقة المشتركة always-on موجود بالفعل في `AGENTS.md`، بينما سياسة model routing في `MODEL_ROUTING.md`. إنشاء مرجع معتمد ثانٍ ودائم التفعيل سيؤدي إلى التكرار واحتمال التعارض.
 
-قواعد المجال، وطوبولوجيا البيئات وعمليات النشر، وتفضيلات المورّد/النموذج، وسلوك المنتج، وقواعد العمل، ومسارات البنية التحتية تبقى خاصة بالمشروع. لتحديد الطبقة المناسبة لأي guidance جديد، استخدم skill `continuous-improvement` ومنهجه في اختيار أصغر safeguard دائم مناسب.
+قواعد المجال، وطوبولوجيا البيئات وعمليات النشر، وتفضيلات المورّد/النموذج، وسلوك المنتج، وقواعد العمل، ومسارات البنية التحتية تبقى خاصة بالمشروع. لتحديد الطبقة المناسبة لأي guidance جديد، استخدم skill `continuous-improvement` ومنهجه في اختيار أصغر safeguard — وسيلة حماية — دائمة مناسبة.
 
 ## Shared skills
 
-الـ skills إجراءات مرتبطة بمهمة محددة وليست always-on policy. عادةً يجب أن تكون metadata فقط متاحة للاكتشاف، ويُحمّل جسم `SKILL.md` الكامل فقط عندما تتطابق المهمة فعلاً مع skill.
+الـ skills إجراءات مرتبطة بمهمة محددة وليست always-on policy. مع progressive disclosure — العرض التدريجي — تكون metadata فقط متاحة عادةً للاكتشاف، ويُحمّل جسم `SKILL.md` الكامل فقط عندما تتطابق المهمة فعلاً مع skill.
 
-المصدر canonical للـ Harness-owned skills هو `skills/`. علامة ownership:
+المصدر canonical للـ Harness-owned skills هو `skills/`. علامة ownership — الملكية:
 
 ```yaml
 metadata:
   ai-engineering-harness: "2.0.0"
 ```
 
-أي skill بالاسم نفسه من دون هذا المفتاح ليس مملوكاً للـ Harness ويجب ألا يُستبدل أثناء adoption أو update.
+أي skill بالاسم نفسه من دون هذا المفتاح ليس مملوكاً للـ Harness ويجب ألا يُستبدل أثناء adoption — التبنّي — أو update.
 
 تحتوي v2 على 14 skills:
 
@@ -44,13 +44,13 @@ metadata:
 - `interface-qa` — التحقق من واجهات web/mobile/desktop/CLI/API.
 - `calculation-model-validation` — التحقق من الصيغ ونماذج القرار.
 - `change-review` — مراجعة التغييرات المكتملة ومخاطر regression.
-- `compatibility-and-rollout` — compatibility وmigration وrollout وrollback.
+- `compatibility-and-rollout` — التوافق، migration، النشر التدريجي، والرجوع للإصدار السابق.
 - `high-risk-change-review` — انضباط إضافي للتغييرات عالية المخاطر.
-- `delegation-strategy` — الاستخدام الآمن لـ delegation/parallelism بعد التحقق.
+- `delegation-strategy` — الاستخدام الآمن للتفويض والعمل المتوازي بعد التحقق.
 - `dependency-change` — تقييم إضافة/حذف/ترقية dependencies.
 - `documentation-sync` — إبقاء التوثيق الدائم متوافقاً مع الواقع.
 - `environment-release-safety` — أمان release/deployment وحدود الموافقة.
-- `continuous-improvement` — تحويل الإخفاقات المتكررة إلى safeguards دائمة.
+- `continuous-improvement` — تحويل الإخفاقات المتكررة إلى وسائل حماية دائمة.
 - `root-cause-debug` — تحديد root cause وإثباتها.
 - `secret-exposure-response` — الاستجابة لانكشاف secrets/credentials.
 - `cross-surface-consistency` — اتساق السلوك عبر عدة surfaces/channels.
@@ -66,9 +66,9 @@ metadata:
 - [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
 - [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-تحدد adoption الـ runtimes المستخدمة من أدلة داخل repository؛ وجود CLI مثبت على الجهاز وحده لا يكفي. المسارات project-level التي تم التحقق منها: `.agents/skills/` لـ Cursor وAntigravity وCodex، و`.claude/skills/` لـ Claude Code. يستطيع Cursor أيضاً قراءة `.claude/skills/`. إذا كان root واحد موثوق يغطي كل runtimes المكتشفة، تُستخدم نسخة واحدة فقط. إذا تعذر التحقق من native activation، يستخدم `harness/skills/` كموقع محايد ولا يُدّعى أن الـ skill مفعّل native.
+تحدد adoption الـ runtimes المستخدمة من أدلة داخل repository؛ وجود CLI مثبت على الجهاز وحده لا يكفي. المسارات project-level التي تم التحقق منها: `.agents/skills/` لـ Cursor وAntigravity وCodex، و`.claude/skills/` لـ Claude Code. يستطيع Cursor أيضاً قراءة `.claude/skills/`. إذا كان root واحد موثوق يغطي كل runtimes المكتشفة، تُستخدم نسخة واحدة فقط. إذا تعذر التحقق من native activation — التفعيل الأصلي — يستخدم `harness/skills/` بوصفه neutral fallback — بديلاً محايداً — ولا يُدّعى أن الـ skill مفعّل native.
 
-قبل كتابة أي skill، تُفحص جميع الأسماء canonical بحثاً عن collisions في جميع target roots. أي managed file سيُعدّل يحصل على backup byte-for-byte خارج repository. لا ينقل update مكان تثبيت skill الحالي؛ وإذا حُذف managed skill من upstream فلا يُحذف تلقائياً بل يُبلغ عنه كـ orphaned.
+قبل كتابة أي skill، تُفحص جميع الأسماء canonical بحثاً عن collisions — تعارضات أسماء — في جميع target roots. أي managed file — ملف مُدار — سيُعدّل يحصل على backup byte-for-byte خارج repository. تبقى نسخ Harness-owned verbatim — مطابقة حرفياً — للمصدر canonical. لا ينقل update مكان تثبيت skill الحالي؛ وإذا حُذف managed skill من upstream فلا يُحذف تلقائياً بل يُبلغ عنه كـ orphaned — لم يعد موجوداً upstream.
 
 ## الإزالة والاختبار
 

@@ -3,40 +3,40 @@
 
 **언어:** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · **한국어** · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-AI 지원 소프트웨어 개발을 위한 최소·벤더 중립 기준입니다. 휴대 가능한 policy/context 레이어와 작고 재사용 가능한 engineering procedures 집합으로 구성됩니다. Agent runtime, orchestrator, installer, framework가 아닙니다.
+AI 지원 소프트웨어 개발을 위한 최소·벤더 중립 기준입니다. 휴대 가능한 policy/context 레이어와 작고 재사용 가능한 engineering procedures 집합으로 구성됩니다. Agent runtime(에이전트 실행 환경), orchestrator, installer, framework가 아닙니다.
 
 ## 파일
 
-- `AGENTS.md` — 공유 always-on engineering baseline.
-- `MODEL_ROUTING.md` — 안정적인 품질/비용 및 capability-tier policy.
-- `MODEL_CATALOG.md` — 시간에 따라 갱신되는 runtime/model catalog.
+- `AGENTS.md` — 공유 always-on(항상 활성) engineering baseline.
+- `MODEL_ROUTING.md` — 안정적인 품질/비용 및 capability-tier(역량 수준) policy.
+- `MODEL_CATALOG.md` — 시간에 따라 갱신되는 runtime(실행 환경)/model catalog.
 - `CLAUDE.md` — Claude Code에서 `AGENTS.md`를 가리키는 얇은 bridge.
-- `skills/` — Harness-owned canonical on-demand procedures.
+- `skills/` — Harness-owned(Harness 소유), canonical(유일한 기준 원본), on-demand(필요할 때 로드) procedures.
 - `i18n/` — README 현지화 요약.
 
-## Rules와 skills: 네 개 레이어
+## Rules(규칙)와 skills(기능): 네 개 레이어
 
 | | Always-on | On-demand |
 | --- | --- | --- |
 | **Shared** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
 | **Project-specific** | 프로젝트 자체 rule/policy mechanism | 프로젝트 자체 skills |
 
-Harness는 별도의 `rules/` 디렉터리를 제공하지 않습니다. 공유 always-on 규칙의 canonical source는 이미 `AGENTS.md`이며 model routing policy는 `MODEL_ROUTING.md`에 있습니다. 두 번째 canonical always-on source는 중복과 충돌 위험만 만듭니다.
+Harness는 별도의 `rules/` 디렉터리를 제공하지 않습니다. 공유 always-on 규칙의 canonical source는 이미 `AGENTS.md`이며 model routing policy는 `MODEL_ROUTING.md`에 있습니다. 두 번째 기준 always-on source는 중복과 충돌 위험만 만듭니다.
 
-Domain rules, environment/deployment topology, vendor/model preferences, product behavior, business rules, infrastructure paths는 project-local로 유지합니다. 새로운 guidance가 어느 레이어에 속해야 하는지는 `continuous-improvement` skill의 “가장 작은 durable safeguard 선택” 접근을 사용해 결정합니다.
+Domain rules, environment/deployment topology, vendor/model preferences, product behavior, business rules, infrastructure paths는 project-local로 유지합니다. 새로운 guidance가 어느 레이어에 속해야 하는지는 `continuous-improvement` skill의 “가장 작은 durable safeguard(지속 가능한 보호 장치) 선택” 접근을 사용해 결정합니다.
 
 ## Shared skills
 
-Skills는 task-specific procedures이며 always-on policy가 아닙니다. 일반적으로 discovery에서는 metadata만 노출되고, 전체 `SKILL.md` body는 현재 작업과 실제로 일치할 때만 로드되어야 합니다.
+Skills는 task-specific procedures이며 always-on policy가 아닙니다. Progressive disclosure(점진적 표시)에서는 일반적으로 discovery에서 metadata만 노출되고, 전체 `SKILL.md` body는 현재 작업과 실제로 일치할 때만 로드되어야 합니다.
 
-Harness-owned skills의 canonical source는 `skills/`입니다. Ownership marker:
+Harness-owned skills의 canonical source는 `skills/`입니다. Ownership marker(소유권 표시):
 
 ```yaml
 metadata:
   ai-engineering-harness: "2.0.0"
 ```
 
-같은 이름의 skill에 이 key가 없다면 Harness-owned가 아니며 adoption/update에서 절대 덮어쓰면 안 됩니다.
+같은 이름의 skill에 이 key가 없다면 Harness-owned가 아니며 adoption(도입)/update에서 절대 덮어쓰면 안 됩니다.
 
 v2에는 14개 skills가 있습니다:
 
@@ -44,13 +44,13 @@ v2에는 14개 skills가 있습니다:
 - `interface-qa` — web, mobile, desktop, CLI, API interface validation.
 - `calculation-model-validation` — formula 및 decision-model validation.
 - `change-review` — 완료된 변경의 regression/risk review.
-- `compatibility-and-rollout` — compatibility, migration, rollout, rollback.
+- `compatibility-and-rollout` — compatibility, migration, 단계적 배포와 rollback.
 - `high-risk-change-review` — 고위험 변경에 대한 추가 discipline.
-- `delegation-strategy` — 검증된 delegation/parallelism의 안전한 사용.
+- `delegation-strategy` — 검증된 위임과 병렬 처리의 안전한 사용.
 - `dependency-change` — dependency 추가·삭제·upgrade 평가.
 - `documentation-sync` — durable documentation을 실제 상태와 동기화.
-- `environment-release-safety` — release/deployment 및 approval boundary 안전성.
-- `continuous-improvement` — 반복 failure를 durable safeguard로 전환.
+- `environment-release-safety` — release/deployment 및 승인 경계 안전성.
+- `continuous-improvement` — 반복 failure를 지속 가능한 보호 장치로 전환.
 - `root-cause-debug` — root cause 식별 및 입증.
 - `secret-exposure-response` — secret/credential exposure 대응.
 - `cross-surface-consistency` — 여러 surface/channel 간 동작 일관성.
@@ -66,9 +66,9 @@ v2에는 14개 skills가 있습니다:
 - [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
 - [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-Adoption은 repository evidence를 통해 실제 사용 runtime을 판단합니다. 머신에 CLI가 설치되어 있다는 사실만으로는 충분하지 않습니다. 검증된 project-level skill paths: Cursor/Antigravity/Codex는 `.agents/skills/`, Claude Code는 `.claude/skills/`. Cursor는 `.claude/skills/`도 읽을 수 있습니다. 하나의 검증된 root가 모든 runtime을 커버하면 한 복사본만 사용합니다. Native activation을 검증할 수 없으면 neutral `harness/skills/`를 사용하고 native active라고 주장하지 않습니다.
+Adoption은 repository evidence를 통해 실제 사용 runtime을 판단합니다. 머신에 CLI가 설치되어 있다는 사실만으로는 충분하지 않습니다. 검증된 project-level skill paths: Cursor/Antigravity/Codex는 `.agents/skills/`, Claude Code는 `.claude/skills/`. Cursor는 `.claude/skills/`도 읽을 수 있습니다. 하나의 검증된 root가 모든 runtime을 커버하면 한 복사본만 사용합니다. Native activation(네이티브 활성화)을 검증할 수 없으면 `harness/skills/`를 neutral fallback(중립 대안)으로 사용하고 native active라고 주장하지 않습니다.
 
-어떤 skill도 쓰기 전에 모든 canonical skill names를 모든 target roots에서 collision scan합니다. 변경되는 managed file은 repository 밖에 byte-for-byte backup을 만듭니다. Update는 기존 skill placement를 이동하지 않으며, upstream에서 제거된 managed skill도 자동 삭제하지 않고 orphaned로 보고합니다.
+어떤 skill도 쓰기 전에 모든 canonical skill names를 모든 target roots에서 collision(이름 충돌) scan합니다. 변경되는 managed(관리 대상) file은 repository 밖에 byte-for-byte backup을 만듭니다. Harness-owned copy는 canonical source와 verbatim(완전 동일) 상태를 유지합니다. Update는 기존 skill placement를 이동하지 않으며, upstream에서 제거된 managed skill도 자동 삭제하지 않고 orphaned(upstream에 없는 상태)로 보고합니다.
 
 ## 제거와 테스트
 

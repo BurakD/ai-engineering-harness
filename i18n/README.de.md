@@ -3,40 +3,40 @@
 
 **Sprachen:** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · **Deutsch** · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-Eine minimale, anbieterneutrale Grundlage für KI-gestützte Softwareentwicklung: eine portable Policy-/Kontextschicht plus ein kleiner Satz wiederverwendbarer Verfahren. Kein Agent-Runtime, Orchestrator, Installer oder Framework.
+Eine minimale, anbieterneutrale Grundlage für KI-gestützte Softwareentwicklung: eine portable Policy-/Kontextschicht plus ein kleiner Satz wiederverwendbarer Verfahren. Kein Agent-Runtime (Ausführungsumgebung für Agenten), Orchestrator, Installer oder Framework.
 
 ## Dateien
 
-- `AGENTS.md` — gemeinsame, stets aktive Engineering-Baseline.
-- `MODEL_ROUTING.md` — stabile Qualitäts-/Kosten- und Capability-Tier-Policy.
-- `MODEL_CATALOG.md` — zeitabhängiger Runtime-/Modellkatalog.
+- `AGENTS.md` — gemeinsame Engineering-Baseline, always-on (stets aktiv).
+- `MODEL_ROUTING.md` — stabile Qualitäts-/Kosten- und capability-tier (Fähigkeitsstufen)-Policy.
+- `MODEL_CATALOG.md` — zeitabhängiger runtime (Ausführungsumgebung)-/Modellkatalog.
 - `CLAUDE.md` — dünne Claude-Code-Brücke zu `AGENTS.md`.
-- `skills/` — kanonische, Harness-eigene On-Demand-Verfahren.
+- `skills/` — Harness-owned (Harness-eigene), canonical (maßgebliche Quelle), on-demand (bei Bedarf) Verfahren.
 - `i18n/` — lokalisierte README-Zusammenfassungen.
 
-## Regeln und Skills: vier Schichten
+## Regeln und skills (Fähigkeiten): vier Schichten
 
 | | Always-on | On-demand |
 | --- | --- | --- |
 | **Gemeinsam** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
 | **Projektspezifisch** | Eigener Rule-/Policy-Mechanismus des Projekts | Eigene Skills des Projekts |
 
-Der Harness liefert bewusst kein separates `rules/`-Verzeichnis aus. Die kanonische gemeinsame Always-on-Regelschicht existiert bereits in `AGENTS.md`; die Modellrouting-Policy liegt in `MODEL_ROUTING.md`. Eine zweite kanonische Regelquelle würde Duplikate und Konfliktrisiken erzeugen.
+Der Harness liefert bewusst kein separates `rules/`-Verzeichnis aus. Die canonical Quelle der gemeinsamen always-on Regelschicht ist bereits `AGENTS.md`; die Modellrouting-Policy liegt in `MODEL_ROUTING.md`. Eine zweite maßgebliche always-on Quelle würde Duplikate und Konfliktrisiken erzeugen.
 
-Domainregeln, Environment-/Deployment-Topologie, Anbieter-/Modellpräferenzen, Produktverhalten, Geschäftsregeln und Infrastrukturpfade bleiben projektspezifisch. Für die Entscheidung, in welche Schicht neue Guidance gehört, verweist der Harness auf den Skill `continuous-improvement` und dessen Prinzip des kleinsten dauerhaften Safeguards.
+Domainregeln, Environment-/Deployment-Topologie, Anbieter-/Modellpräferenzen, Produktverhalten, Geschäftsregeln und Infrastrukturpfade bleiben projektspezifisch. Für die Entscheidung, in welche Schicht neue Guidance gehört, verweist der Harness auf den Skill `continuous-improvement` und dessen Prinzip des kleinsten dauerhaften safeguard (Schutzmechanismus).
 
 ## Gemeinsame Skills
 
-Skills sind aufgabenbezogene Verfahren, keine Always-on-Policy. Für Discovery sollte normalerweise nur Metadata sichtbar sein; der vollständige `SKILL.md`-Inhalt wird erst geladen, wenn die Aufgabe tatsächlich passt.
+Skills sind aufgabenbezogene Verfahren, keine always-on Policy. Bei progressive disclosure (schrittweiser Offenlegung) sollte für Discovery normalerweise nur Metadata sichtbar sein; der vollständige `SKILL.md`-Inhalt wird erst geladen, wenn die Aufgabe tatsächlich passt.
 
-Kanonische Quelle der Harness-eigenen Skills ist `skills/`. Ownership-Marker:
+Canonical Quelle der Harness-owned Skills ist `skills/`. Der ownership marker (Eigentumsmarker) ist:
 
 ```yaml
 metadata:
   ai-engineering-harness: "2.0.0"
 ```
 
-Ein gleichnamiger Skill ohne diesen Schlüssel ist nicht Harness-owned und darf bei Adoption oder Update niemals überschrieben werden.
+Ein gleichnamiger Skill ohne diesen Schlüssel ist nicht Harness-owned und darf bei adoption (Übernahme) oder Update niemals überschrieben werden.
 
 v2 enthält 14 Skills:
 
@@ -44,13 +44,13 @@ v2 enthält 14 Skills:
 - `interface-qa` — Prüfung von Web-, Mobile-, Desktop-, CLI- und API-Interfaces.
 - `calculation-model-validation` — Validierung von Formeln und Entscheidungsmodellen.
 - `change-review` — Review abgeschlossener Änderungen, Regressionen und Risiken.
-- `compatibility-and-rollout` — Kompatibilität, Migration, Rollout und Rollback.
+- `compatibility-and-rollout` — Kompatibilität, Migration, schrittweise Einführung und Rücknahme.
 - `high-risk-change-review` — zusätzliche Disziplin für Änderungen mit hohem Risiko.
-- `delegation-strategy` — sicherer Einsatz verifizierter Delegation/Parallelität.
+- `delegation-strategy` — sicherer Einsatz verifizierter Delegation und Parallelisierung.
 - `dependency-change` — Bewertung von Dependency-Hinzufügung, -Entfernung und Upgrades.
 - `documentation-sync` — dauerhafte Dokumentation mit der Realität synchron halten.
 - `environment-release-safety` — Release-/Deployment-Sicherheit und Approval-Grenzen.
-- `continuous-improvement` — wiederkehrende Fehler in dauerhafte Safeguards überführen.
+- `continuous-improvement` — wiederkehrende Fehler in dauerhafte Schutzmechanismen überführen.
 - `root-cause-debug` — Root Cause identifizieren und belegen.
 - `secret-exposure-response` — Reaktion auf Secret-/Credential-Exposition.
 - `cross-surface-consistency` — Verhaltenskonsistenz über mehrere Oberflächen hinweg.
@@ -61,14 +61,14 @@ Priorität: **projektspezifische Regeln/Policy > gemeinsame `AGENTS.md`-Baseline
 
 ## Adoption und Update
 
-Operative Copy/Paste-Prompts bleiben in einer einzigen kanonischen Quelle und werden nicht übersetzt:
+Operative Copy/Paste-Prompts bleiben in einer einzigen canonical Quelle und werden nicht übersetzt:
 
 - [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
 - [Canonical update prompt](../README.md#copypaste-update-prompt)
 
-Adoption erkennt verwendete Runtimes aus Repository-Evidenz; ein installierter CLI allein reicht nicht. Verifizierte project-level Skill-Pfade: `.agents/skills/` für Cursor, Antigravity und Codex; `.claude/skills/` für Claude Code. Cursor kann ebenfalls `.claude/skills/` lesen. Deckt ein verifizierter Root alle erkannten Runtimes ab, wird nur eine Kopie verwendet. Ist native Aktivierung nicht verifizierbar, wird neutral `harness/skills/` verwendet und keine native Aktivierung behauptet.
+Adoption erkennt verwendete Runtimes aus Repository-Evidenz; ein installierter CLI allein reicht nicht. Verifizierte Projekt-Skill-Pfade: `.agents/skills/` für Cursor, Antigravity und Codex; `.claude/skills/` für Claude Code. Cursor kann ebenfalls `.claude/skills/` lesen. Deckt ein verifizierter Root alle erkannten Runtimes ab, wird nur eine Kopie verwendet. Ist native activation (native Aktivierung) nicht verifizierbar, wird `harness/skills/` als neutral fallback (neutrale Ausweichoption) verwendet und keine native Aktivierung behauptet.
 
-Vor jedem Skill-Write werden alle kanonischen Namen in allen Ziel-Roots auf Kollisionen geprüft. Geänderte managed Dateien werden bytegenau außerhalb des Repositories gesichert. Updates verschieben vorhandene Skill-Installationen nicht; upstream entfernte managed Skills werden nicht automatisch gelöscht, sondern als orphaned gemeldet.
+Vor jedem Skill-Write werden alle canonical Namen in allen Ziel-Roots auf collisions (Kollisionen) geprüft. Geänderte managed (verwaltete) Dateien werden bytegenau außerhalb des Repositories gesichert. Harness-owned Kopien bleiben verbatim (wortgetreu) zur canonical Quelle. Updates verschieben vorhandene Skill-Installationen nicht; upstream entfernte managed Skills werden nicht automatisch gelöscht, sondern als orphaned (ohne Upstream-Gegenstück) gemeldet.
 
 ## Entfernung und Tests
 
@@ -76,4 +76,4 @@ Es gibt keinen automatischen Uninstaller. Nur Skills mit `metadata.ai-engineerin
 
 Kann native Skill-Aktivierung nicht verifiziert werden, darf der Agent nicht behaupten, der Skill sei aktiv. Bei einer nicht passenden Aufgabe dürfen nicht alle Skill-Bodies in den Kontext geladen werden; nur Discovery-Metadata darf sichtbar sein. Siehe [How to test an installation](../README.md#how-to-test-an-installation).
 
-`SKILL.md`-Dateien werden nicht übersetzt; es bleibt eine kanonische englische Kopie. Für detaillierte Wartung, Adoption/Update und Scope-Grenzen gilt das [englische README](../README.md).
+`SKILL.md`-Dateien werden nicht übersetzt; es bleibt eine canonical englische Kopie. Für detaillierte Wartung, Adoption/Update und Scope-Grenzen gilt das [englische README](../README.md).
