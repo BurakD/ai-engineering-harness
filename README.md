@@ -51,6 +51,17 @@ You may use, modify, redistribute, and use the project commercially under the li
 
 Contributions are welcome and are submitted under the Apache License 2.0 unless explicitly stated otherwise, as described in `CONTRIBUTING.md`.
 
+## Rules and skills: four layers
+
+| | Always-on | On-demand |
+| --- | --- | --- |
+| **Shared** | `AGENTS.md` + `MODEL_ROUTING.md` — the Harness rule layer | `skills/` — Harness-owned reusable procedures |
+| **Project-specific** | The project's own rule/policy mechanism — Harness does not modify it | The project's own skills — Harness does not modify them |
+
+The Harness intentionally does **not** ship a separate `rules/` directory. Shared always-on guidance already has a canonical home in `AGENTS.md` (with model-routing policy in `MODEL_ROUTING.md`); adding a second canonical always-on rule source would create duplication and conflict risk.
+
+Domain rules, environment and deployment topology, vendor/model preferences, product behavior, business rules, infrastructure paths, and similar project facts stay project-local and are not promoted into shared Harness files. When deciding where new guidance belongs, use the `continuous-improvement` skill to choose the smallest durable safeguard and the appropriate shared or project-local layer rather than duplicating the decision framework here.
+
 ## Shared skills
 
 The shared skills layer exists because some engineering procedures are useful across unrelated projects and expensive to reconstruct repeatedly. Skills are **task-specific procedures**, not always-on policy. A runtime should normally expose only skill metadata for discovery and load a skill body when the current task actually matches it.
