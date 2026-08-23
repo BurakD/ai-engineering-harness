@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 Diller: [English](../README.md) · Türkçe · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
 Yapay zekâ destekli yazılım geliştirme için minimal ve sağlayıcıdan bağımsız (vendor-neutral) bir politika/bağlam katmanı ile küçük bir yeniden kullanılabilir prosedür kümesidir. Bir agent runtime (ajan çalışma ortamı), orchestrator (orkestrasyon sistemi), installer (kurulum aracı) veya framework (yazılım çerçevesi) değildir.
+
+## Ne elde edersiniz
+
+- Araçlar arasında tek engineering baseline (mühendislik tabanı). Cursor, Claude Code, Codex ve Antigravity aynı project context (proje bağlamı) ve constraints (kısıtları) okur; bu yüzden araç değiştirmek projeyi yeniden anlatmak anlamına gelmez.
+- Model seçimi alışkanlığa değil riske bağlıdır. İş capability tiers (yetenek seviyeleri) içinde sınıflandırılır ve yeterli olan en düşük seviyeden başlar. Bu, enforcement (zorlama) değil policy'dir (politika): gerçekte ne kazandırdığı active runtime'a (aktif çalışma ortamına) ve planınıza bağlıdır.
+- Yanlış gittiğinde can yakan işler için hazır prosedürler. Secret exposure (sır sızıntısı), releases (yayınlar), dependency changes (bağımlılık değişiklikleri), high-risk changes (yüksek riskli değişiklikler) ve recovery (kurtarma) için ortak birer prosedür vardır; hiçbir prosedür approval boundary'yi (onay sınırını) gevşetemez.
+- Discovery (keşif), authorization (yetkilendirme) değildir. Bir agent (ajan), görevinin dışında bir sorun fark ederse kendi inisiyatifiyle düzeltmek yerine raporlar ve karar bekler.
+- Capabilities (yetenekler) konusunda fail closed (doğrulanamadığında kapalı) davranır. Bir agent, active runtime'ın gerçekten sağlayamadığı bir model, subagent (alt ajan) veya skill activation (beceri etkinleştirme) iddiasında bulunmamalıdır.
+- Context (bağlam) küçük kalır. Paylaşılan prosedürler her session'ı (oturumu) doldurmak yerine görevle eşleştiğinde yüklenir.
+- Low lock-in (düşük bağımlılık). Repository'nizde (kod deponuzda) Markdown; installer, runtime veya service (hizmet) yok. Adoption (kurulum) ve removal (kaldırma), tek yönlü bir kapı değil, dokümante edilmiş prosedürlerdir.
 
 ## Dosyalar
 

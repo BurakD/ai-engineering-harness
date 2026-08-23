@@ -1,3 +1,4 @@
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 **Languages:** **English** · [Türkçe](i18n/README.tr.md) · [Español](i18n/README.es.md) · [Português (Brasil)](i18n/README.pt-BR.md) · [Deutsch](i18n/README.de.md) · [Français](i18n/README.fr.md) · [Русский](i18n/README.ru.md) · [简体中文](i18n/README.zh-CN.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [العربية](i18n/README.ar.md) · [हिन्दी](i18n/README.hi.md)
@@ -14,6 +15,16 @@ The harness is designed to solve four practical problems:
 4. Reuse proven, project-neutral engineering procedures without rebuilding the same review and safety discipline in every repository.
 
 It intentionally stays small. The repository itself is the handoff mechanism; there is no required installer, orchestrator, model gateway, workflow engine, or project-specific framework.
+
+## What you get
+
+- One engineering baseline across tools. Cursor, Claude Code, Codex, and Antigravity read the same project context and constraints, so changing tools does not mean re-explaining the project.
+- Model choice tied to risk, not habit. Work is classified into capability tiers and starts at the lowest sufficient one. This is policy rather than enforcement: what it actually saves depends on the active runtime and your plan.
+- Ready procedures for the work that hurts when it goes wrong. Secret exposure, releases, dependency changes, high-risk changes, and recovery each have a shared procedure, and no procedure may loosen an approval boundary.
+- Discovery is not authorization. An agent that notices a problem outside its task reports it and waits for a decision instead of fixing it on its own initiative.
+- Fail closed on capabilities. An agent must not claim a model, subagent, or skill activation that the active runtime cannot actually provide.
+- Context stays small. Shared procedures load when a task matches them instead of filling every session.
+- Low lock-in. Markdown in your repository, with no installer, runtime, or service. Adoption and removal are documented procedures rather than a one-way door.
 
 ## Files
 

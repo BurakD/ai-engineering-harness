@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 Idiomas: [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · Português (Brasil) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
 Uma camada mínima e independente de fornecedor (vendor-neutral) de políticas/contexto para desenvolvimento de software assistido por AI, junto com um pequeno conjunto de procedimentos reutilizáveis. Não é um agent runtime (ambiente de execução de agentes), um orchestrator (orquestrador), um installer (instalador) nem um framework (arcabouço de software).
+
+## O que você obtém
+
+- Uma única base de engenharia entre ferramentas. Cursor, Claude Code, Codex e Antigravity leem o mesmo contexto e as mesmas restrições do projeto, então trocar de ferramenta não significa explicar o projeto novamente.
+- A escolha do modelo é ligada ao risco, não ao hábito. O trabalho é classificado em capability tiers (níveis de capacidade) e começa pelo menor nível suficiente. Isso é policy (política), não enforcement (imposição técnica): o que realmente economiza depende do runtime (ambiente de execução) ativo e do seu plano.
+- Procedimentos prontos para os trabalhos que mais doem quando dão errado. Secret exposure (exposição de segredos), releases (publicações), dependency changes (mudanças de dependências), high-risk changes (mudanças de alto risco) e recovery (recuperação) têm cada um um procedimento compartilhado, e nenhum procedimento pode afrouxar um approval boundary (limite de aprovação).
+- Discovery (descoberta) não é authorization (autorização). Se um agent (agente) perceber um problema fora da tarefa, ele o reporta e espera uma decisão em vez de corrigi-lo por iniciativa própria.
+- Fail closed (falhar de forma segura) em capabilities (capacidades). Um agente não deve afirmar que existe um model (modelo), subagent (subagente) ou skill activation (ativação de habilidade) que o runtime ativo não possa fornecer de fato.
+- O context (contexto) permanece pequeno. Os procedimentos compartilhados são carregados quando uma tarefa corresponde a eles, em vez de preencher cada session (sessão).
+- Baixo lock-in (aprisionamento). Markdown no seu repository (repositório), sem installer, runtime ou service (serviço). Adoption (instalação) e removal (remoção) são procedimentos documentados, não uma porta de mão única.
 
 ## Arquivos
 

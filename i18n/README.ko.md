@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 언어: [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · 한국어 · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
 AI 지원 소프트웨어 개발을 위한 최소한의 vendor-neutral(벤더 중립) 정책/컨텍스트 레이어와 작고 재사용 가능한 절차 집합입니다. agent runtime(에이전트 실행 환경), orchestrator(오케스트레이션 시스템), installer(설치 도구), framework(소프트웨어 프레임워크)가 아닙니다.
+
+## 무엇을 얻을 수 있나
+
+- 도구 전반에 하나의 engineering baseline(엔지니어링 기준). Cursor, Claude Code, Codex, Antigravity가 같은 project context(프로젝트 컨텍스트)와 constraints(제약)를 읽으므로 도구를 바꿔도 프로젝트를 다시 설명할 필요가 없습니다.
+- 모델 선택은 습관이 아니라 위험에 연결됩니다. 작업은 capability tiers(역량 수준)로 분류되고 충분한 가장 낮은 수준에서 시작합니다. 이는 enforcement(강제 적용)가 아니라 policy(정책)이며, 실제 절감 효과는 active runtime(현재 실행 환경)과 사용 중인 요금제에 달려 있습니다.
+- 잘못됐을 때 피해가 큰 작업을 위한 준비된 절차. Secret exposure(비밀값 노출), releases(릴리스), dependency changes(의존성 변경), high-risk changes(고위험 변경), recovery(복구)에는 각각 공유 절차가 있으며 어떤 절차도 approval boundary(승인 경계)를 완화할 수 없습니다.
+- Discovery(발견)는 authorization(권한 부여)이 아닙니다. Agent(에이전트)가 자신의 작업 범위 밖에서 문제를 발견하면 스스로 고치지 않고 보고한 뒤 결정을 기다립니다.
+- Capabilities(역량)는 fail closed(검증되지 않으면 사용할 수 없는 것으로 처리)합니다. Agent는 active runtime이 실제로 제공할 수 없는 model(모델), subagent(하위 에이전트), skill activation(스킬 활성화)을 사용할 수 있다고 주장해서는 안 됩니다.
+- Context(컨텍스트)는 작게 유지됩니다. 공유 절차는 모든 session(세션)을 채우는 대신 작업과 일치할 때만 로드됩니다.
+- Low lock-in(낮은 종속성). Repository(저장소) 안의 Markdown이며 installer, runtime, service(서비스)가 없습니다. Adoption(도입)과 removal(제거)은 일방통행이 아니라 문서화된 절차입니다.
 
 ## 파일
 

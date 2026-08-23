@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 Langues : [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · Français · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
 Une couche minimale de politiques/contexte, indépendante du fournisseur (vendor-neutral), pour le développement logiciel assisté par AI, accompagnée d’un petit ensemble de procédures réutilisables. Ce n’est ni un agent runtime (environnement d’exécution d’agents), ni un orchestrator (orchestrateur), ni un installer (outil d’installation), ni un framework (cadre logiciel).
+
+## Ce que vous obtenez
+
+- Une base d’ingénierie unique entre les outils. Cursor, Claude Code, Codex et Antigravity lisent le même contexte et les mêmes contraintes de projet ; changer d’outil ne signifie donc pas réexpliquer le projet.
+- Le choix du modèle est lié au risque, pas à l’habitude. Le travail est classé en capability tiers (niveaux de capacité) et commence au niveau suffisant le plus bas. Il s’agit d’une policy (politique), pas d’un enforcement (mécanisme d’imposition) : ce que cela permet réellement d’économiser dépend du runtime (environnement d’exécution) actif et de votre forfait.
+- Des procédures prêtes pour les travaux qui coûtent cher lorsqu’ils tournent mal. Secret exposure (exposition de secrets), releases (publications), dependency changes (changements de dépendances), high-risk changes (changements à haut risque) et recovery (récupération) disposent chacun d’une procédure partagée, et aucune procédure ne peut assouplir une approval boundary (limite d’approbation).
+- Discovery (découverte) n’est pas authorization (autorisation). Si un agent (agent) détecte un problème hors de sa tâche, il le signale et attend une décision au lieu de le corriger de sa propre initiative.
+- Fail closed (échouer de manière sûre) pour les capabilities (capacités). Un agent ne doit pas prétendre disposer d’un model (modèle), d’un subagent (sous-agent) ou d’une skill activation (activation de compétence) que le runtime actif ne peut pas réellement fournir.
+- Le context (contexte) reste réduit. Les procédures partagées se chargent lorsqu’une tâche leur correspond au lieu de remplir chaque session (session).
+- Faible lock-in (enfermement). Du Markdown dans votre repository (dépôt), sans installer, runtime ni service (service). Adoption (installation) et removal (suppression) sont des procédures documentées, pas une porte à sens unique.
 
 ## Fichiers
 

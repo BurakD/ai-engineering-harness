@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 言語: [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · 日本語 · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
 AI 支援ソフトウェア開発向けの、最小かつベンダー非依存（vendor-neutral）のポリシー/コンテキスト層と、小さな再利用可能な手順群です。agent runtime（エージェント実行環境）、orchestrator（オーケストレーター）、installer（インストール機構）、framework（ソフトウェア基盤）ではありません。
+
+## 得られるもの
+
+- ツールをまたいだ 1 つの engineering baseline（エンジニアリング基盤）。Cursor、Claude Code、Codex、Antigravity は同じ project context（プロジェクトコンテキスト）と constraints（制約）を読むため、ツールを切り替えてもプロジェクトを説明し直す必要がありません。
+- モデル選択は習慣ではなくリスクに結び付きます。作業は capability tiers（能力レベル）に分類され、必要十分な最も低いレベルから始めます。これは enforcement（強制）ではなく policy（ポリシー）です。実際の節約効果は active runtime（現在の実行環境）と利用プランに依存します。
+- 失敗時の影響が大きい作業向けの準備済み手順。Secret exposure（シークレット漏えい）、releases（リリース）、dependency changes（依存関係の変更）、high-risk changes（高リスク変更）、recovery（復旧）にはそれぞれ共有手順があり、どの手順も approval boundary（承認境界）を緩めることはできません。
+- Discovery（発見）は authorization（権限付与）ではありません。Agent（エージェント）が自分のタスク外の問題に気づいた場合、自発的に修正するのではなく報告し、判断を待ちます。
+- Capabilities（能力）は fail closed（検証できなければ利用不可として扱う）。Agent は active runtime が実際には提供できない model（モデル）、subagent（サブエージェント）、skill activation（スキル有効化）を利用できると主張してはいけません。
+- Context（コンテキスト）は小さく保たれます。共有手順はすべての session（セッション）を埋めるのではなく、タスクが一致したときに読み込まれます。
+- Low lock-in（低い囲い込み）。Repository（リポジトリ）内の Markdown であり、installer、runtime、service（サービス）はありません。Adoption（導入）と removal（削除）は一方通行ではなく、文書化された手順です。
 
 ## ファイル
 

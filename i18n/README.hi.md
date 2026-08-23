@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 भाषाएँ: [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · हिन्दी
 
 AI-सहायित सॉफ़्टवेयर विकास के लिए एक न्यूनतम और प्रदाता-स्वतंत्र (vendor-neutral) नीति/संदर्भ परत और पुनः उपयोग योग्य प्रक्रियाओं का छोटा समूह। यह agent runtime (एजेंट निष्पादन परिवेश), orchestrator (समन्वय प्रणाली), installer (स्थापना उपकरण) या framework (सॉफ़्टवेयर ढाँचा) नहीं है।
+
+## आपको क्या मिलता है
+
+- अलग-अलग tools (उपकरणों) में एक engineering baseline (इंजीनियरिंग आधार)। Cursor, Claude Code, Codex और Antigravity एक ही project context (प्रोजेक्ट संदर्भ) और constraints (सीमाएँ) पढ़ते हैं, इसलिए tool बदलने का मतलब प्रोजेक्ट को फिर से समझाना नहीं है।
+- Model choice (मॉडल चयन) आदत नहीं, जोखिम से जुड़ा है। काम capability tiers (क्षमता स्तरों) में वर्गीकृत होता है और सबसे कम पर्याप्त स्तर से शुरू होता है। यह enforcement (तकनीकी बाध्यता) नहीं, policy (नीति) है; वास्तविक बचत active runtime (सक्रिय निष्पादन परिवेश) और आपकी योजना पर निर्भर करती है।
+- उन कामों के लिए तैयार प्रक्रियाएँ जिनमें गलती महँगी पड़ती है। Secret exposure (गोपनीय मान का खुलासा), releases (रिलीज़), dependency changes (निर्भरता परिवर्तन), high-risk changes (उच्च-जोखिम परिवर्तन) और recovery (पुनर्प्राप्ति) के लिए साझा प्रक्रियाएँ हैं, और कोई भी प्रक्रिया approval boundary (अनुमोदन सीमा) को कमजोर नहीं कर सकती।
+- Discovery (खोज) authorization (अधिकृत अनुमति) नहीं है। कोई agent (एजेंट) अपनी task (कार्य) सीमा से बाहर समस्या देखता है तो वह खुद से ठीक करने के बजाय रिपोर्ट करता है और निर्णय की प्रतीक्षा करता है।
+- Capabilities (क्षमताओं) पर fail closed (सत्यापन न हो तो अनुपलब्ध मानना)। Agent किसी model (मॉडल), subagent (उप-एजेंट) या skill activation (कौशल सक्रियण) का दावा नहीं कर सकता जिसे active runtime वास्तव में उपलब्ध नहीं करा सकता।
+- Context (संदर्भ) छोटा रहता है। साझा प्रक्रियाएँ हर session (सत्र) को भरने के बजाय तभी लोड होती हैं जब task उनसे मेल खाता है।
+- Low lock-in (कम निर्भरता)। आपके repository (रिपॉज़िटरी) में Markdown, बिना installer, runtime या service (सेवा) के। Adoption (स्थापना) और removal (हटाना) दस्तावेज़ित प्रक्रियाएँ हैं, एकतरफा रास्ता नहीं।
 
 ## फ़ाइलें
 

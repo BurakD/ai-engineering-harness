@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 语言：[English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · 简体中文 · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
 面向 AI 辅助软件开发的最小化、供应商中立（vendor-neutral）策略/上下文层，并配有一小组可复用流程。它不是 agent runtime（智能体运行环境）、orchestrator（编排系统）、installer（安装工具）或 framework（软件框架）。
+
+## 你会得到什么
+
+- 跨工具的一套 engineering baseline（工程基线）。Cursor、Claude Code、Codex 和 Antigravity 读取相同的 project context（项目上下文）与 constraints（约束），因此切换工具不意味着重新解释项目。
+- 模型选择由风险决定，而不是由习惯决定。工作会被划分到 capability tiers（能力层级），并从最低的足够层级开始。这是 policy（策略），不是 enforcement（强制执行）：实际能节省多少取决于 active runtime（当前运行环境）和你的套餐。
+- 为出错代价高的工作准备好流程。Secret exposure（机密泄露）、releases（发布）、dependency changes（依赖变更）、high-risk changes（高风险变更）和 recovery（恢复）各有共享流程，而且任何流程都不能放宽 approval boundary（审批边界）。
+- Discovery（发现）不等于 authorization（授权）。Agent（智能体）发现任务范围外的问题时，会先报告并等待决定，而不是自行修复。
+- 对 capabilities（能力）采取 fail closed（无法验证时按不可用处理）。Agent 不得声称 active runtime 实际无法提供的 model（模型）、subagent（子智能体）或 skill activation（技能激活）能力。
+- Context（上下文）保持精简。共享流程只在任务匹配时加载，而不是填满每个 session（会话）。
+- Low lock-in（低锁定）。内容就是 repository（代码库）里的 Markdown，没有 installer、runtime 或 service（服务）。Adoption（安装）和 removal（移除）都是有文档的流程，而不是单向门。
 
 ## 文件
 

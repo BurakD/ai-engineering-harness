@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 Sprachen: [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · Deutsch · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
 Eine minimale und anbieterneutrale (vendor-neutral) Policy-/Kontextschicht für AI-gestützte Softwareentwicklung mit einem kleinen Satz wiederverwendbarer Verfahren. Sie ist kein agent runtime (Agenten-Laufzeitsystem), kein orchestrator (Koordinationssystem), kein installer (Installationswerkzeug) und kein framework (Software-Framework).
+
+## Was Sie erhalten
+
+- Eine gemeinsame Engineering-Basis über Werkzeuge hinweg. Cursor, Claude Code, Codex und Antigravity lesen denselben Projektkontext und dieselben Einschränkungen; ein Werkzeugwechsel bedeutet daher nicht, das Projekt erneut erklären zu müssen.
+- Die Modellwahl richtet sich nach Risiko, nicht nach Gewohnheit. Arbeit wird in capability tiers (Fähigkeitsstufen) eingeteilt und beginnt mit der niedrigsten ausreichenden Stufe. Das ist policy (Richtlinie), kein enforcement (technisches Erzwingen): Was tatsächlich eingespart wird, hängt vom aktiven runtime (Laufzeitsystem) und Ihrem Tarif ab.
+- Fertige Verfahren für Arbeiten, bei denen Fehler besonders teuer sind. Secret exposure (Offenlegung von Geheimnissen), releases (Veröffentlichungen), dependency changes (Abhängigkeitsänderungen), high-risk changes (Änderungen mit hohem Risiko) und recovery (Wiederherstellung) haben jeweils ein gemeinsames Verfahren; keines darf eine approval boundary (Freigabegrenze) lockern.
+- Discovery (Erkennung) ist nicht authorization (Autorisierung). Wenn ein agent (Agent) außerhalb seiner Aufgabe ein Problem bemerkt, meldet er es und wartet auf eine Entscheidung, statt es eigenmächtig zu beheben.
+- Bei capabilities (Fähigkeiten) gilt fail closed (im Zweifel als nicht verfügbar behandeln). Ein Agent darf kein model (Modell), keinen subagent (Unteragenten) und keine skill activation (Aktivierung einer Fähigkeit) behaupten, die der aktive runtime tatsächlich nicht bereitstellen kann.
+- Der context (Kontext) bleibt klein. Gemeinsame Verfahren werden geladen, wenn eine Aufgabe passt, statt jede session (Sitzung) zu füllen.
+- Geringes lock-in (Abhängigkeitsrisiko). Markdown in Ihrem repository (Repository), ohne installer, runtime oder service (Dienst). Adoption (Installation) und removal (Entfernung) sind dokumentierte Verfahren statt einer Einbahnstraße.
 
 ## Dateien
 

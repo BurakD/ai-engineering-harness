@@ -1,9 +1,19 @@
-<!-- Based on README.md @ v2.0.0 -->
+<!-- Based on README.md @ v2.0.3 -->
 # AI Engineering Harness
 
 اللغات: [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · العربية · [हिन्दी](README.hi.md)
 
 طبقة سياسات/سياق صغيرة ومحايدة تجاه المورّد (vendor-neutral) لتطوير البرمجيات بمساعدة AI، مع مجموعة محدودة من الإجراءات القابلة لإعادة الاستخدام. ليست agent runtime (بيئة تشغيل للوكلاء)، ولا orchestrator (نظام تنسيق)، ولا installer (أداة تثبيت)، ولا framework (إطار برمجي).
+
+## ما الذي تحصل عليه
+
+- Engineering baseline (خط أساس هندسي) واحد عبر الأدوات. يقرأ Cursor وClaude Code وCodex وAntigravity نفس project context (سياق المشروع) وconstraints (القيود)، لذلك لا يعني تغيير الأداة إعادة شرح المشروع.
+- اختيار النموذج مرتبط بالمخاطر لا بالعادات. يُصنَّف العمل ضمن capability tiers (مستويات القدرة) ويبدأ من أدنى مستوى كافٍ. هذه policy (سياسة) وليست enforcement (فرضاً تقنياً): ما توفره فعلياً يعتمد على active runtime (بيئة التشغيل النشطة) وخطتك.
+- إجراءات جاهزة للأعمال التي تكون أخطاؤها مؤلمة. لكل من secret exposure (تسرّب الأسرار)، وreleases (الإصدارات)، وdependency changes (تغييرات التبعيات)، وhigh-risk changes (التغييرات عالية المخاطر)، وrecovery (التعافي) إجراء مشترك، ولا يجوز لأي إجراء تخفيف approval boundary (حدود الموافقة).
+- Discovery (الاكتشاف) ليس authorization (تفويضاً). إذا لاحظ agent (وكيل) مشكلة خارج مهمته، فإنه يبلغ عنها وينتظر قراراً بدلاً من إصلاحها بمبادرة منه.
+- التعامل مع capabilities (القدرات) وفق fail closed (اعتبارها غير متاحة عند غياب التحقق). لا يجوز للـ agent ادعاء توفر model (نموذج) أو subagent (وكيل فرعي) أو skill activation (تفعيل مهارة) لا تستطيع active runtime توفيره فعلياً.
+- يبقى context (السياق) صغيراً. تُحمّل الإجراءات المشتركة عندما تطابقها المهمة بدلاً من ملء كل session (جلسة).
+- Low lock-in (ارتباط منخفض). Markdown داخل repository (المستودع)، من دون installer أو runtime أو service (خدمة). Adoption (التثبيت) وremoval (الإزالة) إجراءات موثقة وليستا باباً باتجاه واحد.
 
 ## الملفات
 
