@@ -1,5 +1,7 @@
-<!-- Based on README.md @ v2.0.3 -->
+<!-- Based on README.md @ v2.0.4 -->
 # AI Engineering Harness
+
+![AI Engineering Harness](assets/poster_en.png)
 
 **Languages:** **English** · [Türkçe](i18n/README.tr.md) · [Español](i18n/README.es.md) · [Português (Brasil)](i18n/README.pt-BR.md) · [Deutsch](i18n/README.de.md) · [Français](i18n/README.fr.md) · [Русский](i18n/README.ru.md) · [简体中文](i18n/README.zh-CN.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [العربية](i18n/README.ar.md) · [हिन्दी](i18n/README.hi.md)
 
