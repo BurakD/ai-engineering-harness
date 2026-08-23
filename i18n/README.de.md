@@ -3,77 +3,79 @@
 
 **Sprachen:** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · **Deutsch** · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-Eine minimale, anbieterneutrale Grundlage für KI-gestützte Softwareentwicklung: eine portable Policy-/Kontextschicht plus ein kleiner Satz wiederverwendbarer Verfahren. Kein Agent-Runtime (Ausführungsumgebung für Agenten), Orchestrator, Installer oder Framework.
+Eine minimale Grundlage für AI-gestützte Softwareentwicklung mit vendor-neutral (anbieterneutral) ausgerichteter Policy-/Kontextschicht und einem kleinen Satz wiederverwendbarer Verfahren. Sie ist kein agent runtime (Agenten-Laufzeitsystem), kein orchestrator (Orchestrator zur Koordination), kein installer (Installationswerkzeug) und kein Framework.
 
 ## Dateien
 
-- `AGENTS.md` — gemeinsame Engineering-Baseline, always-on (stets aktiv).
-- `MODEL_ROUTING.md` — stabile Qualitäts-/Kosten- und capability-tier (Fähigkeitsstufen)-Policy.
-- `MODEL_CATALOG.md` — zeitabhängiger runtime (Ausführungsumgebung)-/Modellkatalog.
-- `CLAUDE.md` — dünne Claude-Code-Brücke zu `AGENTS.md`.
-- `skills/` — Harness-owned (Harness-eigene), canonical (maßgebliche Quelle), on-demand (bei Bedarf) Verfahren.
+- `AGENTS.md` — gemeinsame, always-on (stets aktive) Engineering-Basis.
+- `MODEL_ROUTING.md` — stabile Qualitäts-/Kosten- und capability tier (Fähigkeitsstufen)-Policy.
+- `MODEL_CATALOG.md` — zeitabhängiger runtime (Laufzeitumgebungs)-/Modellkatalog.
+- `CLAUDE.md` — schlanke Brücke von Claude Code zu `AGENTS.md`.
+- `skills/` — Harness-owned (dem Harness zugehörige), canonical (aus der maßgeblichen Quelle stammende), on-demand (bei Bedarf geladene) Verfahren.
 - `i18n/` — lokalisierte README-Zusammenfassungen.
 
-## Regeln und skills (Fähigkeiten): vier Schichten
+## Regeln und Fähigkeiten: vier Schichten
 
-| | Always-on | On-demand |
+Hier stehen rules (Regeln) für dauerhaft geltende Vorgaben und skills (Fähigkeiten) für Verfahren, die bei bestimmten Aufgaben eingesetzt werden.
+
+| | Stets aktiv | Bei Bedarf |
 | --- | --- | --- |
 | **Gemeinsam** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
-| **Projektspezifisch** | Eigener Rule-/Policy-Mechanismus des Projekts | Eigene Skills des Projekts |
+| **Projektspezifisch** | Eigener Regel-/Policy-Mechanismus des Projekts | Eigene Fähigkeiten des Projekts |
 
-Der Harness liefert bewusst kein separates `rules/`-Verzeichnis aus. Die canonical Quelle der gemeinsamen always-on Regelschicht ist bereits `AGENTS.md`; die Modellrouting-Policy liegt in `MODEL_ROUTING.md`. Eine zweite maßgebliche always-on Quelle würde Duplikate und Konfliktrisiken erzeugen.
+AI Engineering Harness liefert bewusst kein separates `rules/`-Verzeichnis. Die gemeinsame always-on (stets aktive) Regelschicht hat ihre canonical source (einzige maßgebliche Quelle) bereits in `AGENTS.md`; die model routing (Modellweiterleitungs)-Policy liegt in `MODEL_ROUTING.md`. Eine zweite stets aktive Quelle würde Duplikate und Konfliktrisiken erzeugen.
 
-Domainregeln, Environment-/Deployment-Topologie, Anbieter-/Modellpräferenzen, Produktverhalten, Geschäftsregeln und Infrastrukturpfade bleiben projektspezifisch. Für die Entscheidung, in welche Schicht neue Guidance gehört, verweist der Harness auf den Skill `continuous-improvement` und dessen Prinzip des kleinsten dauerhaften safeguard (Schutzmechanismus).
+Domain rules (Domänenregeln), environment/deployment topology (Umgebungs-/Deployment-Topologie), vendor/model preferences (Anbieter-/Modellpräferenzen), product behavior (Produktverhalten), business rules (Geschäftsregeln) und infrastructure paths (Infrastrukturpfade) bleiben projektspezifisch. Für neue Vorgaben verwenden Sie den safeguard (dauerhafte Schutzmaßnahme)-Ansatz aus dem Skill `continuous-improvement`.
 
-## Gemeinsame Skills
+## Gemeinsame Fähigkeiten
 
-Skills sind aufgabenbezogene Verfahren, keine always-on Policy. Bei progressive disclosure (schrittweiser Offenlegung) sollte für Discovery normalerweise nur Metadata sichtbar sein; der vollständige `SKILL.md`-Inhalt wird erst geladen, wenn die Aufgabe tatsächlich passt.
+Skills (Fähigkeiten) sind task-specific procedures (aufgabenspezifische Verfahren), keine always-on policy (stets aktive Policy). Bei progressive disclosure (schrittweiser Offenlegung) ist normalerweise nur discovery metadata (Metadaten zur Erkennung) sichtbar; der vollständige Inhalt von `SKILL.md` wird nur geladen, wenn die Aufgabe wirklich passt.
 
-Canonical Quelle der Harness-owned Skills ist `skills/`. Der ownership marker (Eigentumsmarker) ist:
+Die canonical source (einzige maßgebliche Quelle) für Harness-owned skills (dem Harness zugehörige Fähigkeiten) ist `skills/`. Der ownership marker (Eigentumsmarker) lautet:
 
 ```yaml
 metadata:
   ai-engineering-harness: "2.0.0"
 ```
 
-Ein gleichnamiger Skill ohne diesen Schlüssel ist nicht Harness-owned und darf bei adoption (Übernahme) oder Update niemals überschrieben werden.
+Ein gleichnamiger skill (Fähigkeit) ohne diesen Schlüssel ist nicht Harness-owned (dem Harness zugehörig) und darf bei adoption (Installation) oder update (Aktualisierung) niemals überschrieben werden.
 
-v2 enthält 14 Skills:
+v2 enthält 14 Fähigkeiten:
 
-- `backup-and-recovery-review` — Backup-, Restore- und Recovery-Bereitschaft.
-- `interface-qa` — Prüfung von Web-, Mobile-, Desktop-, CLI- und API-Interfaces.
+- `backup-and-recovery-review` — Bereitschaft für Backup, Restore und Recovery.
+- `interface-qa` — Prüfung von Web-, Mobile-, Desktop-, CLI- und API-Schnittstellen.
 - `calculation-model-validation` — Validierung von Formeln und Entscheidungsmodellen.
 - `change-review` — Review abgeschlossener Änderungen, Regressionen und Risiken.
-- `compatibility-and-rollout` — Kompatibilität, Migration, schrittweise Einführung und Rücknahme.
+- `compatibility-and-rollout` — compatibility (Kompatibilität), migration (Migration), rollout (schrittweise Einführung) und rollback (Rücknahme).
 - `high-risk-change-review` — zusätzliche Disziplin für Änderungen mit hohem Risiko.
-- `delegation-strategy` — sicherer Einsatz verifizierter Delegation und Parallelisierung.
+- `delegation-strategy` — sicherer Einsatz verifizierter delegation (Delegation) und parallelism (Parallelität).
 - `dependency-change` — Bewertung von Dependency-Hinzufügung, -Entfernung und Upgrades.
 - `documentation-sync` — dauerhafte Dokumentation mit der Realität synchron halten.
-- `environment-release-safety` — Release-/Deployment-Sicherheit und Approval-Grenzen.
-- `continuous-improvement` — wiederkehrende Fehler in dauerhafte Schutzmechanismen überführen.
-- `root-cause-debug` — Root Cause identifizieren und belegen.
-- `secret-exposure-response` — Reaktion auf Secret-/Credential-Exposition.
-- `cross-surface-consistency` — Verhaltenskonsistenz über mehrere Oberflächen hinweg.
+- `environment-release-safety` — Sicherheit von Release/Deployment und approval (Freigabe).
+- `continuous-improvement` — wiederkehrende Fehler in dauerhafte safeguards (Schutzmaßnahmen) überführen.
+- `root-cause-debug` — root cause (Grundursache) identifizieren und belegen.
+- `secret-exposure-response` — Reaktion auf exposure (Offenlegung) von Secrets und Credentials.
+- `cross-surface-consistency` — Verhaltenskonsistenz über mehrere surfaces (Oberflächen) hinweg.
 
-Der gemeinsame Satz sollte ungefähr **20 Skills oder weniger** umfassen; `description` sollte **höchstens 300 Zeichen** lang sein.
+Der gemeinsame Satz sollte ungefähr **20 Fähigkeiten oder weniger** umfassen; `description` sollte **höchstens 300 Zeichen** lang sein.
 
-Priorität: **projektspezifische Regeln/Policy > gemeinsame `AGENTS.md`-Baseline > gemeinsame Skills**. Ein Skill darf Approval-Grenzen, autorisierten Scope, Runtime-Capabilities oder Production/Live-Sicherheit niemals abschwächen.
+Priorität: **project-local rules/policy (projektspezifische Regeln/Policy) > gemeinsame `AGENTS.md`-Basis > shared skills (gemeinsame Fähigkeiten)**. Ein Skill darf approval boundaries (Freigabegrenzen), authorized scope (autorisierten Umfang), runtime capabilities (Fähigkeiten der Laufzeitumgebung) oder production/live safety (Produktions-/Live-Sicherheit) niemals abschwächen.
 
-## Adoption und Update
+## Installation und Aktualisierung
 
-Operative Copy/Paste-Prompts bleiben in einer einzigen canonical Quelle und werden nicht übersetzt:
+Operative copy/paste prompts (Prompts zum Kopieren/Einfügen) bleiben in einer einzigen canonical source (maßgeblichen Quelle) und werden nicht übersetzt:
 
-- [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
-- [Canonical update prompt](../README.md#copypaste-update-prompt)
+- [Installations-Prompt (Englisch)](../README.md#copypaste-adoption-prompt)
+- [Aktualisierungs-Prompt (Englisch)](../README.md#copypaste-update-prompt)
 
-Adoption erkennt verwendete Runtimes aus Repository-Evidenz; ein installierter CLI allein reicht nicht. Verifizierte Projekt-Skill-Pfade: `.agents/skills/` für Cursor, Antigravity und Codex; `.claude/skills/` für Claude Code. Cursor kann ebenfalls `.claude/skills/` lesen. Deckt ein verifizierter Root alle erkannten Runtimes ab, wird nur eine Kopie verwendet. Ist native activation (native Aktivierung) nicht verifizierbar, wird `harness/skills/` als neutral fallback (neutrale Ausweichoption) verwendet und keine native Aktivierung behauptet.
+Adoption (Installation) erkennt verwendete runtimes (Laufzeitumgebungen) aus repository evidence (Repository-Nachweisen); ein installierter CLI allein reicht nicht. Verifizierte project-level skill paths (Fähigkeitspfade auf Projektebene): `.agents/skills/` für Cursor/Antigravity/Codex und `.claude/skills/` für Claude Code; Cursor kann ebenfalls `.claude/skills/` lesen. Deckt ein verifizierter root (Wurzelpfad) alle erkannten Laufzeitumgebungen ab, wird nur eine Kopie verwendet. Ist native activation (native Aktivierung) nicht verifizierbar, wird `harness/skills/` als neutral fallback (neutrale Ausweichlösung) verwendet und keine native Aktivierung behauptet.
 
-Vor jedem Skill-Write werden alle canonical Namen in allen Ziel-Roots auf collisions (Kollisionen) geprüft. Geänderte managed (verwaltete) Dateien werden bytegenau außerhalb des Repositories gesichert. Harness-owned Kopien bleiben verbatim (wortgetreu) zur canonical Quelle. Updates verschieben vorhandene Skill-Installationen nicht; upstream entfernte managed Skills werden nicht automatisch gelöscht, sondern als orphaned (ohne Upstream-Gegenstück) gemeldet.
+Vor jedem Schreiben werden alle canonical names (Namen der maßgeblichen Quelle) in allen target roots (Ziel-Wurzelpfaden) auf collision (Namenskollisionen) geprüft. Geänderte managed files (verwaltete Dateien) werden byte-for-byte (bytegenau) außerhalb des Repository gesichert. Harness-owned (dem Harness zugehörige) Kopien bleiben verbatim (wortgetreu identisch) zur canonical source (maßgeblichen Quelle). Ein update (Aktualisierung) verschiebt vorhandene Installationen nicht; ein upstream (in der übergeordneten Quelle) entfernter managed skill (verwalteter Skill) wird nicht automatisch gelöscht, sondern als orphaned (in der Quelle nicht mehr vorhanden) gemeldet.
 
 ## Entfernung und Tests
 
-Es gibt keinen automatischen Uninstaller. Nur Skills mit `metadata.ai-engineering-harness` werden als Harness-owned entfernt; projektspezifische Regeln und Skills bleiben unangetastet. Siehe [Remove the shared skills](../README.md#remove-the-shared-skills).
+Es gibt keinen automatischen uninstaller (Deinstallationsmechanismus). Nur managed skills (verwaltete Fähigkeiten) mit dem ownership marker (Eigentumsmarker) `metadata.ai-engineering-harness` werden entfernt; project-local skills/rules (projektspezifische Fähigkeiten/Regeln) bleiben unangetastet. Siehe [Gemeinsame Fähigkeiten entfernen (Englisch)](../README.md#remove-the-shared-skills).
 
-Kann native Skill-Aktivierung nicht verifiziert werden, darf der Agent nicht behaupten, der Skill sei aktiv. Bei einer nicht passenden Aufgabe dürfen nicht alle Skill-Bodies in den Kontext geladen werden; nur Discovery-Metadata darf sichtbar sein. Siehe [How to test an installation](../README.md#how-to-test-an-installation).
+Kann native skill activation (native Aktivierung einer Fähigkeit) nicht verifiziert werden, darf der agent (Agent) nicht behaupten, die Fähigkeit sei active (aktiv). Bei einer unpassenden Aufgabe dürfen nicht alle skill bodies (Fähigkeitsinhalte) in den context (Kontext) geladen werden; nur discovery metadata (Erkennungsmetadaten) darf sichtbar sein. Siehe [Installation testen (Englisch)](../README.md#how-to-test-an-installation).
 
-`SKILL.md`-Dateien werden nicht übersetzt; es bleibt eine canonical englische Kopie. Für detaillierte Wartung, Adoption/Update und Scope-Grenzen gilt das [englische README](../README.md).
+`SKILL.md`-Dateien werden nicht übersetzt; es bleibt eine canonical English copy (einzige maßgebliche englische Kopie). Für detaillierte maintenance (Wartung), adoption/update behavior (Installations-/Aktualisierungsverhalten) und scope boundaries (Umfangsgrenzen) gilt das [englische README](../README.md).

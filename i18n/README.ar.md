@@ -3,77 +3,79 @@
 
 **اللغات:** [English](../README.md) · [Türkçe](README.tr.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **العربية** · [हिन्दी](README.hi.md)
 
-خط أساس صغير ومحايد تجاه المورّد لتطوير البرمجيات بمساعدة الذكاء الاصطناعي: طبقة محمولة للسياسات/السياق مع مجموعة محدودة من الإجراءات الهندسية القابلة لإعادة الاستخدام. ليس agent runtime — بيئة تشغيل للوكلاء، ولا orchestrator، ولا installer، ولا framework.
+خط أساس صغير لتطوير البرمجيات بمساعدة AI، بمنهج ⁦vendor-neutral⁩ (محايد تجاه المورّد): طبقة محمولة للسياسات/السياق مع مجموعة محدودة من الإجراءات القابلة لإعادة الاستخدام. ليس ⁦agent runtime⁩ (بيئة تشغيل للوكلاء)، ولا ⁦orchestrator⁩ (منظّم تنسيق)، ولا ⁦installer⁩ (أداة تثبيت)، ولا ⁦framework⁩ (إطار برمجي).
 
 ## الملفات
 
-- `AGENTS.md` — خط أساس هندسي مشترك always-on — دائم التفعيل.
-- `MODEL_ROUTING.md` — سياسة مستقرة للجودة/الكلفة و capability-tier — مستوى القدرة.
-- `MODEL_CATALOG.md` — كتالوج runtime — بيئة التشغيل / model يتغير مع الزمن.
+- `AGENTS.md` — خط أساس هندسي مشترك ⁦always-on⁩ (دائم التفعيل).
+- `MODEL_ROUTING.md` — سياسة مستقرة للجودة/الكلفة و⁦capability tier⁩ (مستوى القدرة).
+- `MODEL_CATALOG.md` — كتالوج ⁦runtime⁩ (بيئات التشغيل)/النماذج المتغير مع الزمن.
 - `CLAUDE.md` — جسر خفيف من Claude Code إلى `AGENTS.md`.
-- `skills/` — إجراءات Harness-owned — مملوكة للـ Harness، و canonical — المرجع المعتمد، و on-demand — عند الحاجة.
+- `skills/` — إجراءات ⁦Harness-owned⁩ (مملوكة للـ Harness)، و⁦canonical⁩ (قادمة من المصدر المرجعي الوحيد)، و⁦on-demand⁩ (تُحمّل عند الحاجة).
 - `i18n/` — ملخصات README مترجمة.
 
-## القواعد و skills — المهارات: أربع طبقات
+## القواعد والمهارات: أربع طبقات
 
-| | Always-on | On-demand |
+المقصود بـ ⁦rules⁩ (القواعد) هنا هو التوجيه الدائم، وبـ ⁦skills⁩ (المهارات) الإجراءات المستخدمة لمهام محددة.
+
+| | دائم التفعيل | عند الحاجة |
 | --- | --- | --- |
 | **مشتركة** | `AGENTS.md` + `MODEL_ROUTING.md` | `skills/` |
-| **خاصة بالمشروع** | آلية rules/policy الخاصة بالمشروع | skills الخاصة بالمشروع |
+| **خاصة بالمشروع** | آلية القواعد/السياسات الخاصة بالمشروع | مهارات المشروع الخاصة |
 
-لا يوزّع Harness مجلد `rules/` منفصلاً عمداً. المصدر canonical للطبقة المشتركة always-on موجود بالفعل في `AGENTS.md`، بينما سياسة model routing في `MODEL_ROUTING.md`. إنشاء مرجع معتمد ثانٍ ودائم التفعيل سيؤدي إلى التكرار واحتمال التعارض.
+لا يوزّع AI Engineering Harness مجلد `rules/` منفصلاً عمداً. طبقة القواعد المشتركة ⁦always-on⁩ (دائمة التفعيل) لها بالفعل ⁦canonical source⁩ (مصدر مرجعي وحيد) في `AGENTS.md`، بينما توجد سياسة ⁦model routing⁩ (توجيه النماذج) في `MODEL_ROUTING.md`. إنشاء مصدر دائم ثانٍ سيؤدي إلى التكرار واحتمال التعارض.
 
-قواعد المجال، وطوبولوجيا البيئات وعمليات النشر، وتفضيلات المورّد/النموذج، وسلوك المنتج، وقواعد العمل، ومسارات البنية التحتية تبقى خاصة بالمشروع. لتحديد الطبقة المناسبة لأي guidance جديد، استخدم skill `continuous-improvement` ومنهجه في اختيار أصغر safeguard — وسيلة حماية — دائمة مناسبة.
+تبقى ⁦domain rules⁩ (قواعد المجال)، و⁦environment/deployment topology⁩ (طوبولوجيا البيئات/النشر)، و⁦vendor/model preferences⁩ (تفضيلات المورّد/النموذج)، و⁦product behavior⁩ (سلوك المنتج)، و⁦business rules⁩ (قواعد العمل)، و⁦infrastructure paths⁩ (مسارات البنية التحتية) خاصة بالمشروع. لتحديد الطبقة المناسبة لتوجيه جديد، استخدم منهج ⁦safeguard⁩ (إجراء حماية دائم) في المهارة `continuous-improvement`.
 
-## Shared skills
+## المهارات المشتركة
 
-الـ skills إجراءات مرتبطة بمهمة محددة وليست always-on policy. مع progressive disclosure — العرض التدريجي — تكون metadata فقط متاحة عادةً للاكتشاف، ويُحمّل جسم `SKILL.md` الكامل فقط عندما تتطابق المهمة فعلاً مع skill.
+⁦Skills⁩ (المهارات) هي ⁦task-specific procedures⁩ (إجراءات خاصة بالمهمة)، وليست ⁦always-on policy⁩ (سياسة دائمة التفعيل). مع ⁦progressive disclosure⁩ (العرض التدريجي)، تظهر عادةً فقط ⁦discovery metadata⁩ (بيانات الاكتشاف الوصفية)، ولا يُحمّل النص الكامل في `SKILL.md` إلا عندما تتطابق المهمة فعلاً.
 
-المصدر canonical للـ Harness-owned skills هو `skills/`. علامة ownership — الملكية:
+المصدر ⁦canonical source⁩ (المرجعي الوحيد) للمهارات ⁦Harness-owned⁩ (المملوكة للـ Harness) هو `skills/`. و⁦ownership marker⁩ (علامة الملكية) هو:
 
 ```yaml
 metadata:
   ai-engineering-harness: "2.0.0"
 ```
 
-أي skill بالاسم نفسه من دون هذا المفتاح ليس مملوكاً للـ Harness ويجب ألا يُستبدل أثناء adoption — التبنّي — أو update.
+أي ⁦skill⁩ (مهارة) بالاسم نفسه من دون هذا المفتاح ليست ⁦Harness-owned⁩ (مملوكة للـ Harness)، ولا يجوز استبدالها أثناء ⁦adoption⁩ (التثبيت) أو ⁦update⁩ (التحديث).
 
-تحتوي v2 على 14 skills:
+تحتوي v2 على 14 مهارة:
 
-- `backup-and-recovery-review` — جاهزية backup/restore/recovery.
-- `interface-qa` — التحقق من واجهات web/mobile/desktop/CLI/API.
+- `backup-and-recovery-review` — جاهزية ⁦backup⁩ (النسخ الاحتياطي)، و⁦restore⁩ (الاستعادة)، و⁦recovery⁩ (التعافي).
+- `interface-qa` — التحقق من واجهات الويب والجوال وسطح المكتب وCLI وAPI.
 - `calculation-model-validation` — التحقق من الصيغ ونماذج القرار.
-- `change-review` — مراجعة التغييرات المكتملة ومخاطر regression.
-- `compatibility-and-rollout` — التوافق، migration، النشر التدريجي، والرجوع للإصدار السابق.
-- `high-risk-change-review` — انضباط إضافي للتغييرات عالية المخاطر.
-- `delegation-strategy` — الاستخدام الآمن للتفويض والعمل المتوازي بعد التحقق.
-- `dependency-change` — تقييم إضافة/حذف/ترقية dependencies.
+- `change-review` — ⁦review⁩ (مراجعة) التغييرات المكتملة والانحدارات والمخاطر.
+- `compatibility-and-rollout` — ⁦compatibility⁩ (التوافق)، و⁦migration⁩ (الترحيل)، و⁦rollout⁩ (النشر التدريجي)، و⁦rollback⁩ (الرجوع للإصدار السابق).
+- `high-risk-change-review` — انضباط إضافي للتغييرات عالية التأثير.
+- `delegation-strategy` — الاستخدام الآمن لـ ⁦delegation⁩ (تفويض المهام) و⁦parallelism⁩ (التنفيذ المتوازي) بعد التحقق.
+- `dependency-change` — تقييم إضافة/حذف ⁦dependencies⁩ (التبعيات) و⁦upgrade⁩ (ترقية الإصدارات).
 - `documentation-sync` — إبقاء التوثيق الدائم متوافقاً مع الواقع.
-- `environment-release-safety` — أمان release/deployment وحدود الموافقة.
-- `continuous-improvement` — تحويل الإخفاقات المتكررة إلى وسائل حماية دائمة.
-- `root-cause-debug` — تحديد root cause وإثباتها.
-- `secret-exposure-response` — الاستجابة لانكشاف secrets/credentials.
-- `cross-surface-consistency` — اتساق السلوك عبر عدة surfaces/channels.
+- `environment-release-safety` — أمان ⁦release⁩ (الإصدار)/⁦deployment⁩ (النشر) و⁦approval⁩ (الموافقة).
+- `continuous-improvement` — تحويل الإخفاقات المتكررة إلى ⁦safeguards⁩ (إجراءات حماية دائمة).
+- `root-cause-debug` — تحديد ⁦root cause⁩ (السبب الجذري) وإثباته.
+- `secret-exposure-response` — الاستجابة لـ ⁦exposure⁩ (انكشاف) ⁦secrets⁩ (الأسرار) و⁦credentials⁩ (بيانات الاعتماد).
+- `cross-surface-consistency` — اتساق السلوك عبر عدة ⁦surfaces⁩ (واجهات استخدام).
 
-ينبغي إبقاء المجموعة المشتركة عند نحو **20 skill أو أقل**، وأن يكون كل `description` **300 حرف أو أقل**.
+ينبغي إبقاء المجموعة المشتركة عند نحو **20 مهارة أو أقل**، وأن يكون كل `description` **300 حرف أو أقل**.
 
-الأولوية: **project-local rules/policy > shared `AGENTS.md` baseline > shared skills**. لا يجوز لأي skill أن يخفف حدود الموافقة أو النطاق المصرّح أو قدرات runtime أو أمان production/live.
+الأولوية: **⁦project-local rules/policy⁩ (قواعد/سياسات المشروع المحلية) > خط أساس `AGENTS.md` المشترك > ⁦shared skills⁩ (المهارات المشتركة)**. لا يجوز لأي مهارة أن تخفف ⁦approval boundary⁩ (حدود الموافقة)، أو ⁦authorized scope⁩ (النطاق المصرّح)، أو ⁦runtime capability⁩ (قدرات بيئة التشغيل)، أو ⁦production/live safety⁩ (أمان الإنتاج/النظام الحي).
 
-## Adoption و update
+## التثبيت والتحديث
 
-تبقى prompts التشغيلية القابلة للنسخ واللصق في مصدر canonical واحد ولا تُترجم:
+تبقى ⁦copy/paste prompts⁩ (أوامر النسخ/اللصق) التشغيلية في ⁦canonical source⁩ (مصدر مرجعي واحد) ولا يُترجم نصها:
 
-- [Canonical adoption prompt](../README.md#copypaste-adoption-prompt)
-- [Canonical update prompt](../README.md#copypaste-update-prompt)
+- [أمر التثبيت (بالإنجليزية)](../README.md#copypaste-adoption-prompt)
+- [أمر التحديث (بالإنجليزية)](../README.md#copypaste-update-prompt)
 
-تحدد adoption الـ runtimes المستخدمة من أدلة داخل repository؛ وجود CLI مثبت على الجهاز وحده لا يكفي. المسارات project-level التي تم التحقق منها: `.agents/skills/` لـ Cursor وAntigravity وCodex، و`.claude/skills/` لـ Claude Code. يستطيع Cursor أيضاً قراءة `.claude/skills/`. إذا كان root واحد موثوق يغطي كل runtimes المكتشفة، تُستخدم نسخة واحدة فقط. إذا تعذر التحقق من native activation — التفعيل الأصلي — يستخدم `harness/skills/` بوصفه neutral fallback — بديلاً محايداً — ولا يُدّعى أن الـ skill مفعّل native.
+تحدد ⁦adoption⁩ (عملية التثبيت) بيئات ⁦runtime⁩ (التشغيل) المستخدمة من ⁦repository evidence⁩ (أدلة المستودع)؛ وجود CLI مثبت على الجهاز وحده لا يكفي. مسارات المهارات ⁦project-level⁩ (على مستوى المشروع) التي تم التحقق منها هي `.agents/skills/` لـ Cursor/Antigravity/Codex و`.claude/skills/` لـ Claude Code؛ ويستطيع Cursor أيضاً قراءة `.claude/skills/`. إذا كان ⁦root⁩ (مجلد جذر) واحد موثوق يغطي كل البيئات المكتشفة، تُستخدم نسخة واحدة فقط. إذا تعذر التحقق من ⁦native activation⁩ (التفعيل الأصلي)، يُستخدم `harness/skills/` كـ ⁦neutral fallback⁩ (بديل محايد) ولا يُدّعى أن التفعيل الأصلي قد تم.
 
-قبل كتابة أي skill، تُفحص جميع الأسماء canonical بحثاً عن collisions — تعارضات أسماء — في جميع target roots. أي managed file — ملف مُدار — سيُعدّل يحصل على backup byte-for-byte خارج repository. تبقى نسخ Harness-owned verbatim — مطابقة حرفياً — للمصدر canonical. لا ينقل update مكان تثبيت skill الحالي؛ وإذا حُذف managed skill من upstream فلا يُحذف تلقائياً بل يُبلغ عنه كـ orphaned — لم يعد موجوداً upstream.
+قبل كتابة أي مهارة، تُفحص كل ⁦canonical names⁩ (أسماء المصدر المرجعي) في جميع ⁦target roots⁩ (المجلدات الجذرية المستهدفة) بحثاً عن ⁦collision⁩ (تعارض أسماء). كل ⁦managed file⁩ (ملف مُدار) سيتغير يحصل على نسخة احتياطية ⁦byte-for-byte⁩ (مطابقة بايتاً ببايت) خارج ⁦repository⁩ (المستودع). تبقى النسخ ⁦Harness-owned⁩ (المملوكة للـ Harness) ⁦verbatim⁩ (مطابقة حرفياً) مع ⁦canonical source⁩ (المصدر المرجعي). لا ينقل ⁦update⁩ (التحديث) مكان التثبيت الحالي؛ وإذا حُذفت ⁦managed skill⁩ (مهارة مُدارة) من ⁦upstream⁩ (المصدر الأعلى) فلا تُحذف تلقائياً، بل يُبلغ عنها كـ ⁦orphaned⁩ (غير موجودة في المصدر).
 
 ## الإزالة والاختبار
 
-لا يوجد uninstaller آلي. لا تُزال باعتبارها Harness-owned إلا skills التي تحمل `metadata.ai-engineering-harness`؛ ولا تُمس project-local rules/skills. راجع [Remove the shared skills](../README.md#remove-the-shared-skills).
+لا يوجد ⁦uninstaller⁩ (أداة إزالة) آلي. لا تُزال إلا ⁦managed skills⁩ (المهارات المُدارة) التي تحمل ⁦ownership marker⁩ (علامة الملكية) `metadata.ai-engineering-harness`؛ ولا تُمس ⁦project-local skills/rules⁩ (مهارات/قواعد المشروع المحلية). راجع [إزالة المهارات المشتركة (بالإنجليزية)](../README.md#remove-the-shared-skills).
 
-إذا تعذر التحقق من native skill activation فلا يجوز للوكيل الادعاء بأن skill نشط. وفي مهمة غير مرتبطة لا ينبغي تحميل أجسام جميع skills إلى context؛ يمكن أن تظهر discovery metadata فقط. راجع [How to test an installation](../README.md#how-to-test-an-installation).
+إذا تعذر التحقق من ⁦native skill activation⁩ (التفعيل الأصلي للمهارة)، فلا يجوز للـ ⁦agent⁩ (الوكيل) الادعاء بأن المهارة ⁦active⁩ (نشطة). وفي مهمة غير مرتبطة لا ينبغي تحميل كل ⁦skill bodies⁩ (نصوص المهارات) إلى ⁦context⁩ (السياق)؛ يمكن أن تظهر فقط ⁦discovery metadata⁩ (بيانات الاكتشاف الوصفية). راجع [اختبار التثبيت (بالإنجليزية)](../README.md#how-to-test-an-installation).
 
-لا تُترجم ملفات `SKILL.md`؛ تبقى نسخة canonical إنجليزية واحدة. للتفاصيل الكاملة عن maintenance وadoption/update وحدود النطاق، راجع [English README](../README.md).
+لا تُترجم ملفات `SKILL.md`؛ تبقى ⁦canonical English copy⁩ (نسخة إنجليزية مرجعية وحيدة). ولتفاصيل ⁦maintenance⁩ (الصيانة)، و⁦adoption/update behavior⁩ (سلوك التثبيت/التحديث)، و⁦scope boundaries⁩ (حدود النطاق)، راجع [README الإنجليزي](../README.md).
