@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_pt_BR.png)
@@ -9,7 +9,7 @@ Uma camada mínima e independente de fornecedor (vendor-neutral) de políticas/c
 
 ## O que você obtém
 
-- Uma única base de engenharia entre ferramentas. Cursor, Claude Code, Codex e Antigravity leem o mesmo contexto e as mesmas restrições do projeto, então trocar de ferramenta não significa explicar o projeto novamente.
+- Uma única base de engenharia entre ferramentas. Cursor, Claude Code, Codex, Antigravity e Kiro leem o mesmo contexto e as mesmas restrições do projeto, então trocar de ferramenta não significa explicar o projeto novamente.
 - A escolha do modelo é ligada ao risco, não ao hábito. O trabalho é classificado em capability tiers (níveis de capacidade) e começa pelo menor nível suficiente. Isso é policy (política), não enforcement (imposição técnica): o que realmente economiza depende do runtime (ambiente de execução) ativo e do seu plano.
 - Procedimentos prontos para os trabalhos que mais doem quando dão errado. Secret exposure (exposição de segredos), releases (publicações), dependency changes (mudanças de dependências), high-risk changes (mudanças de alto risco) e recovery (recuperação) têm cada um um procedimento compartilhado, e nenhum procedimento pode afrouxar um approval boundary (limite de aprovação).
 - Discovery (descoberta) não é authorization (autorização). Se um agent (agente) perceber um problema fora da tarefa, ele o reporta e espera uma decisão em vez de corrigi-lo por iniciativa própria.
@@ -80,7 +80,7 @@ Os prompts de copiar/colar ficam em uma única canonical source e não são trad
 - [Prompt de instalação (em inglês)](../README.md#copypaste-adoption-prompt)
 - [Prompt de atualização (em inglês)](../README.md#copypaste-update-prompt)
 
-Adoption determina os runtimes usados a partir de repository evidence (evidência do repositório); ter um CLI instalado não basta por si só. Os caminhos de skills verificados em nível de projeto são: `.agents/skills/` para Cursor, Antigravity e Codex; `.claude/skills/` para Claude Code. Cursor também pode ler `.claude/skills/`. Se um único root (diretório raiz) verificado cobrir todos os runtimes usados, utiliza-se uma única cópia. Se a native activation (ativação nativa) não puder ser verificada, `harness/skills/` é usado como neutral fallback (alternativa neutra) e não se afirma que a native activation ocorreu.
+Adoption determina os runtimes usados a partir de repository evidence (evidência do repositório); ter um CLI instalado não basta por si só. Os caminhos de skills verificados em nível de projeto são: `.agents/skills/` para Cursor, Antigravity e Codex; `.claude/skills/` para Claude Code; `.kiro/skills/` para Kiro. Cursor também pode ler `.claude/skills/`. Kiro descobre diretamente `AGENTS.md` na raiz do workspace (espaço de trabalho) e em subdiretórios, portanto `.kiro/steering/` não é criado apenas para duplicar a base do Harness. Kiro custom agents (agentes personalizados) normalmente herdam os default resources (recursos padrão), incluindo workspace skills e `AGENTS.md`, mas `chat.disableInheritingDefaultResources` pode desativar essa herança. Nesse caso, não se afirma native activation (ativação nativa) sem um skill resource (recurso de skill) explícito como `skill://.kiro/skills/**/SKILL.md`, e arquivos em `.kiro/agents/` não são alterados sem aprovação humana. Se um único root (diretório raiz) verificado cobrir todos os runtimes usados, utiliza-se uma única cópia. Se a native activation não puder ser verificada, `harness/skills/` é usado como neutral fallback (alternativa neutra) e não se afirma que ocorreu.
 
 Antes de escrever qualquer skill, todos os nomes canonical são verificados em todos os roots de destino para detectar collision (colisão de nomes). Se um skill managed (gerenciado) for alterado, é feito fora do repository um backup byte-for-byte (cópia de segurança byte por byte). As cópias Harness-owned permanecem verbatim (idênticas) à fonte canonical. Update não move a localização atual do skill; um managed skill removido upstream (na fonte superior) não é apagado automaticamente e é reportado como orphaned (ausente da fonte).
 

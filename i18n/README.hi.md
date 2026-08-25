@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_hi.png)
@@ -9,7 +9,7 @@ AI-सहायित सॉफ़्टवेयर विकास के ल�
 
 ## आपको क्या मिलता है
 
-- अलग-अलग tools (उपकरणों) में एक engineering baseline (इंजीनियरिंग आधार)। Cursor, Claude Code, Codex और Antigravity एक ही project context (प्रोजेक्ट संदर्भ) और constraints (सीमाएँ) पढ़ते हैं, इसलिए tool बदलने का मतलब प्रोजेक्ट को फिर से समझाना नहीं है।
+- अलग-अलग tools (उपकरणों) में एक engineering baseline (इंजीनियरिंग आधार)। Cursor, Claude Code, Codex, Antigravity और Kiro एक ही project context (प्रोजेक्ट संदर्भ) और constraints (सीमाएँ) पढ़ते हैं, इसलिए tool बदलने का मतलब प्रोजेक्ट को फिर से समझाना नहीं है।
 - Model choice (मॉडल चयन) आदत नहीं, जोखिम से जुड़ा है। काम capability tiers (क्षमता स्तरों) में वर्गीकृत होता है और सबसे कम पर्याप्त स्तर से शुरू होता है। यह enforcement (तकनीकी बाध्यता) नहीं, policy (नीति) है; वास्तविक बचत active runtime (सक्रिय निष्पादन परिवेश) और आपकी योजना पर निर्भर करती है।
 - उन कामों के लिए तैयार प्रक्रियाएँ जिनमें गलती महँगी पड़ती है। Secret exposure (गोपनीय मान का खुलासा), releases (रिलीज़), dependency changes (निर्भरता परिवर्तन), high-risk changes (उच्च-जोखिम परिवर्तन) और recovery (पुनर्प्राप्ति) के लिए साझा प्रक्रियाएँ हैं, और कोई भी प्रक्रिया approval boundary (अनुमोदन सीमा) को कमजोर नहीं कर सकती।
 - Discovery (खोज) authorization (अधिकृत अनुमति) नहीं है। कोई agent (एजेंट) अपनी task (कार्य) सीमा से बाहर समस्या देखता है तो वह खुद से ठीक करने के बजाय रिपोर्ट करता है और निर्णय की प्रतीक्षा करता है।
@@ -80,7 +80,7 @@ v2 में 14 skills हैं:
 - [स्थापना prompt (अंग्रेज़ी)](../README.md#copypaste-adoption-prompt)
 - [अद्यतन prompt (अंग्रेज़ी)](../README.md#copypaste-update-prompt)
 
-Adoption repository evidence (रिपॉज़िटरी के साक्ष्य) से उपयोग हो रहे runtimes का पता लगाता है; मशीन पर CLI स्थापित होना अकेले पर्याप्त नहीं है। सत्यापित प्रोजेक्ट-स्तरीय skill पथ ये हैं: Cursor, Antigravity और Codex के लिए `.agents/skills/`; Claude Code के लिए `.claude/skills/`। Cursor `.claude/skills/` भी पढ़ सकता है। यदि एक सत्यापित root (मूल डायरेक्टरी) सभी उपयोग हो रहे runtimes को कवर करता है, तो केवल एक कॉपी उपयोग होती है। यदि native activation (मूल सक्रियण) सत्यापित नहीं किया जा सके, तो `harness/skills/` को neutral fallback (तटस्थ विकल्प) के रूप में उपयोग किया जाता है और यह दावा नहीं किया जाता कि native activation हो गया है।
+Adoption repository evidence (रिपॉज़िटरी के साक्ष्य) से उपयोग हो रहे runtimes का पता लगाता है; मशीन पर CLI स्थापित होना अकेले पर्याप्त नहीं है। सत्यापित प्रोजेक्ट-स्तरीय skill पथ ये हैं: Cursor, Antigravity और Codex के लिए `.agents/skills/`; Claude Code के लिए `.claude/skills/`; Kiro के लिए `.kiro/skills/`। Cursor `.claude/skills/` भी पढ़ सकता है। Kiro workspace root (कार्यस्थान मूल) और उपनिर्देशिकाओं में `AGENTS.md` को सीधे खोजता है, इसलिए केवल Harness आधार की प्रतिलिपि बनाने के लिए `.kiro/steering/` नहीं बनाया जाता। Kiro custom agents (कस्टम एजेंट) सामान्यतः workspace skills और `AGENTS.md` सहित default resources (डिफ़ॉल्ट संसाधन) विरासत में लेते हैं, लेकिन `chat.disableInheritingDefaultResources` सेटिंग इस विरासत को बंद कर सकती है। बंद होने पर `skill://.kiro/skills/**/SKILL.md` जैसे स्पष्ट skill resource (कौशल संसाधन) के बिना native activation (मूल सक्रियण) का दावा नहीं किया जाता और मानव अनुमोदन के बिना `.kiro/agents/` फ़ाइलें नहीं बदली जातीं। यदि एक सत्यापित root (मूल डायरेक्टरी) सभी उपयोग हो रहे runtimes को कवर करता है, तो केवल एक कॉपी उपयोग होती है। यदि native activation सत्यापित नहीं किया जा सके, तो `harness/skills/` को neutral fallback (तटस्थ विकल्प) के रूप में उपयोग किया जाता है और यह दावा नहीं किया जाता कि native activation हो गया है।
 
 किसी भी skill को लिखने से पहले सभी canonical नामों को सभी लक्षित roots में collision (नाम टकराव) के लिए जाँचा जाता है। यदि किसी managed (प्रबंधित) skill को बदला जाना है, तो repository के बाहर byte-for-byte (बाइट-दर-बाइट समान) बैकअप लिया जाता है। Harness-owned कॉपियाँ canonical स्रोत के साथ verbatim (हूबहू) रखी जाती हैं। Update मौजूदा skill स्थान को नहीं बदलता; upstream (ऊपरी स्रोत) से हटाया गया managed skill अपने-आप नहीं हटता, बल्कि orphaned (स्रोत में अनुपस्थित) के रूप में रिपोर्ट होता है।
 

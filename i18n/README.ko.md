@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_ko.png)
@@ -9,7 +9,7 @@ AI 지원 소프트웨어 개발을 위한 최소한의 vendor-neutral(벤더 �
 
 ## 무엇을 얻을 수 있나
 
-- 도구 전반에 하나의 engineering baseline(엔지니어링 기준). Cursor, Claude Code, Codex, Antigravity가 같은 project context(프로젝트 컨텍스트)와 constraints(제약)를 읽으므로 도구를 바꿔도 프로젝트를 다시 설명할 필요가 없습니다.
+- 도구 전반에 하나의 engineering baseline(엔지니어링 기준). Cursor, Claude Code, Codex, Antigravity, Kiro가 같은 project context(프로젝트 컨텍스트)와 constraints(제약)를 읽으므로 도구를 바꿔도 프로젝트를 다시 설명할 필요가 없습니다.
 - 모델 선택은 습관이 아니라 위험에 연결됩니다. 작업은 capability tiers(역량 수준)로 분류되고 충분한 가장 낮은 수준에서 시작합니다. 이는 enforcement(강제 적용)가 아니라 policy(정책)이며, 실제 절감 효과는 active runtime(현재 실행 환경)과 사용 중인 요금제에 달려 있습니다.
 - 잘못됐을 때 피해가 큰 작업을 위한 준비된 절차. Secret exposure(비밀값 노출), releases(릴리스), dependency changes(의존성 변경), high-risk changes(고위험 변경), recovery(복구)에는 각각 공유 절차가 있으며 어떤 절차도 approval boundary(승인 경계)를 완화할 수 없습니다.
 - Discovery(발견)는 authorization(권한 부여)이 아닙니다. Agent(에이전트)가 자신의 작업 범위 밖에서 문제를 발견하면 스스로 고치지 않고 보고한 뒤 결정을 기다립니다.
@@ -80,7 +80,7 @@ v2에는 14개 skills가 있습니다.
 - [도입 프롬프트(영어)](../README.md#copypaste-adoption-prompt)
 - [업데이트 프롬프트(영어)](../README.md#copypaste-update-prompt)
 
-Adoption은 repository evidence(저장소의 근거)를 통해 사용 중인 runtimes를 판단합니다. 머신에 CLI가 설치되어 있다는 사실만으로는 충분하지 않습니다. 검증된 프로젝트 수준 skill 경로는 다음과 같습니다: Cursor, Antigravity, Codex는 `.agents/skills/`, Claude Code는 `.claude/skills/`. Cursor는 `.claude/skills/`도 읽을 수 있습니다. 하나의 검증된 root(루트 디렉터리)가 사용 중인 모든 runtimes를 포함하면 한 복사본만 사용합니다. native activation(네이티브 활성화)을 검증할 수 없으면 `harness/skills/`를 neutral fallback(중립 대안)으로 사용하고 native activation이 되었다고 주장하지 않습니다.
+Adoption은 repository evidence(저장소의 근거)를 통해 사용 중인 runtimes를 판단합니다. 머신에 CLI가 설치되어 있다는 사실만으로는 충분하지 않습니다. 검증된 프로젝트 수준 skill 경로는 다음과 같습니다: Cursor, Antigravity, Codex는 `.agents/skills/`, Claude Code는 `.claude/skills/`, Kiro는 `.kiro/skills/`. Cursor는 `.claude/skills/`도 읽을 수 있습니다. Kiro는 workspace root(워크스페이스 루트)와 하위 디렉터리의 `AGENTS.md`를 직접 탐색하므로 Harness 기준을 복제하기 위해서만 `.kiro/steering/`을 만들지 않습니다. Kiro custom agents(사용자 지정 에이전트)는 일반적으로 workspace skills와 `AGENTS.md`를 포함한 default resources(기본 리소스)를 상속하지만 `chat.disableInheritingDefaultResources` 설정으로 이 상속을 끌 수 있습니다. 상속이 꺼진 경우 `skill://.kiro/skills/**/SKILL.md` 같은 명시적 skill resource(스킬 리소스)가 없으면 native activation(네이티브 활성화)을 주장하지 않으며 사람의 승인 없이 `.kiro/agents/` 파일을 변경하지 않습니다. 하나의 검증된 root(루트 디렉터리)가 사용 중인 모든 runtimes를 포함하면 한 복사본만 사용합니다. native activation을 검증할 수 없으면 `harness/skills/`를 neutral fallback(중립 대안)으로 사용하고 native activation이 되었다고 주장하지 않습니다.
 
 어떤 skill도 쓰기 전에 모든 canonical 이름을 모든 대상 roots에서 collision(이름 충돌) 여부로 검사합니다. 변경할 managed(관리 대상) skill이 있으면 repository 밖에 byte-for-byte(바이트 단위 완전 일치) 백업을 만듭니다. Harness-owned 복사본은 canonical 소스와 verbatim(완전 동일) 상태를 유지합니다. Update는 기존 skill 배치를 이동하지 않습니다. upstream(상위 원본)에서 제거된 managed skill도 자동 삭제하지 않고 orphaned(상위 원본에 없는 상태)로 보고합니다.
 

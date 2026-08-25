@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_tr.png)
@@ -9,7 +9,7 @@ Yapay zekâ destekli yazılım geliştirme için minimal ve sağlayıcıdan bağ
 
 ## Ne elde edersiniz
 
-- Araçlar arasında tek engineering baseline (mühendislik tabanı). Cursor, Claude Code, Codex ve Antigravity aynı project context (proje bağlamı) ve constraints (kısıtları) okur; bu yüzden araç değiştirmek projeyi yeniden anlatmak anlamına gelmez.
+- Araçlar arasında tek engineering baseline (mühendislik tabanı). Cursor, Claude Code, Codex, Antigravity ve Kiro aynı project context (proje bağlamı) ve constraints (kısıtları) okur; bu yüzden araç değiştirmek projeyi yeniden anlatmak anlamına gelmez.
 - Model seçimi alışkanlığa değil riske bağlıdır. İş capability tiers (yetenek seviyeleri) içinde sınıflandırılır ve yeterli olan en düşük seviyeden başlar. Bu, enforcement (zorlama) değil policy'dir (politika): gerçekte ne kazandırdığı active runtime'a (aktif çalışma ortamına) ve planınıza bağlıdır.
 - Yanlış gittiğinde can yakan işler için hazır prosedürler. Secret exposure (sır sızıntısı), releases (yayınlar), dependency changes (bağımlılık değişiklikleri), high-risk changes (yüksek riskli değişiklikler) ve recovery (kurtarma) için ortak birer prosedür vardır; hiçbir prosedür approval boundary'yi (onay sınırını) gevşetemez.
 - Discovery (keşif), authorization (yetkilendirme) değildir. Bir agent (ajan), görevinin dışında bir sorun fark ederse kendi inisiyatifiyle düzeltmek yerine raporlar ve karar bekler.
@@ -80,7 +80,7 @@ Kopyala/yapıştır prompt'ları tek canonical kaynakta tutulur ve çevrilmez:
 - [Kurulum prompt'u (İngilizce)](../README.md#copypaste-adoption-prompt)
 - [Güncelleme prompt'u (İngilizce)](../README.md#copypaste-update-prompt)
 
-Adoption, kullanılan runtime'ları repository evidence'tan (kod deposundaki kanıtlardan) belirler; makinede bir CLI kurulu olması tek başına yeterli değildir. Doğrulanmış proje düzeyindeki skill yolları şöyledir: Cursor, Antigravity ve Codex için `.agents/skills/`; Claude Code için `.claude/skills/`. Cursor ayrıca `.claude/skills/` yolunu okuyabilir. Tek bir doğrulanmış root (kök dizin) kullanılan tüm runtime'ları kapsıyorsa tek kopya kullanılır. Native activation (yerel etkinleştirme) doğrulanamıyorsa `harness/skills/` neutral fallback (tarafsız alternatif) olarak kullanılır ve native activation gerçekleşmiş gibi gösterilmez.
+Adoption, kullanılan runtime'ları repository evidence'tan (kod deposundaki kanıtlardan) belirler; makinede bir CLI kurulu olması tek başına yeterli değildir. Doğrulanmış proje düzeyindeki skill yolları şöyledir: Cursor, Antigravity ve Codex için `.agents/skills/`; Claude Code için `.claude/skills/`; Kiro için `.kiro/skills/`. Cursor ayrıca `.claude/skills/` yolunu okuyabilir. Kiro, workspace-root (çalışma alanı kökü) ve iç dizinlerdeki `AGENTS.md` dosyalarını doğrudan keşfeder; bu nedenle yalnız Harness tabanını kopyalamak için `.kiro/steering/` oluşturulmaz. Kiro custom agents (özel ajanlar) normalde default resources'ı (varsayılan kaynakları), dolayısıyla workspace skills'i ve `AGENTS.md`'yi miras alır; ancak `chat.disableInheritingDefaultResources` ayarı bu mirası kapatabilir. Bu durumda ilgili agent kaynaklarında `skill://.kiro/skills/**/SKILL.md` gibi açık bir skill resource (beceri kaynağı) bulunmadan native activation iddia edilmez ve `.kiro/agents/` dosyaları insan onayı olmadan değiştirilmez. Tek bir doğrulanmış root (kök dizin) kullanılan tüm runtime'ları kapsıyorsa tek kopya kullanılır. Native activation (yerel etkinleştirme) doğrulanamıyorsa `harness/skills/` neutral fallback (tarafsız alternatif) olarak kullanılır ve native activation gerçekleşmiş gibi gösterilmez.
 
 Herhangi bir skill yazılmadan önce tüm canonical isimler, tüm hedef root'larda collision (ad çakışması) açısından taranır. Değiştirilecek managed (yönetilen) bir skill varsa repository dışında byte-for-byte (bayt bayt birebir) yedek alınır. Harness-owned kopyalar canonical kaynakla verbatim (birebir) tutulur. Update mevcut skill yerleşimini taşımaz; upstream'den (üst kaynaktan) kaldırılmış managed skill otomatik silinmez, orphaned (kaynakta olmayan) olarak raporlanır.
 

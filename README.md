@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](assets/poster_en.png)
@@ -7,7 +7,7 @@
 
 A minimal, vendor-neutral baseline for AI-assisted software development.
 
-Switching between AI coding tools or models usually means losing the project's engineering context and re-explaining it. AI Engineering Harness is a small, portable policy/context layer plus a focused set of reusable engineering procedures that prevents that. It is not an agent runtime or orchestrator. Cursor, Claude Code, Codex, Antigravity, and other runtimes provide their own execution and orchestration capabilities; this repository is designed to sit alongside them, not replace them.
+Switching between AI coding tools or models usually means losing the project's engineering context and re-explaining it. AI Engineering Harness is a small, portable policy/context layer plus a focused set of reusable engineering procedures that prevents that. It is not an agent runtime or orchestrator. Cursor, Claude Code, Codex, Antigravity, Kiro, and other runtimes provide their own execution and orchestration capabilities; this repository is designed to sit alongside them, not replace them.
 
 The harness is designed to solve four practical problems:
 
@@ -20,7 +20,7 @@ It intentionally stays small. The repository itself is the handoff mechanism; th
 
 ## What you get
 
-- One engineering baseline across tools. Cursor, Claude Code, Codex, and Antigravity read the same project context and constraints, so changing tools does not mean re-explaining the project.
+- One engineering baseline across tools. Cursor, Claude Code, Codex, Antigravity, and Kiro read the same project context and constraints, so changing tools does not mean re-explaining the project.
 - Model choice tied to risk, not habit. Work is classified into capability tiers and starts at the lowest sufficient one. This is policy rather than enforcement: what it actually saves depends on the active runtime and your plan.
 - Ready procedures for the work that hurts when it goes wrong. Secret exposure, releases, dependency changes, high-risk changes, and recovery each have a shared procedure, and no procedure may loosen an approval boundary.
 - Discovery is not authorization. An agent that notices a problem outside its task reports it and waits for a decision instead of fixing it on its own initiative.
@@ -50,11 +50,15 @@ It is **not** a spec-driven workflow engine, multi-agent framework, runtime, ins
 
 `AGENTS.md` is an external cross-tool convention rather than a format invented by this repository. Runtimes that consume it directly need no Harness-specific adapter.
 
+Kiro natively supports the `AGENTS.md` standard in IDE, CLI, Web, and Mobile. A workspace-root `AGENTS.md` is picked up automatically, and Kiro also discovers nested `AGENTS.md` files. Do not create `.kiro/steering/` copies merely to mirror the shared Harness baseline; Kiro-specific steering remains useful for genuinely project-specific Kiro guidance.
+
 Claude Code reads `CLAUDE.md`, so this repository includes only the minimal documented bridge: `CLAUDE.md` imports `@AGENTS.md`. That adapter exists for compatibility, not vendor preference.
 
-Harness-owned canonical skills are different from project-local or tool-native skills. The canonical copies live only under this repository's `skills/` directory. During adoption they may be installed **verbatim** into a verified project-level skill location supported by the runtimes the target repository actually uses. Current verified shared locations include `.agents/skills/` for Cursor, Antigravity, and Codex, and `.claude/skills/` for Claude Code; Cursor can also consume `.claude/skills/` for compatibility. Native placement is selected from repository evidence and verified runtime support, not from vendor preference or directory symmetry.
+Harness-owned canonical skills are different from project-local or tool-native skills. The canonical copies live only under this repository's `skills/` directory. During adoption they may be installed **verbatim** into a verified project-level skill location supported by the runtimes the target repository actually uses. Current verified shared locations include `.agents/skills/` for Cursor, Antigravity, and Codex, `.claude/skills/` for Claude Code, and `.kiro/skills/` for Kiro; Cursor can also consume `.claude/skills/` for compatibility. Native placement is selected from repository evidence and verified runtime support, not from vendor preference or directory symmetry.
 
-Project-local and tool-native skills, rules, workflows, and other runtime artifacts remain project-local. The Harness does **not** copy, generate, mirror, migrate, or synchronize them. In particular, `.agents/workflows/` remains outside the shared Harness. The only narrow exception is verbatim placement of explicitly Harness-owned canonical skills for verified native activation.
+Kiro uses progressive disclosure for Agent Skills: workspace skill metadata is available for discovery and the full skill body loads when relevant. Kiro custom agents normally inherit default resources, including workspace skills and `AGENTS.md`; however, that inheritance can be disabled with Kiro's `chat.disableInheritingDefaultResources` setting. If a repository uses Kiro custom agents, adoption must verify the effective inheritance/resource configuration before claiming Harness skill activation. When inheritance is disabled, an explicit resource such as `skill://.kiro/skills/**/SKILL.md` can expose the Harness skills to a custom agent. Do not silently rewrite project-local Kiro agent definitions merely to enable this; report the limitation and wait for approval if a project-local agent configuration must change.
+
+Project-local and tool-native skills, rules, steering, agents, workflows, and other runtime artifacts remain project-local. The Harness does **not** copy, generate, mirror, migrate, or synchronize them. In particular, `.agents/workflows/` and `.kiro/steering/` remain outside the shared Harness. The only narrow exception is verbatim placement of explicitly Harness-owned canonical skills for verified native activation.
 
 ## License
 
@@ -140,7 +144,7 @@ Do not create or switch to a new branch, worktree, project copy, or duplicate ch
 
 Before changing anything:
 - inspect the current branch and working-tree status;
-- discover existing AGENTS.md, CLAUDE.md, repository-local AI rules, tool-native rules/skills, docs, ADRs, tests, CI/release/deployment conventions, and other canonical project instructions;
+- discover existing AGENTS.md, CLAUDE.md, repository-local AI rules, tool-native rules/skills, Kiro `.kiro/` steering/skills/agents where present, docs, ADRs, tests, CI/release/deployment conventions, and other canonical project instructions;
 - discover the project's environment and release topology from repository evidence: which environments exist (if any), which are customer-facing/live, which branches/tags/releases/actions deploy or publish to them, which deployments are automatic, and which actions already require human approval;
 - discover the documented build/test/lint/analysis commands and any project-local model/subagent/cost policy;
 - identify which AI runtimes are actually used by this repository from repository evidence. A CLI or application merely being installed on the machine is not evidence that this repository uses that runtime;
@@ -149,8 +153,15 @@ Before changing anything:
 For native shared-skill placement, use only currently verified project-level paths:
 - Cursor, Antigravity, and Codex may use `.agents/skills/`;
 - Claude Code uses `.claude/skills/`;
+- Kiro uses `.kiro/skills/`;
 - Cursor can also read `.claude/skills/` for compatibility.
 If all detected runtimes can use one verified project-level skill root, install one copy there. Do not create a second copy merely for symmetry. If a detected runtime's native skill path cannot be verified, do not guess one; use the neutral `harness/skills/` location for the Harness-owned skills that cannot be safely placed natively and do not claim native activation for that copy.
+
+Kiro-specific compatibility rules:
+- Kiro natively discovers workspace-root and nested AGENTS.md files, so do not create `.kiro/steering/` copies merely to mirror the Harness AGENTS.md baseline;
+- Kiro workspace skills live under `.kiro/skills/` and use progressive disclosure;
+- if Kiro custom agents are used, inspect whether default-resource inheritance is enabled and whether agent resources already expose the workspace skills. Do not claim Harness skill activation for a custom agent when the effective configuration does not expose those skills;
+- if default-resource inheritance is disabled, `skill://.kiro/skills/**/SKILL.md` is a valid explicit custom-agent resource for workspace Harness skills. Do not edit `.kiro/agents/` merely to add it without explicit human approval; report the exact affected agent file and recommended change instead.
 
 Before writing any Harness skill anywhere:
 - enumerate the canonical Harness skill names from the upstream `skills/` directory;
@@ -179,16 +190,16 @@ Apply the Harness minimally:
 - if AGENTS.md already exists, preserve it exactly outside the documented shared-baseline markers and append/update the shared Harness AGENTS.md verbatim inside those markers;
 - MODEL_ROUTING.md must remain a verbatim copy of the Harness MODEL_ROUTING.md when Harness-owned;
 - MODEL_CATALOG.md must remain a verbatim copy of the shared current catalog when Harness-owned; do not move project-local model preferences into it;
-- install canonical Harness-owned `skills/<name>/SKILL.md` files verbatim into the selected verified native skill root(s), or into neutral `harness/skills/` when native activation cannot be verified or is not desired;
+- install canonical Harness-owned `skills/<name>/SKILL.md` files verbatim into the selected verified native skill root(s), including `.kiro/skills/` when Kiro is the selected verified runtime root, or into neutral `harness/skills/` when native activation cannot be verified or is not desired;
 - never edit a copied Harness skill to make it project-specific; project-specific guidance stays in project-local rules, docs, tests, configuration, or separate project-owned skills;
 - if the project already has local model/tool routing rules, preserve them where they are; do not copy, summarize, map, or duplicate those project-specific model names or policies into MODEL_ROUTING.md or MODEL_CATALOG.md;
 - if existing project-local routing appears semantically incompatible with the shared tier policy, do not invent a reconciliation or mapping. Stop and report the conflict for human review;
 - add the thin CLAUDE.md adapter if Claude Code is used now or is intended to be used with this project. If CLAUDE.md already exists, preserve its existing value and add the shared AGENTS.md reference rather than replacing it. If Claude Code is definitely not used for this project, CLAUDE.md may be omitted.
 
 Do not copy, symlink, generate, mirror, or synchronize project-local/tool-native skills or rules merely to make them look portable across tools.
-Do not create `.agents/workflows/`, `.ai/`, installers, manifests, orchestration, project overlays, extra adapters, or unrelated process files. `.agents/skills/` may be created only when needed for verified native activation of Harness-owned shared skills.
+Do not create `.agents/workflows/`, `.ai/`, `.kiro/steering/` mirrors, installers, manifests, orchestration, project overlays, extra adapters, or unrelated process files. `.agents/skills/` and `.kiro/skills/` may be created only when needed for verified Harness-owned native skill activation.
 Do not modify application code merely to install the Harness.
-Do not silently edit existing project-local deployment, release, environment, Git, model-routing, rules, skills, or documentation files merely to resolve a discovered ambiguity. In the final report, recommend the smallest existing project-local file(s) that should record each durable clarification, and wait for explicit approval before changing them.
+Do not silently edit existing project-local deployment, release, environment, Git, model-routing, rules, skills, Kiro custom-agent configuration, or documentation files merely to resolve a discovered ambiguity. In the final report, recommend the smallest existing project-local file(s) that should record each durable clarification, and wait for explicit approval before changing them.
 Do not commit, push, merge, deploy, publish, access production/live systems, or perform unrelated cleanup.
 
 When finished:
@@ -199,7 +210,7 @@ When finished:
 5. explain what project-specific content/rules you preserved and any conflicts;
 6. confirm that AGENTS.md shared content, MODEL_ROUTING.md, MODEL_CATALOG.md, the shared portion of CLAUDE.md, and every installed Harness-owned skill follow the upstream Harness source as required;
 7. report the detected AI runtimes and the repository evidence for each;
-8. report the selected skill root(s), why each root was chosen, how many Harness skills were installed or updated, every collision found, and whether each managed installed copy is verbatim-equal to its canonical upstream `skills/<name>/SKILL.md`;
+8. report the selected skill root(s), why each root was chosen, how many Harness skills were installed or updated, every collision found, and whether each managed installed copy is verbatim-equal to its canonical upstream `skills/<name>/SKILL.md`; for Kiro, distinguish default-resource activation from any custom-agent configuration that disables inheritance;
 9. report the exact upstream Harness commit used;
 10. confirm that no unrelated file was changed and that no branch/worktree/project copy was created for adoption;
 11. provide a Project readiness section covering, when applicable:
@@ -272,17 +283,17 @@ The preferred model is **inspect, preserve, back up, then add — in place**.
 3. Discover repository-local instructions, docs, ADRs, tests, CI/release conventions, deployment evidence, existing tool-native rules/skills, and documented validation commands.
 4. Reconstruct environment/release topology from evidence without assuming environment names, count, promotion flow, or deployment automation.
 5. Detect AI runtimes from repository evidence; an installed CLI alone is insufficient.
-6. Choose the smallest verified set of native skill roots. `.agents/skills/` currently covers Cursor, Antigravity, and Codex; `.claude/skills/` covers Claude Code and can also be consumed by Cursor. Use one copy when one root covers all detected runtimes. Use neutral `harness/skills/` for any placement that cannot be verified natively, and do not claim native activation for it.
+6. Choose the smallest verified set of native skill roots. `.agents/skills/` currently covers Cursor, Antigravity, and Codex; `.claude/skills/` covers Claude Code and can also be consumed by Cursor; `.kiro/skills/` covers Kiro. Use one copy when one root covers all detected runtimes. Use neutral `harness/skills/` for any placement that cannot be verified natively, and do not claim native activation for it. For Kiro custom agents, verify effective default-resource inheritance before claiming that workspace skills are available to that agent.
 7. Before writing any skill, scan all selected roots for every canonical Harness skill name. Managed ownership is established only by the `metadata.ai-engineering-harness` key. An unowned same-name collision stops the skill-installation phase but does not automatically block the rest of Harness adoption.
 8. Before modifying any existing file, including managed skills, make a byte-for-byte backup outside the repository.
 9. Add/update `AGENTS.md`, `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and the minimal `CLAUDE.md` adapter according to their ownership rules.
 10. Install Harness-owned skills verbatim from canonical `skills/` into selected roots. Never rewrite them into project-specific variants.
-11. Do not create `.ai/`, `.agents/workflows/`, installers, manifests, orchestration, project overlays, or extra adapters. `.agents/skills/` may be created only for verified Harness-owned native skill activation.
+11. Do not create `.ai/`, `.agents/workflows/`, `.kiro/steering/` mirrors, installers, manifests, orchestration, project overlays, or extra adapters. `.agents/skills/` and `.kiro/skills/` may be created only for verified Harness-owned native skill activation.
 12. Review the exact diff, verify every managed installed skill against canonical content, report the exact upstream commit, and stop for human review before commit/push/deploy/publish.
 
 ### If the project has no `AGENTS.md`
 
-Copy `AGENTS.md` byte-for-byte from this repository. Do not summarize, rewrite, or regenerate it from the README.
+Copy `AGENTS.md` byte-for-byte from this repository. Do not summarize, rewrite, or regenerate it from the README. Kiro consumes a workspace-root `AGENTS.md` directly; do not duplicate that shared baseline into `.kiro/steering/` merely for Kiro compatibility.
 
 ### If the project already has `AGENTS.md`
 
@@ -336,13 +347,13 @@ Stay in this repository and on the current branch unless this repository's docum
 
 Before changing anything:
 - inspect current branch and working-tree status;
-- inspect installed AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md where present, shared-baseline markers, and relevant project-local/tool-native rules;
+- inspect installed AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md where present, shared-baseline markers, relevant Kiro `.kiro/` configuration where Kiro is used, and relevant project-local/tool-native rules;
 - discover every installed Harness-owned skill root and every skill whose frontmatter metadata contains the `ai-engineering-harness` key;
 - inspect current upstream AGENTS.md, MODEL_ROUTING.md, MODEL_CATALOG.md, CLAUDE.md, README.md, and canonical `skills/`;
 - record the exact upstream commit being applied;
 - identify every existing file that would be modified.
 
-Do not relocate existing Harness-owned skills during an update. Preserve each managed installation root even if a different native path is now preferred or newly available.
+Do not relocate existing Harness-owned skills during an update. Preserve each managed installation root even if a different native path is now preferred or newly available. In particular, do not move an existing managed skill installation into `.kiro/skills/` merely because Kiro support was added later; new adoption may use `.kiro/skills/`, while existing installations preserve their managed placement unless the human explicitly requests migration.
 
 Before modifying each existing file, including each managed Harness skill, create a byte-for-byte backup outside the repository and report its exact path.
 
@@ -358,6 +369,8 @@ Update only Harness-owned shared content:
 - if a locally installed managed Harness skill no longer exists upstream, do not delete it. Report it as an orphaned Harness skill and ask for a human decision;
 - never copy, translate, migrate, synchronize, or treat project-local/tool-native skills, rules, workflows, model names, agents, subagents, or invocation syntax as Harness-owned content or as capabilities of another runtime.
 
+If Kiro is used, verify that its current AGENTS.md and skill-discovery behavior remains available in the active runtime/version. For Kiro custom agents, verify effective default-resource inheritance before claiming activation. Do not silently alter `.kiro/agents/`, `.kiro/steering/`, or other project-local Kiro configuration to resolve activation gaps; report the exact gap and wait for approval.
+
 If current project-local instructions conflict semantically with the new shared policy, do not invent a reconciliation. Stop before rewriting project-local policy and report the exact conflict for human review.
 
 If a project-local preferred model is no longer supported by the current catalog or live runtime, do not silently replace it. Report the stale preference and the closest current options for human review.
@@ -372,7 +385,7 @@ When finished:
 4. list every managed Harness skill root and confirm its placement was preserved;
 5. report skills updated, newly added, skipped because of unowned collisions, and orphaned Harness skills awaiting human review;
 6. verify and report verbatim equality between every managed installed Harness skill with an upstream counterpart and its canonical upstream file;
-7. identify semantic conflicts, stale project-local model choices, or project-local instructions made stale by the new shared policy/catalog;
+7. identify semantic conflicts, stale project-local model choices, runtime-specific activation gaps, or project-local instructions made stale by the new shared policy/catalog;
 8. confirm unrelated and project-local content was preserved;
 9. run applicable README installation tests, including the cross-tool runtime-capability test where multiple runtimes are used;
 10. stop for human review.
@@ -384,8 +397,8 @@ There is intentionally no uninstaller. Removal is explicit and ownership-based:
 
 1. Discover installed skill roots and identify only skills whose `SKILL.md` frontmatter contains `metadata.ai-engineering-harness`.
 2. Confirm each candidate is actually Harness-owned before deleting it. Never remove a same-name project-local skill that lacks the ownership marker.
-3. Remove only those Harness-owned skill directories from their current managed root(s). If the repository uses neutral `harness/skills/`, the same ownership test applies there.
-4. If the repository's `AGENTS.md` contains the shared Harness baseline block, remove or update that block only according to the repository's chosen Harness-removal scope; preserve all project-local content outside the markers.
+3. Remove only those Harness-owned skill directories from their current managed root(s). This includes `.kiro/skills/` when that is the managed Kiro placement. If the repository uses neutral `harness/skills/`, the same ownership test applies there.
+4. If the repository's `AGENTS.md` contains the shared Harness baseline block, remove or update that block only according to the repository's chosen Harness-removal scope; preserve all project-local content outside the markers. Do not remove project-local Kiro steering or agent configuration merely because the Harness is being removed.
 5. If removing the Harness entirely, review `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and the shared `CLAUDE.md` adapter separately according to their ownership and preservation rules.
 6. Review the final diff and verify no project-local rules, skills, docs, code, or unrelated runtime artifacts were removed.
 
@@ -393,7 +406,7 @@ There is intentionally no uninstaller. Removal is explicit and ownership-based:
 
 If your coding agent cannot access the upstream source or you prefer manual installation, copy only the shared files you need.
 
-For a new project with no existing `AGENTS.md`, copy `AGENTS.md`, `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and `CLAUDE.md` when Claude Code is used. For skills, prefer a verified native project-level skill root; when native activation cannot be verified or is not desired, place verbatim Harness-owned skill copies under neutral `harness/skills/` and use them only as on-demand repository guidance. Do not claim that neutral copies are natively active.
+For a new project with no existing `AGENTS.md`, copy `AGENTS.md`, `MODEL_ROUTING.md`, `MODEL_CATALOG.md`, and `CLAUDE.md` when Claude Code is used. Kiro consumes the workspace-root `AGENTS.md` directly, so no Kiro-specific steering copy is needed for the shared baseline. For Harness skills, prefer a verified native project-level skill root: `.kiro/skills/` for Kiro, or the corresponding verified root for the other runtimes in use. When native activation cannot be verified or is not desired, place verbatim Harness-owned skill copies under neutral `harness/skills/` and use them only as on-demand repository guidance. Do not claim that neutral copies are natively active.
 
 For existing projects, never blindly overwrite files or skills. Follow the collision, backup, ownership, and preservation rules above.
 
@@ -472,6 +485,7 @@ Then consider two hypothetical tasks:
 
 For each task, tell me which shared skill, if any, should be activated and why. Do not execute the task.
 If this runtime's native skill activation cannot be verified, say that the skills are available only as repository guidance and do not claim native activation.
+If this is Kiro and a custom agent is active, also report whether default-resource inheritance is enabled or whether an explicit `skill://` resource exposes the workspace skills.
 Also state whether full bodies of unrelated skills should be loaded for either task.
 ```
 
@@ -480,6 +494,7 @@ Expected behavior:
 - The root-cause task should make `root-cause-debug` relevant; unrelated skill bodies should remain unloaded unless another skill is independently relevant.
 - The trivial typo should not cause all shared skill bodies to enter context. Discovery metadata may be visible, but progressive disclosure should keep irrelevant bodies out of the working context.
 - A runtime with unverified native skill discovery must **not** claim that a skill is natively active. A neutral `harness/skills/` copy is repository guidance unless native activation is independently verified.
+- In Kiro, `.kiro/skills/` is the verified workspace skill root. A custom agent may inherit those default resources, but if default-resource inheritance is disabled, the agent must not claim access unless its effective resources expose the skills (for example with `skill://.kiro/skills/**/SKILL.md`).
 - Project-local policy remains higher precedence than shared skills, and any conflict must be reported rather than silently resolved in favor of the skill.
 
 Passing these smoke tests is evidence that shared context and skill discovery are behaving as designed. It is not proof of hard enforcement; use runtime-native permissions, deny rules, hooks, CI, tests, and other deterministic controls when an operation must be technically impossible.

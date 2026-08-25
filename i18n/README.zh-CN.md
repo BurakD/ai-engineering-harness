@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_zh_CN.png)
@@ -9,7 +9,7 @@
 
 ## 你会得到什么
 
-- 跨工具的一套 engineering baseline（工程基线）。Cursor、Claude Code、Codex 和 Antigravity 读取相同的 project context（项目上下文）与 constraints（约束），因此切换工具不意味着重新解释项目。
+- 跨工具的一套 engineering baseline（工程基线）。Cursor、Claude Code、Codex、Antigravity 和 Kiro 读取相同的 project context（项目上下文）与 constraints（约束），因此切换工具不意味着重新解释项目。
 - 模型选择由风险决定，而不是由习惯决定。工作会被划分到 capability tiers（能力层级），并从最低的足够层级开始。这是 policy（策略），不是 enforcement（强制执行）：实际能节省多少取决于 active runtime（当前运行环境）和你的套餐。
 - 为出错代价高的工作准备好流程。Secret exposure（机密泄露）、releases（发布）、dependency changes（依赖变更）、high-risk changes（高风险变更）和 recovery（恢复）各有共享流程，而且任何流程都不能放宽 approval boundary（审批边界）。
 - Discovery（发现）不等于 authorization（授权）。Agent（智能体）发现任务范围外的问题时，会先报告并等待决定，而不是自行修复。
@@ -80,7 +80,7 @@ v2 包含 14 个 skills：
 - [安装 prompt（英文）](../README.md#copypaste-adoption-prompt)
 - [更新 prompt（英文）](../README.md#copypaste-update-prompt)
 
-Adoption 根据 repository evidence（代码库中的证据）判断实际使用的 runtimes；机器上安装了 CLI 并不能单独作为依据。已验证的项目级 skill 路径如下：Cursor、Antigravity 和 Codex 使用 `.agents/skills/`；Claude Code 使用 `.claude/skills/`。Cursor 也可以读取 `.claude/skills/`。如果一个已验证的 root（根目录）覆盖所有正在使用的 runtimes，只保存一份副本。无法验证 native activation（原生激活）时，使用 `harness/skills/` 作为 neutral fallback（中立备用方案），并且不能声称 native activation 已完成。
+Adoption 根据 repository evidence（代码库中的证据）判断实际使用的 runtimes；机器上安装了 CLI 并不能单独作为依据。已验证的项目级 skill 路径如下：Cursor、Antigravity 和 Codex 使用 `.agents/skills/`；Claude Code 使用 `.claude/skills/`；Kiro 使用 `.kiro/skills/`。Cursor 也可以读取 `.claude/skills/`。Kiro 会直接发现 workspace root（工作区根目录）以及子目录中的 `AGENTS.md`，因此不会仅为复制 Harness 基线而创建 `.kiro/steering/`。Kiro custom agents（自定义智能体）通常继承 default resources（默认资源），其中包括 workspace skills 和 `AGENTS.md`；但 `chat.disableInheritingDefaultResources` 设置可以关闭这种继承。关闭后，如果没有 `skill://.kiro/skills/**/SKILL.md` 这样的显式 skill resource（技能资源），就不能声称 native activation（原生激活），也不会在未经人工批准的情况下修改 `.kiro/agents/` 文件。如果一个已验证的 root（根目录）覆盖所有正在使用的 runtimes，只保存一份副本。无法验证 native activation 时，使用 `harness/skills/` 作为 neutral fallback（中立备用方案），并且不能声称 native activation 已完成。
 
 写入任何 skill 之前，必须在所有目标 roots 中检查全部 canonical 名称是否发生 collision（名称冲突）。如果要修改 managed（受管理）skill，则在 repository 外创建 byte-for-byte（逐字节一致）备份。Harness-owned 副本与 canonical 来源保持 verbatim（逐字一致）。Update 不会迁移现有 skill 位置；upstream（上游来源）已删除的 managed skill 也不会自动删除，而是报告为 orphaned（上游已不存在）。
 

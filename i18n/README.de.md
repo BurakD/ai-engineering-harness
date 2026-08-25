@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_de.png)
@@ -9,7 +9,7 @@ Eine minimale und anbieterneutrale (vendor-neutral) Policy-/Kontextschicht für 
 
 ## Was Sie erhalten
 
-- Eine gemeinsame Engineering-Basis über Werkzeuge hinweg. Cursor, Claude Code, Codex und Antigravity lesen denselben Projektkontext und dieselben Einschränkungen; ein Werkzeugwechsel bedeutet daher nicht, das Projekt erneut erklären zu müssen.
+- Eine gemeinsame Engineering-Basis über Werkzeuge hinweg. Cursor, Claude Code, Codex, Antigravity und Kiro lesen denselben Projektkontext und dieselben Einschränkungen; ein Werkzeugwechsel bedeutet daher nicht, das Projekt erneut erklären zu müssen.
 - Die Modellwahl richtet sich nach Risiko, nicht nach Gewohnheit. Arbeit wird in capability tiers (Fähigkeitsstufen) eingeteilt und beginnt mit der niedrigsten ausreichenden Stufe. Das ist policy (Richtlinie), kein enforcement (technisches Erzwingen): Was tatsächlich eingespart wird, hängt vom aktiven runtime (Laufzeitsystem) und Ihrem Tarif ab.
 - Fertige Verfahren für Arbeiten, bei denen Fehler besonders teuer sind. Secret exposure (Offenlegung von Geheimnissen), releases (Veröffentlichungen), dependency changes (Abhängigkeitsänderungen), high-risk changes (Änderungen mit hohem Risiko) und recovery (Wiederherstellung) haben jeweils ein gemeinsames Verfahren; keines darf eine approval boundary (Freigabegrenze) lockern.
 - Discovery (Erkennung) ist nicht authorization (Autorisierung). Wenn ein agent (Agent) außerhalb seiner Aufgabe ein Problem bemerkt, meldet er es und wartet auf eine Entscheidung, statt es eigenmächtig zu beheben.
@@ -80,7 +80,7 @@ Copy/Paste-Prompts bleiben in einer einzigen canonical source und werden nicht �
 - [Installations-Prompt (Englisch)](../README.md#copypaste-adoption-prompt)
 - [Aktualisierungs-Prompt (Englisch)](../README.md#copypaste-update-prompt)
 
-Adoption bestimmt verwendete runtimes aus repository evidence (Nachweisen im Repository); ein installierter CLI allein reicht nicht. Verifizierte skill-Pfade auf Projektebene sind: `.agents/skills/` für Cursor, Antigravity und Codex; `.claude/skills/` für Claude Code. Cursor kann ebenfalls `.claude/skills/` lesen. Deckt ein verifizierter root (Wurzelpfad) alle verwendeten runtimes ab, wird nur eine Kopie verwendet. Ist native activation (native Aktivierung) nicht verifizierbar, wird `harness/skills/` als neutral fallback (neutrale Ausweichlösung) verwendet und keine native activation behauptet.
+Adoption bestimmt verwendete runtimes aus repository evidence (Nachweisen im Repository); ein installierter CLI allein reicht nicht. Verifizierte skill-Pfade auf Projektebene sind: `.agents/skills/` für Cursor, Antigravity und Codex; `.claude/skills/` für Claude Code; `.kiro/skills/` für Kiro. Cursor kann ebenfalls `.claude/skills/` lesen. Kiro erkennt `AGENTS.md` direkt im workspace root (Arbeitsbereichswurzel) und in Unterverzeichnissen; deshalb wird `.kiro/steering/` nicht nur als Kopie der Harness-Basis angelegt. Kiro custom agents (benutzerdefinierte Agenten) erben normalerweise default resources (Standardressourcen), einschließlich workspace skills und `AGENTS.md`; die Einstellung `chat.disableInheritingDefaultResources` kann diese Vererbung jedoch deaktivieren. Ist sie deaktiviert, wird native activation (native Aktivierung) ohne eine explizite skill resource (Skill-Ressource) wie `skill://.kiro/skills/**/SKILL.md` nicht behauptet, und Dateien unter `.kiro/agents/` werden nicht ohne menschliche Freigabe geändert. Deckt ein verifizierter root (Wurzelpfad) alle verwendeten runtimes ab, wird nur eine Kopie verwendet. Ist native activation nicht verifizierbar, wird `harness/skills/` als neutral fallback (neutrale Ausweichlösung) verwendet und keine native activation behauptet.
 
 Vor dem Schreiben eines skills werden alle canonical Namen in allen Ziel-roots auf collision (Namenskollision) geprüft. Wird ein managed (verwalteter) skill geändert, wird außerhalb des repository ein byte-for-byte (bytegenaues) Backup erstellt. Harness-owned Kopien bleiben verbatim (identisch) zur canonical Quelle. Update verschiebt die vorhandene skill-Platzierung nicht; ein upstream (in der übergeordneten Quelle) entfernter managed skill wird nicht automatisch gelöscht, sondern als orphaned (in der Quelle nicht mehr vorhanden) gemeldet.
 

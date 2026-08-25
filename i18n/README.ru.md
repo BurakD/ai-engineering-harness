@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_ru.png)
@@ -9,7 +9,7 @@
 
 ## Что вы получаете
 
-- Единая engineering baseline (инженерная база) для разных инструментов. Cursor, Claude Code, Codex и Antigravity читают один и тот же project context (контекст проекта) и constraints (ограничения), поэтому при смене инструмента не нужно заново объяснять проект.
+- Единая engineering baseline (инженерная база) для разных инструментов. Cursor, Claude Code, Codex, Antigravity и Kiro читают один и тот же project context (контекст проекта) и constraints (ограничения), поэтому при смене инструмента не нужно заново объяснять проект.
 - Выбор модели привязан к риску, а не к привычке. Работа классифицируется по capability tiers (уровням возможностей) и начинается с минимально достаточного уровня. Это policy (политика), а не enforcement (техническое принуждение): фактическая экономия зависит от active runtime (активной среды выполнения) и вашего тарифа.
 - Готовые процедуры для работ, где ошибки особенно болезненны. Для secret exposure (утечки секретов), releases (выпусков), dependency changes (изменений зависимостей), high-risk changes (изменений с высоким риском) и recovery (восстановления) есть общая процедура; ни одна процедура не может ослабить approval boundary (границу одобрения).
 - Discovery (обнаружение) — не authorization (авторизация). Если agent (агент) замечает проблему вне своей задачи, он сообщает о ней и ждёт решения, а не исправляет её по собственной инициативе.
@@ -80,7 +80,7 @@ metadata:
 - [Промпт установки (на английском)](../README.md#copypaste-adoption-prompt)
 - [Промпт обновления (на английском)](../README.md#copypaste-update-prompt)
 
-Adoption определяет используемые runtimes по repository evidence (доказательствам в репозитории); сам факт установки CLI недостаточен. Проверенные пути skills на уровне проекта: `.agents/skills/` для Cursor, Antigravity и Codex; `.claude/skills/` для Claude Code. Cursor также может читать `.claude/skills/`. Если один проверенный root (корневой каталог) покрывает все используемые runtimes, применяется одна копия. Если native activation (нативную активацию) нельзя подтвердить, `harness/skills/` используется как neutral fallback (нейтральный запасной вариант), и факт native activation не заявляется.
+Adoption определяет используемые runtimes по repository evidence (доказательствам в репозитории); сам факт установки CLI недостаточен. Проверенные пути skills на уровне проекта: `.agents/skills/` для Cursor, Antigravity и Codex; `.claude/skills/` для Claude Code; `.kiro/skills/` для Kiro. Cursor также может читать `.claude/skills/`. Kiro напрямую обнаруживает `AGENTS.md` в workspace root (корне рабочего пространства) и во вложенных каталогах, поэтому `.kiro/steering/` не создаётся лишь для дублирования базы Harness. Kiro custom agents (пользовательские агенты) обычно наследуют default resources (ресурсы по умолчанию), включая workspace skills и `AGENTS.md`, однако настройка `chat.disableInheritingDefaultResources` может отключить наследование. В этом случае native activation (нативная активация) не заявляется без явного skill resource (ресурса навыка), например `skill://.kiro/skills/**/SKILL.md`, а файлы `.kiro/agents/` не изменяются без одобрения человека. Если один проверенный root (корневой каталог) покрывает все используемые runtimes, применяется одна копия. Если native activation нельзя подтвердить, `harness/skills/` используется как neutral fallback (нейтральный запасной вариант), и факт native activation не заявляется.
 
 Перед записью любого skill все canonical-имена проверяются во всех целевых roots на collision (конфликт имён). Если меняется managed (управляемый) skill, вне repository создаётся backup byte-for-byte (побайтовая резервная копия). Harness-owned копии сохраняются verbatim (полностью идентичными) canonical-источнику. Update не переносит существующее размещение skill; managed skill, удалённый upstream (в вышестоящем источнике), автоматически не удаляется и отмечается как orphaned (отсутствующий в источнике).
 

@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.0.4 -->
+<!-- Based on README.md @ v2.1.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_ar.png)
@@ -9,7 +9,7 @@
 
 ## ما الذي تحصل عليه
 
-- Engineering baseline (خط أساس هندسي) واحد عبر الأدوات. يقرأ Cursor وClaude Code وCodex وAntigravity نفس project context (سياق المشروع) وconstraints (القيود)، لذلك لا يعني تغيير الأداة إعادة شرح المشروع.
+- Engineering baseline (خط أساس هندسي) واحد عبر الأدوات. يقرأ Cursor وClaude Code وCodex وAntigravity وKiro نفس project context (سياق المشروع) وconstraints (القيود)، لذلك لا يعني تغيير الأداة إعادة شرح المشروع.
 - اختيار النموذج مرتبط بالمخاطر لا بالعادات. يُصنَّف العمل ضمن capability tiers (مستويات القدرة) ويبدأ من أدنى مستوى كافٍ. هذه policy (سياسة) وليست enforcement (فرضاً تقنياً): ما توفره فعلياً يعتمد على active runtime (بيئة التشغيل النشطة) وخطتك.
 - إجراءات جاهزة للأعمال التي تكون أخطاؤها مؤلمة. لكل من secret exposure (تسرّب الأسرار)، وreleases (الإصدارات)، وdependency changes (تغييرات التبعيات)، وhigh-risk changes (التغييرات عالية المخاطر)، وrecovery (التعافي) إجراء مشترك، ولا يجوز لأي إجراء تخفيف approval boundary (حدود الموافقة).
 - Discovery (الاكتشاف) ليس authorization (تفويضاً). إذا لاحظ agent (وكيل) مشكلة خارج مهمته، فإنه يبلغ عنها وينتظر قراراً بدلاً من إصلاحها بمبادرة منه.
@@ -80,7 +80,7 @@ metadata:
 - [أمر التثبيت (بالإنجليزية)](../README.md#copypaste-adoption-prompt)
 - [أمر التحديث (بالإنجليزية)](../README.md#copypaste-update-prompt)
 
-تحدد Adoption بيئات runtime المستخدمة من repository evidence (أدلة المستودع)؛ وجود CLI مثبت على الجهاز وحده لا يكفي. مسارات skills التي تم التحقق منها على مستوى المشروع هي: `.agents/skills/` لـ Cursor وAntigravity وCodex؛ و`.claude/skills/` لـ Claude Code. يستطيع Cursor أيضاً قراءة `.claude/skills/`. إذا كان root (مجلد جذر) واحد موثوق يغطي كل بيئات runtime المستخدمة، تُستخدم نسخة واحدة فقط. إذا تعذر التحقق من native activation (التفعيل الأصلي)، يُستخدم `harness/skills/` كـ neutral fallback (بديل محايد) ولا يُدّعى أن native activation قد تم.
+تحدد Adoption بيئات runtime المستخدمة من repository evidence (أدلة المستودع)؛ وجود CLI مثبت على الجهاز وحده لا يكفي. مسارات skills التي تم التحقق منها على مستوى المشروع هي: `.agents/skills/` لـ Cursor وAntigravity وCodex؛ و`.claude/skills/` لـ Claude Code؛ و`.kiro/skills/` لـ Kiro. يستطيع Cursor أيضاً قراءة `.claude/skills/`. يكتشف Kiro ملفات `AGENTS.md` مباشرة في workspace root (جذر مساحة العمل) والمجلدات الفرعية، لذلك لا يُنشأ `.kiro/steering/` لمجرد نسخ خط أساس Harness. ترث Kiro custom agents (الوكلاء المخصصون) عادةً default resources (الموارد الافتراضية)، بما فيها workspace skills و`AGENTS.md`، لكن يمكن للإعداد `chat.disableInheritingDefaultResources` تعطيل هذا الإرث. عند تعطيله لا يُدّعى native activation (التفعيل الأصلي) من دون skill resource (مورد مهارة) صريح مثل `skill://.kiro/skills/**/SKILL.md`، ولا تُعدّل ملفات `.kiro/agents/` من دون موافقة بشرية. إذا كان root (مجلد جذر) واحد موثوق يغطي كل بيئات runtime المستخدمة، تُستخدم نسخة واحدة فقط. إذا تعذر التحقق من native activation، يُستخدم `harness/skills/` كـ neutral fallback (بديل محايد) ولا يُدّعى أن native activation قد تم.
 
 قبل كتابة أي skill، تُفحص جميع الأسماء canonical في كل الجذور المستهدفة بحثاً عن collision (تعارض أسماء). إذا كان سيجري تغيير skill managed (مُدارة)، تؤخذ خارج repository نسخة احتياطية byte-for-byte (مطابقة بايتاً ببايت). تبقى النسخ Harness-owned متطابقة verbatim (حرفياً) مع المصدر canonical. لا ينقل Update موضع skill الحالي؛ وإذا حُذفت managed skill من upstream (المصدر الأعلى) فلا تُحذف تلقائياً، بل يُبلغ عنها كـ orphaned (غير موجودة في المصدر).
 
