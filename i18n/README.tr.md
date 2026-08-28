@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_tr.png)
@@ -52,7 +52,7 @@ metadata:
 
 Aynı isimli bir skill bu anahtarı taşımıyorsa Harness-owned değildir; adoption (kurulum) veya update (güncelleme) sırasında üzerine yazılmaz.
 
-v2 kümesi 14 skill içerir:
+v2 kümesi 15 skill içerir:
 
 - `backup-and-recovery-review` — backup (yedekleme), restore (geri yükleme) ve recovery (kurtarma) hazırlığının incelenmesi.
 - `interface-qa` — web, mobil, masaüstü, CLI ve API arayüzlerinin doğrulanması.
@@ -64,6 +64,7 @@ v2 kümesi 14 skill içerir:
 - `dependency-change` — dependency (bağımlılık) ekleme, kaldırma ve sürüm yükseltme incelemesi.
 - `documentation-sync` — kalıcı dokümantasyonun gerçekle eşzamanlı tutulması.
 - `environment-release-safety` — release (yayın) ve deployment (dağıtım) etkisi ile onay güvenliği.
+- `automation-cost-control` — metered compute (ölçülü işlem gücü) maliyetini gerçek harcamaya göre atfeder; en ucuz yeterli executor'ı (yürütücüyü), runtime bound'u (çalışma süresi sınırını) ve maliyet amaçlı koşulların gerekli işi sessizce atlamadığını doğrular.
 - `continuous-improvement` — tekrarlanan hataların kalıcı safeguard'lara (koruyucu önlemlere) dönüştürülmesi.
 - `root-cause-debug` — belirti yerine kök nedenin bulunup kanıtlanması.
 - `secret-exposure-response` — secret (sır) ve credential (kimlik bilgisi) sızıntısına müdahale.

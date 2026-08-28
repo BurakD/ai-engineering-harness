@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](assets/poster_en.png)
@@ -92,7 +92,7 @@ metadata:
 
 The key identifies Harness ownership; the value records the canonical Harness version for that skill content. Installed Harness-owned copies remain verbatim copies of canonical `skills/<name>/SKILL.md`. A same-name skill without this metadata key is not Harness-owned and must never be overwritten by adoption or update.
 
-The v2 shared set contains 14 procedures:
+The v2 shared set contains 15 procedures:
 
 - `backup-and-recovery-review` — reviews backup, restore, and recovery readiness for persistent assets and services.
 - `interface-qa` — validates changed user or consumer interfaces across web, mobile, desktop, CLI, or API surfaces.
@@ -104,6 +104,7 @@ The v2 shared set contains 14 procedures:
 - `dependency-change` — evaluates dependency additions, removals, and upgrades for necessity, maintenance, security, compatibility, and operational impact.
 - `documentation-sync` — keeps durable project documentation aligned with implementation and operating reality.
 - `environment-release-safety` — validates release/deployment actions against the project's actual topology, effects, recovery path, and approval boundaries.
+- `automation-cost-control` — controls metered automation compute cost through real-spend attribution, cheapest-capable execution, runtime bounds, and verification that cost-driven conditions do not silently skip required work.
 - `continuous-improvement` — converts recurring failure classes into the smallest durable engineering safeguard.
 - `root-cause-debug` — investigates defects by testing hypotheses, identifying the underlying cause, and proving the fix with regression evidence.
 - `secret-exposure-response` — handles suspected secret or credential exposure without reproducing secret values and without confusing cleanup with rotation/revocation.

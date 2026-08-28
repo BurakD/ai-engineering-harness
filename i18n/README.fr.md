@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_fr.png)
@@ -52,7 +52,7 @@ metadata:
 
 Un skill de même nom qui ne porte pas cette clé n’est pas Harness-owned ; il n’est pas écrasé pendant adoption (installation) ou update (mise à jour).
 
-Le jeu v2 contient 14 skills :
+Le jeu v2 contient 15 skills :
 
 - `backup-and-recovery-review` — examen de la préparation de backup (sauvegarde), restore (restauration) et recovery (récupération).
 - `interface-qa` — validation des interfaces web, mobile, bureau, CLI et API.
@@ -64,6 +64,7 @@ Le jeu v2 contient 14 skills :
 - `dependency-change` — examen de l’ajout, de la suppression et de la montée de version d’une dependency (dépendance).
 - `documentation-sync` — maintien de la documentation durable synchronisée avec la réalité.
 - `environment-release-safety` — impact de release (publication) et deployment (déploiement), avec sécurité d’approbation.
+- `automation-cost-control` — contrôle le coût de compute mesuré de l’automatisation à partir des dépenses réelles, de l’executor (exécuteur) suffisant le moins coûteux, de limites de durée et de la vérification que les conditions de coût ne suppriment pas silencieusement un travail requis.
 - `continuous-improvement` — transformation des erreurs répétées en safeguards (protections) durables.
 - `root-cause-debug` — recherche et preuve de la cause racine plutôt que du symptôme.
 - `secret-exposure-response` — réponse aux fuites de secret (secret) et credential (identifiant).

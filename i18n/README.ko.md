@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_ko.png)
@@ -52,7 +52,7 @@ metadata:
 
 같은 이름의 skill이 이 키를 갖고 있지 않으면 Harness-owned가 아니며 adoption(도입)이나 update(업데이트) 중 덮어쓰지 않습니다.
 
-v2에는 14개 skills가 있습니다.
+v2에는 15개 skills가 있습니다.
 
 - `backup-and-recovery-review` — backup(백업), restore(복원), recovery(복구) 준비 상태 검토.
 - `interface-qa` — web, mobile, desktop, CLI, API 인터페이스 검증.
@@ -64,6 +64,7 @@ v2에는 14개 skills가 있습니다.
 - `dependency-change` — dependency(의존성) 추가, 삭제, 버전 상향 검토.
 - `documentation-sync` — 장기 문서를 실제 상태와 동기화.
 - `environment-release-safety` — release(릴리스)와 deployment(배포)의 영향 및 승인 안전성.
+- `automation-cost-control` — 실제 지출을 기준으로 자동화의 metered compute(종량제 연산) 비용을 관리하고, 가장 저렴하면서 충분한 executor(실행기), 실행 시간 한도, 비용 조건이 필수 작업을 조용히 누락하지 않는지 검증합니다.
 - `continuous-improvement` — 반복되는 오류를 지속 가능한 safeguards(보호 장치)로 전환.
 - `root-cause-debug` — 증상이 아니라 근본 원인을 찾아 입증.
 - `secret-exposure-response` — secret(비밀값)과 credential(인증 정보) 유출 대응.

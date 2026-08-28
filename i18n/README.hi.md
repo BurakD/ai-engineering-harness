@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_hi.png)
@@ -52,7 +52,7 @@ metadata:
 
 इसी नाम का कोई skill यदि यह कुंजी नहीं रखता, तो वह Harness-owned नहीं है; adoption (स्थापना) या update (अद्यतन) के दौरान उसे ऊपर से नहीं लिखा जाता।
 
-v2 में 14 skills हैं:
+v2 में 15 skills हैं:
 
 - `backup-and-recovery-review` — backup (बैकअप), restore (पुनर्स्थापन) और recovery (पुनर्प्राप्ति) तैयारी की समीक्षा।
 - `interface-qa` — web, mobile, desktop, CLI और API इंटरफ़ेस सत्यापन।
@@ -64,6 +64,7 @@ v2 में 14 skills हैं:
 - `dependency-change` — dependency (निर्भरता) जोड़ने, हटाने और संस्करण उन्नयन की समीक्षा।
 - `documentation-sync` — दीर्घकालिक दस्तावेज़ को वास्तविक स्थिति के साथ समकालिक रखना।
 - `environment-release-safety` — release (रिलीज़) और deployment (डिप्लॉयमेंट) प्रभाव तथा अनुमोदन सुरक्षा।
+- `automation-cost-control` — वास्तविक खर्च के आधार पर automation (स्वचालन) की metered compute (मापित कंप्यूट) लागत नियंत्रित करता है, सबसे सस्ता पर्याप्त executor (निष्पादक) चुनता है, runtime bound (रनटाइम सीमा) तय करता है और लागत-आधारित conditions (शर्तों) से आवश्यक काम चुपचाप न छूटे यह सत्यापित करता है।
 - `continuous-improvement` — दोहराई जाने वाली त्रुटियों को स्थायी safeguards (सुरक्षा उपायों) में बदलना।
 - `root-cause-debug` — लक्षण के बजाय मूल कारण को ढूँढना और प्रमाणित करना।
 - `secret-exposure-response` — secret (गोपनीय मान) और credential (प्रमाण-पत्र) के रिसाव पर प्रतिक्रिया।

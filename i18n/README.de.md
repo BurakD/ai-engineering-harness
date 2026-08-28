@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_de.png)
@@ -52,7 +52,7 @@ metadata:
 
 Ein gleichnamiger skill ohne diesen Schlüssel ist nicht Harness-owned; er wird bei adoption (Installation) oder update (Aktualisierung) nicht überschrieben.
 
-v2 enthält 14 skills:
+v2 enthält 15 skills:
 
 - `backup-and-recovery-review` — Prüfung der Bereitschaft für backup (Sicherung), restore (Wiederherstellung) und recovery (Recovery).
 - `interface-qa` — Prüfung von Web-, Mobile-, Desktop-, CLI- und API-Schnittstellen.
@@ -64,6 +64,7 @@ v2 enthält 14 skills:
 - `dependency-change` — Prüfung von Hinzufügen, Entfernen und Versionsanhebung einer dependency (Abhängigkeit).
 - `documentation-sync` — dauerhafte Dokumentation mit der Realität synchron halten.
 - `environment-release-safety` — Auswirkungen von release (Veröffentlichung) und deployment (Bereitstellung) sowie Freigabesicherheit.
+- `automation-cost-control` — steuert gemessene Automatisierungs-Compute-Kosten anhand realer Ausgaben, des günstigsten ausreichenden executors (Ausführers), Laufzeitgrenzen und der Prüfung, dass kostenbedingte Bedingungen keine erforderliche Arbeit unbemerkt auslassen.
 - `continuous-improvement` — wiederkehrende Fehler in dauerhafte safeguards (Schutzmaßnahmen) überführen.
 - `root-cause-debug` — die Grundursache statt nur das Symptom finden und belegen.
 - `secret-exposure-response` — Reaktion auf Lecks von secret (Geheimnis) und credential (Zugangsdaten).

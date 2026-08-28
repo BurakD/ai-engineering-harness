@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_zh_CN.png)
@@ -52,7 +52,7 @@ metadata:
 
 同名 skill 如果没有这个键，就不是 Harness-owned；在 adoption（安装）或 update（更新）期间不会被覆盖。
 
-v2 包含 14 个 skills：
+v2 包含 15 个 skills：
 
 - `backup-and-recovery-review` — 检查 backup（备份）、restore（还原）与 recovery（恢复）的准备情况。
 - `interface-qa` — 验证 web、mobile、desktop、CLI 与 API 界面。
@@ -64,6 +64,7 @@ v2 包含 14 个 skills：
 - `dependency-change` — 检查 dependency（依赖项）的添加、删除与版本升级。
 - `documentation-sync` — 让长期文档与实际情况保持同步。
 - `environment-release-safety` — release（发布）和 deployment（部署）的影响及审批安全。
+- `automation-cost-control` — 根据实际支出控制自动化中的计量 compute（计算）成本，选择最便宜且足够的 executor（执行器），设置运行时间边界，并验证成本条件不会静默跳过必需工作。
 - `continuous-improvement` — 将重复错误转化为持久 safeguards（防护措施）。
 - `root-cause-debug` — 查找并证明根本原因，而不是只处理症状。
 - `secret-exposure-response` — 响应 secret（机密）与 credential（凭据）泄露。

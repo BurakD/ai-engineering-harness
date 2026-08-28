@@ -1,4 +1,4 @@
-<!-- Based on README.md @ v2.1.0 -->
+<!-- Based on README.md @ v2.2.0 -->
 # AI Engineering Harness
 
 ![AI Engineering Harness](../assets/poster_ja.png)
@@ -52,7 +52,7 @@ metadata:
 
 同名の skill にこのキーがなければ Harness-owned ではなく、adoption（導入）や update（更新）で上書きされません。
 
-v2 は 14 個の skills を含みます。
+v2 は 15 個の skills を含みます。
 
 - `backup-and-recovery-review` — backup（バックアップ）、restore（復元）、recovery（復旧）の準備状況を確認。
 - `interface-qa` — web、mobile、desktop、CLI、API インターフェースを検証。
@@ -64,6 +64,7 @@ v2 は 14 個の skills を含みます。
 - `dependency-change` — dependency（依存関係）の追加・削除・バージョン更新を確認。
 - `documentation-sync` — 長期的な文書を実態と同期。
 - `environment-release-safety` — release（リリース）と deployment（デプロイ）の影響、および承認の安全性を確認。
+- `automation-cost-control` — 実際の支出に基づいて自動化の metered compute（従量計算）コストを管理し、最も安価で十分な executor（実行環境）、実行時間の上限、コスト条件が必要な処理を黙って外さないことを確認。
 - `continuous-improvement` — 繰り返す失敗を永続的な safeguards（保護策）に変換。
 - `root-cause-debug` — 症状ではなく根本原因を特定し、証明。
 - `secret-exposure-response` — secret（シークレット）と credential（認証情報）の漏えいに対応。
