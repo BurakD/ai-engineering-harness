@@ -86,6 +86,8 @@ Do not update unrelated project files, publish a release, or incur new spend.
 - OpenAI API changelog: https://developers.openai.com/api/docs/changelog
 - Google Antigravity CLI official live-discovery guide: https://codelabs.developers.google.com/antigravity-cli-hands-on
 - Kiro models and plan/region constraints: https://kiro.dev/docs/models/
-- Kiro model release history: https://kiro.dev/changelog/models/
+- Kiro Sonnet 5.5 availability and October rollout: https://kiro.dev/changelog/models/claude-sonnet-5-5/
+- Kiro Opus 5.5 availability and rollout: https://kiro.dev/changelog/models/claude-opus-5-5/
+- Kiro Fable 5.1 Enterprise Preview restrictions: https://kiro.dev/changelog/models/claude-fable-5-1-for-enterprise/
 
 Vendor and model names are trademarks of their respective owners. This catalog does not guarantee availability, price, entitlement or performance.
