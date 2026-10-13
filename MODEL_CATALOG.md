@@ -1,105 +1,91 @@
 # Model Catalog
 
-Last broad verification: **2026-08-19**. Kiro row verified: **2026-08-25**.
+Last broad verification: **2026-10-13** (official vendor/runtime documentation; not a live check of any particular user's account).
 
-This file is the time-sensitive companion to `MODEL_ROUTING.md`.
-
-`MODEL_ROUTING.md` defines the stable FAST / STANDARD / REASONING / FRONTIER policy. This catalog records current, evidence-based model/runtime options and recommended starting points. It is intentionally easier to update as vendors, products, pricing, plans, and model names change.
+This is the time-sensitive companion to `MODEL_ROUTING.md`. That file defines the stable FAST / STANDARD / REASONING / FRONTIER capability tiers; this catalog provides **current, runtime-specific starting points**, not permanent model assignments or claims of cross-vendor equivalence.
 
 ## Precedence and safety
 
-1. **The active runtime/session is authoritative for what can actually be invoked.** A model listed here is not proof that the current account, plan, region, client version, or session can use it.
-2. **Project-local tool-specific rules may choose a different model for that tool** when the model is genuinely available there.
-3. This catalog provides shared defaults and discovery guidance; it does not override project-specific risk, cost, compliance, or approval policy.
-4. Never claim a model switch, subagent call, or cross-tool delegation that the active runtime cannot actually perform.
-5. Prefer live discovery over stale catalog entries. If the live runtime contradicts this file, follow the runtime and report that the catalog may need refresh.
-6. If the relevant verification date is no longer reasonably current for the decision at hand, treat concrete catalog entries as unverified until refreshed from current official sources or confirmed by live runtime discovery.
-7. **Included capacity comes before unapproved paid escalation.** If a preferred model requires extra credits, pay-as-you-go usage, or another spend path that is not already approved, use the next-best verified model that satisfies the tier within included or agreed capacity. Ask only when no acceptable fallback exists or the downgrade materially changes quality or risk.
+1. **The active runtime/session is authoritative.** A published model or catalog entry does not establish access through a particular account, plan, client, region, provider, or tool.
+2. Check the runtime's model picker/discovery first. If discovery fails or returns incomplete information, treat named models as **unverified**, not as a reason to guess.
+3. Project-local tool-specific preferences remain authoritative where compatible with project safety, quality, and cost rules.
+4. Use included or already-approved capacity. Do not automatically opt into usage credits, pay-as-you-go, premium routing, or other new spend. Ask before material quality downgrades or unapproved spending.
+5. Keep model capability/effort selection separate from **communication style**. Concise, decision-oriented explanations must not silently reduce analysis, implementation quality, testing, or required review.
+6. Model choice does not authorize broader scope, additional subagents, or deployment actions. Delegation and approvals follow `AGENTS.md` and the relevant skills.
 
 ## Current recommended mappings
 
-These are starting points, not literal cross-vendor equivalences. The table is a maintained set of useful runtime mappings, **not an exhaustive list of tools supported by the shared harness**; a runtime does not need a catalog row in order to consume the vendor-neutral policy.
+Recommendations are starting points, **not exhaustive supported-model lists**. Verify exact availability at runtime, especially after new releases.
 
-| Runtime / tool | FAST | STANDARD | REASONING | FRONTIER | Live discovery / notes |
-|---|---|---|---|---|---|
-| **Cursor** | Composer 2.5 for inexpensive routine execution; Composer 2.5 Fast when latency matters more than token price | Composer 2.5 is a strong default for hands-on coding; Cursor Auto/Router is acceptable when exact model identity is not required | Claude Fable 5 at a suitable reasoning level when available within included/agreed capacity; otherwise the strongest verified reasoning model available without unapproved spend | Strongest verified model/effort actually available within agreed spend; manual escalation before paid-only capacity | Use the model picker / current Cursor model list. Auto/Router is dynamic and does not provide a stable, auditable underlying-model mapping, so select explicitly when a workflow requires a known planner or reviewer. |
-| **Claude Code** | Claude Haiku 4.5 for small, latency/cost-sensitive work when available within included capacity | Claude Sonnet 5 is the default balanced choice when available within included capacity | Prefer the strongest verified reasoning-capable model available within included capacity. Claude Fable 5 is quality-first only when the account/session exposes it without unapproved extra spend; otherwise prefer Claude Sonnet 5 at higher effort, or another stronger included model actually shown by `/model` | Strongest verified model/effort actually available within included or already-approved capacity; manual escalation before paid-only usage | Run `/model` to see what the current account can actually use. Claude plan usage is pooled and model availability/limits can vary by plan and account. Usage credits are a separate pay-as-you-go path after included limits; the harness must not opt into that spend automatically. |
-| **OpenAI Codex CLI / IDE** | GPT-5.6 Luna | GPT-5.6 Terra | GPT-5.6 Sol with an appropriate reasoning effort | GPT-5.6 Sol with the strongest reasoning setting actually exposed by the current Codex runtime | Current OpenAI guidance exposes Sol, Terra, and Luna in Codex according to plan. Do not assume every API reasoning mode is exposed identically in every Codex client/version. |
-| **Antigravity CLI (`agy`)** | Prefer the fastest/lowest-effort model shown by `agy models` that is adequate for the task | Prefer the balanced coding model shown by `agy models` | Prefer the strongest reasoning-capable model shown by `agy models` within included/agreed capacity | Prefer the strongest model/effort actually shown by `agy models`; manual escalation before new spend | Run `agy models` before relying on a named model. Google's official codelab explicitly documents this command because the available model set is dynamic. |
-| **Kiro** | GPT-5.6 Luna when the current plan/session exposes it; otherwise use the lowest-cost verified model that is adequate for the task | GPT-5.6 Terra is a good explicit balanced mapping; Kiro Auto is acceptable when dynamic routing is desired and exact model identity is not required | GPT-5.6 Sol or Claude Sonnet 5 when verified and within included/agreed capacity; otherwise use the strongest verified reasoning-capable option that satisfies the task | Claude Opus 5 or the strongest verified model/effort actually exposed within agreed capacity; manual escalation before paid-only usage | Use Kiro's model picker or `/model` in the CLI. Availability varies by plan, region, and session. Auto is a dynamic router, so choose an explicit verified model when auditability, repeatability, or cost predictability matters. Official Kiro models documentation checked 2026-08-25. |
+| Runtime / tool | FAST | STANDARD | REASONING | FRONTIER | Runtime-specific discovery and cautions |
+| --- | --- | --- | --- | --- | --- |
+| **Cursor** | Composer 2.5 for scoped routine work; non-Fast variant when cost matters | Composer 2.5 or another verified balanced coding model | Claude Opus 5.5 for difficult engineering; Fable 5.1 only when its additional capacity/cost is justified and approved | Strongest verified capable model, deliberately selected for an exceptional task | Use Cursor's current model picker and official Models & Pricing page. Cursor Models (including Composer 2.5) and Other Models have different usage pools; Auto/Router is dynamic, not a stable named-model mapping. |
+| **Claude Code** | Claude Haiku 5.5 when available in the current provider/session | Claude Sonnet 5.5 for daily coding | Claude Opus 5.5 at suitable/high effort for complex architecture, debugging, and review; choose stronger available capability if the actual task requires it | Claude Fable 5.1 for exceptional, long-running work **only when available within agreed spend**, otherwise the strongest verified permitted option | Check `/model`. Aliases `haiku`, `sonnet`, `opus`, `fable` follow provider-dependent mappings. Fable can require usage credits, even when other models are included. Claude Code/client versions and provider gateways can affect availability. |
+| **OpenAI Codex CLI / IDE** | GPT-6 Luna for narrow, repeatable implementation or triage | GPT-6.1 Sol at ordinary reasoning effort when available | GPT-6.1 Sol at High/higher verified effort for difficult coding and review | GPT-6 Astra for hardest work when exposed by this client/account and within agreed spend | Use `/model` or `codex --model <id>`. Current documented IDs include `gpt-6-luna`, `gpt-6.1-sol`, and `gpt-6-astra`. Availability/effort settings and included usage depend on plan, sign-in, client, and rollout. Do **not** infer Codex access from API availability. |
+| **Antigravity CLI (`agy`)** | Lowest sufficient available fast/low-effort model | Verified balanced coding model | Strongest verified reasoning-capable choice within agreed capacity | Strongest explicitly verified permitted option for exceptional work | Run `agy models` and use the current model picker/`--model`. Google's first-party CLI guide gives examples, not a guarantee of the exact models visible to this account today. |
+| **Kiro** | Claude Haiku 4.5 or GPT-5.6 Luna where exposed; otherwise lowest-cost sufficient option | Claude Sonnet 5.5 or GPT-5.6 Terra, where available and economical | Claude Opus 5.5 or GPT-5.6 Sol for difficult agentic work | Claude Fable 5.1 **only for approved Enterprise Preview access**, otherwise strongest available permitted option | Use IDE/CLI picker or `/model` and Kiro's live catalog. Kiro still lists GPT-5.6 tiers alongside Claude 5.5. Sonnet/Opus 5.5 have rollout, region, plan, and credit implications; Fable 5.1 is limited to Kiro Enterprise Preview. |
 
-## Dynamic routers and auto-selection
+### Important release distinctions as of 2026-10-13
 
-Auto-selection or router modes can be useful, but they are runtime routers rather than stable model mappings. Their model pools and selection logic may change with task fit, reliability, capacity, product policy, or other runtime signals. Cursor Auto / Router and Kiro Auto are concrete examples. When repeatability, model-specific evaluation, planner/worker separation, or cost predictability matters, choose a concrete verified capability instead of treating any dynamic router as a fixed tier-to-model mapping.
+- **Anthropic**: Claude Sonnet 5.5 (2026-09-28), Opus 5.5 (2026-09-22), and Haiku 5.5 (2026-10-07) supersede earlier default recommendations where the relevant runtime/provider supports them. Fable 5.1 is a separate, higher-capability/availability-constrained choice, not a routine default. In Claude Code on Anthropic API, `sonnet`, `opus`, and `haiku` currently point to 5.5; some hosted providers resolve aliases differently.
+- **OpenAI**: GPT-6 Astra, GPT-6.1 Sol (released 2026-09-29), and GPT-6 Luna are current starting points in OpenAI's API guidance. Codex/Work documentation separately describes rollout and model selection; models listed for the API or ChatGPT chat are not automatically available in Codex. GPT-5.6 remains available in some contexts during the transition.
+- **Cursor**: Composer 2.5 remains a documented economical baseline. Cursor's live model page now also lists Claude 5.5 models; the two usage pools and changing Auto routing matter more than a static cross-vendor tier table.
+- **Kiro**: Its October 2026 catalog continues to expose GPT-5.6 Sol/Terra/Luna, plus Claude Opus 5.5 and Sonnet 5.5. Do not replace Kiro's GPT-5.6 entries with OpenAI's API/Codex GPT-6 models without Kiro-specific evidence.
+- **Google Antigravity CLI**: Use `agy models`, since its available set can change independently of Gemini API releases.
 
-## Planner / worker patterns
+## Dynamic routers, effort and communication
 
-A project may intentionally use a stronger planner/reviewer and a cheaper implementation worker when the active runtime supports that orchestration. The portable pattern is the separation of roles, not any particular vendor model or subagent API.
+Auto/Router modes dynamically select a model. They can be useful for routine work but are not auditable fixed mappings. For explicit quality/cost comparisons or stable reviewer/planner identity, select a named capability that the active runtime actually exposes.
 
-For example, Cursor can support patterns such as **Fable 5 planning/review + Composer 2.5 implementation** when those models and the required agent/subagent mechanics are genuinely available in the current Cursor runtime **within the user's included or already-approved spend capacity**. In another runtime, preserve the same semantic intent only with capabilities that runtime actually exposes.
+A user's preference for high effort on complex work should be respected where available. **High reasoning effort does not require a long user-facing answer.** Output style should favor a brief recommendation, rationale and decision needed, while retaining full technical analysis, verification and risks.
 
-Claude Code, Codex, Antigravity, Kiro, or another tool must not pretend it can invoke Cursor-native subagents merely because a project file describes them.
+## Planner / worker and delegation patterns
+
+Prefer a strong verified planner/reviewer for ambiguous or high-risk decisions and the lowest sufficient verified implementation worker for bounded tasks, **only when the active runtime supports the intended arrangement**. This is a portable role pattern, not a promise that Claude, Codex, Cursor, Kiro, or Antigravity can invoke one another's native agents.
+
+Use the `delegation-strategy` skill to decide whether delegation is worthwhile and to bound agent scope, evidence, attempts and escalation. Do not launch extra agents merely to speed up a task that one agent can complete clearly. If a worker stalls or cannot demonstrate progress, stop or narrow the task and report the blocker instead of repeating attempts indefinitely.
 
 ## User and project overrides
 
-Do not edit this shared catalog merely to record one project's personal preference. Keep durable project-specific choices in that project's existing rules/docs/configuration, for example:
-
-- a preferred planner model for a particular runtime;
-- a cost ceiling;
-- a minimum tier for auth, payments, migrations, or release work;
-- a prohibition on a provider or model for privacy/compliance reasons.
-
-During a harness update, shared catalog changes should not overwrite those project-local preferences. If an upstream catalog change makes a local preference stale or unavailable, report the conflict for human review.
+Keep personal preferences, approval authority, cost ceilings, product-specific decisions, sensitive-area minimum tiers, and user/teammate communication profiles **outside this shared catalog**, in the adopting project's existing instructions or an explicitly agreed local/profile location. When a Harness update changes a suggested model, preserve project-local overrides and report unavailable or stale choices rather than silently replacing them.
 
 ## Maintaining this catalog
 
-Catalog updates should be small and evidence-based:
-
-1. Check the vendor/tool's current official documentation first.
-2. Prefer runtime-specific availability evidence over general API availability.
-3. Record only models or discovery mechanisms that are reasonably current and useful to the tier policy.
-4. Update the relevant verification date.
-5. Remove or demote stale entries instead of accumulating historical model names.
-6. Keep pricing details minimal unless they directly affect the routing recommendation; prices and subscription entitlements change faster than capability tiers.
-7. Do not modify `MODEL_ROUTING.md` merely because model names changed.
+1. Check **current first-party product/runtime documentation** for each listed tool and relevant recent release notes. General API release pages are not sufficient evidence of availability in an IDE/CLI.
+2. Prefer the runtime's live model discovery; document where account-specific confirmation cannot be performed.
+3. Verify tool access, region/plan conditions, effort settings, paid-credit implications and any special preview restrictions before recommending a default.
+4. Update the relevant date, change only affected rows, and demote stale models instead of accumulating historical options.
+5. Do not change `MODEL_ROUTING.md` merely because model names changed. Do not promise a provider-native capability in another runtime.
+6. Keep refreshes concise, evidence-based and separated from project-specific settings.
 
 ### Copy/paste catalog refresh prompt
 
 ```text
-Refresh MODEL_CATALOG.md in this AI Engineering Harness repository.
+Refresh MODEL_CATALOG.md in AI Engineering Harness against current first-party
+runtime docs and recent changelogs for the runtimes already covered.
 
-Use current official primary sources for the runtimes already covered by the catalog. Verify current model availability, runtime-specific selection/discovery mechanisms, and whether the existing FAST / STANDARD / REASONING / FRONTIER starting recommendations are still sensible.
+Preserve MODEL_ROUTING.md tiers and project-local preferences. Verify model
+availability in each specific runtime, not merely in the vendor's API. Identify
+newer releases, retired choices, effort controls, subscription/paid-credit and
+preview restrictions, live-discovery commands, and any dynamic router behavior.
 
-Treat MODEL_ROUTING.md as stable policy. Do not change tier definitions merely because model names or vendor offerings changed.
-
-Requirements:
-- prefer official vendor/tool docs, changelogs, model pages, and runtime documentation;
-- distinguish general API availability from actual availability in Cursor, Claude Code, Codex, Antigravity, Kiro, or another runtime;
-- never infer that a model available in one runtime is callable from another;
-- prefer live-discovery commands or runtime model pickers when the available set is dynamic;
-- distinguish subscription-included/agreed capacity from extra-credit or pay-as-you-go usage; do not recommend unapproved paid escalation as an automatic fallback;
-- keep the catalog concise and current rather than exhaustive;
-- update the relevant verification date;
-- preserve project-neutral wording;
-- report any uncertain or unverified entry instead of guessing.
-
-Show the exact diff and sources used. Do not modify application/project-specific files, publish a release, or change repository visibility.
+Replace stale mappings conservatively. If runtime availability is unclear,
+state that clearly; never invent a model name or automatic fallback.
+Update the verification date and official sources. Show the exact diff.
+Do not update unrelated project files, publish a release, or incur new spend.
 ```
 
-## Sources used for current verification
+## Primary sources checked (2026-10-13)
 
-Primary or first-party sources:
+- Cursor model catalog / usage pools: https://cursor.com/docs/models-and-pricing
+- Cursor Composer 2.5 announcement: https://cursor.com/blog/composer-2-5
+- Claude Code models, aliases, effort and Fable usage: https://code.claude.com/docs/en/model-config
+- Anthropic 2026 model releases: https://www.anthropic.com/news
+- OpenAI Codex/Work model selection and rollout: https://learn.chatgpt.com/docs/models
+- OpenAI API current model catalog (not by itself Codex access): https://developers.openai.com/api/docs/models
+- OpenAI API changelog: https://developers.openai.com/api/docs/changelog
+- Google Antigravity CLI official live-discovery guide: https://codelabs.developers.google.com/antigravity-cli-hands-on
+- Kiro models and plan/region constraints: https://kiro.dev/docs/models/
+- Kiro model release history: https://kiro.dev/changelog/models/
 
-- Cursor models / Auto: https://docs.cursor.com/models/
-- Cursor Composer 2.5: https://cursor.com/blog/composer-2-5
-- Cursor model-economics research using Fable 5 + Composer 2.5: https://cursor.com/blog/agent-swarm-model-economics
-- Anthropic Claude pricing / plan model and usage information: https://claude.com/pricing
-- Anthropic Claude Code models, usage, limits, and `/model` discovery: https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code
-- Anthropic usage credits for paid Claude plans: https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans
-- Anthropic usage bundles: https://support.claude.com/en/articles/14246112-buy-usage-bundles
-- OpenAI GPT-5.6 / Codex availability: https://help.openai.com/en/articles/20001354-gpt-56-in-chatgpt/
-- Google Antigravity CLI model discovery: https://codelabs.developers.google.com/antigravity-cli-hands-on
-- Kiro model availability and recommendations: https://kiro.dev/docs/models/
-- Kiro CLI model discovery (`/model`): https://kiro.dev/docs/cli/reference/slash-commands/
-
-Vendor and model names are trademarks of their respective owners. This catalog is informational and is not an endorsement or guarantee of availability, pricing, or performance.
+Vendor and model names are trademarks of their respective owners. This catalog does not guarantee availability, price, entitlement or performance.
