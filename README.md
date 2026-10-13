@@ -68,6 +68,29 @@ You may use, modify, redistribute, and use the project commercially under the li
 
 Contributions are welcome and are submitted under the Apache License 2.0 unless explicitly stated otherwise, as described in `CONTRIBUTING.md`.
 
+## Collaborator-aware communication and bounded delegation
+
+The shared Harness is **role-neutral**: it must not hard-code the repository author's profile or assume every collaborator is a CTO, developer, product manager, solo builder, or teammate. An agent should communicate at the user's actual technical fluency, lead with a clear recommendation and key trade-offs, and ask only consequential questions. Use the active tool's *verified* concise/output-style option when useful; this affects **presentation, not reasoning depth, safety checks, or code quality**. A Claude Code-specific command is an example, never an instruction to run that command in Codex, Cursor, Kiro, or Antigravity.
+
+### Optional collaborator onboarding
+
+At the first substantial planning interaction, if the project does not already answer these questions and the user wants personalization, offer **short, selectable options**, one question at a time when appropriate. Do not block adoption or routine work for a profile questionnaire:
+
+| Dimension | Suggested options |
+| --- | --- |
+| Main role | Product / product owner; engineering / developer; technical lead / architect; founder / business; designer / QA; other / mixed |
+| Technical fluency | Basic; working knowledge; advanced; expert; varies by topic |
+| Working mode | Solo with AI tools; solo plus occasional collaborators; team with distinct roles; prefer not to specify |
+| Decision boundaries | AI handles routine technical details; consult me for architecture / stack; consult me for significant spend / infrastructure; consult the designated team owner for product / risk / release decisions; customize |
+
+A person may both own product decisions and make technical choices with expert AI guidance. **Role is not the same as authority or technical fluency**; describe what the user actually decides instead of pigeonholing them. Offer a recommended default, allow free-text corrections, and do not persist unconfirmed assumptions.
+
+Only with explicit agreement, put confirmed **project-shared** preferences in an existing project-local instruction or decision document (or propose a minimal new project-owned file if none exists), so other tools/models can read the same source. If the preferences are individual or private, do **not** commit them to a shared repository; agree on a local, appropriately excluded storage location or keep them session-only. Never write the author's personal profile into this shared upstream Harness, and never assume a team member may speak for other people's approval rights. Project-local rules and user decisions take precedence.
+
+### Small changes, bounded agents, honest progress
+
+Implement only the requested outcome with the smallest maintainable code and supporting tests; avoid speculative features, abstraction, refactors, dependencies and extra files. Delegation is optional, not a default fan-out strategy. The existing `delegation-strategy` skill now requires a bounded worker contract (outcome, scope, validation, evidence, budget where supported, and exit condition), a progress/escalation rule for repeated failures, and coordinator review. A runtime-native `maxTurns`, timeout, or equivalent is helpful **only if supported and appropriately configured**; it is not by itself a reliable stuck-agent detector.
+
 ## Rules and skills: four layers
 
 | | Always-on | On-demand |
@@ -129,6 +152,8 @@ For an existing project, the recommended path is **in-place AI-assisted adoption
 For one-time adoption, prefer a capable/reasoning model because it must inspect and preserve existing project rules safely. After adoption, normal model routing applies.
 
 If you want a specific communication language, prepend one short line such as `Respond in Turkish.` or `Respond in English.`.
+
+The optional collaborator profile is **not** an installation prerequisite or a new shared configuration layer. The agent should offer the short onboarding choices during its first substantial planning exchange after adoption, or when the user asks to personalize its behavior, and seek explicit permission before storing project-shared preferences. The onboarding question must not silently rewrite project-local rules or delay basic Harness installation.
 
 ### Copy/paste adoption prompt
 
@@ -204,6 +229,7 @@ Do not silently edit existing project-local deployment, release, environment, Gi
 Do not commit, push, merge, deploy, publish, access production/live systems, or perform unrelated cleanup.
 
 When finished:
+- if collaborator role/fluency/decision preferences are missing, optionally offer the user the short selectable choices from the README. Do not block adoption or write a profile without consent;
 1. show git status;
 2. show the exact Harness-related diff;
 3. list every file changed or added;
@@ -499,6 +525,10 @@ Expected behavior:
 - Project-local policy remains higher precedence than shared skills, and any conflict must be reported rather than silently resolved in favor of the skill.
 
 Passing these smoke tests is evidence that shared context and skill discovery are behaving as designed. It is not proof of hard enforcement; use runtime-native permissions, deny rules, hooks, CI, tests, and other deterministic controls when an operation must be technically impossible.
+
+### 6. Communication and bounded delegation smoke test
+
+In fresh sessions using the actual tools your project supports, request a small architecture decision and a bounded coding change. The response should begin with a clear recommendation in the user's language, explain only decision-relevant trade-offs, ask for approval on significant cost/architecture/product choices, and keep technical validation intact. For delegated work, verify that the coordinator uses a scoped worker contract, catches repeated unproductive attempts, and reports any blocked result without expanding implementation scope. These are **behavioral checks**, not guarantees of runtime-enforced timeouts or private profile persistence.
 
 ## Model routing and catalog maintenance
 
