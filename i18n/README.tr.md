@@ -74,6 +74,21 @@ Paylaşılan küme yaklaşık 20 skill veya altında tutulmalıdır; `descriptio
 
 Öncelik sırası: projeye özel rules/policy > paylaşılan `AGENTS.md` tabanı > paylaşılan skills. Bir skill; approval boundary (onay sınırı), authorized scope (yetkili kapsam), runtime capability (çalışma ortamı yeteneği) veya production/live safety (üretim/canlı sistem güvenliği) kurallarını gevşetemez.
 
+## Kullanıcıya uyarlanmış iletişim ve sınırlandırılmış alt ajanlar
+
+Harness herhangi bir kullanıcıyı varsayılan olarak CTO, geliştirici veya ürün yöneticisi kabul etmez. Kullanıcının teknik bilgisine göre **önce öneri ve karar gerekçesi** açıklanır; gereksiz uzun metinlerden kaçınılır. Kısa anlatım, derin analizden, kod kalitesinden veya testlerden vazgeçmek değildir. `Concise` gibi araca özel bir özellik yalnız gerçekten destekleyen araçta kullanılır.
+
+İlk önemli planlama görüşmesinde, bilgi zaten mevcut değilse **isteğe bağlı kısa seçenekler** sunulabilir:
+
+- **Rol:** Ürün yöneticisi/ürün sahibi; geliştirici; teknik lider/mimar; kurucu/iş yöneticisi; tasarım/QA; diğer/karma.
+- **Teknik seviye:** Temel; orta; ileri; uzman; konuya göre değişiyor.
+- **Çalışma biçimi:** Yapay zekâyla tek başına; zaman zaman iş birliği; farklı rollere sahip ekip; belirtmek istemiyorum.
+- **Karar yetkisi:** Rutin teknik kararları yapay zekâ versin; mimari/teknoloji seçimlerini bana danışsın; önemli maliyet/altyapı yatırımlarını bana danışsın; ürün/risk/yayın kararlarını yetkili ekip üyesine danışsın; özelleştir.
+
+Profil zorunlu değildir; kullanıcı kısa seçeneklerden birini seçebilir veya kendi cevabını yazabilir. **Açık izinle** ekipçe paylaşılabilecek tercihler, kullanılan tüm modellerin okuyabileceği mevcut projeye özel kurallar/belgeler içinde tutulur. Kişisel veya özel bilgiler izinsiz ortak Git deposuna yazılmaz; paylaşılan Harness'e hiçbir kullanıcının kişisel profili gömülmez.
+
+**Alt ajanlar:** Önce dar görev kapsamı, kabul ölçütü, dosya sınırı, kanıt ve doğrulama tanımlanır. Tekrarlayan sonuçsuz denemede ajan durup ana ajana engeli bildirir; izinsiz kapsam büyütmez, gereksiz kod, soyutlama veya bağımlılık eklemez. Destekleniyorsa süre/tur sınırları ek korumadır, otomatik takılma algılaması garantisi değildir. Ayrıntı için [İngilizce ana rehber](../README.md#collaborator-aware-communication-and-bounded-delegation) ve `delegation-strategy` skill'i.
+
 ## Adoption (kurulum) ve update (güncelleme)
 
 Kopyala/yapıştır prompt'ları tek canonical kaynakta tutulur ve çevrilmez:
