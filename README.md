@@ -229,7 +229,6 @@ Do not silently edit existing project-local deployment, release, environment, Gi
 Do not commit, push, merge, deploy, publish, access production/live systems, or perform unrelated cleanup.
 
 When finished:
-- if collaborator role/fluency/decision preferences are missing, optionally offer the user the short selectable choices from the README. Do not block adoption or write a profile without consent;
 1. show git status;
 2. show the exact Harness-related diff;
 3. list every file changed or added;
@@ -249,6 +248,8 @@ When finished:
    - runtime/skill activation status;
    - stale, contradictory, or unresolved project instructions.
    Mark each item as clear, unresolved, or not applicable. For each unresolved item, ask the smallest focused question needed and recommend the exact existing project-local file(s) where the durable answer should be recorded after approval.
+
+If collaborator role, fluency, or decision preferences are missing, offer the user the optional short choices described above after completing the installation review. Do not block adoption or write a profile without consent.
 
 Stop after the adoption review and wait for human approval. Do not resolve Project readiness questions by editing project-local files until I explicitly approve those edits.
 ```
