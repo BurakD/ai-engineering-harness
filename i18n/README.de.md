@@ -74,6 +74,21 @@ Der gemeinsame Satz sollte ungefähr 20 skills oder weniger umfassen; `descripti
 
 Priorität: projektspezifische rules/policy > gemeinsame `AGENTS.md`-Basis > gemeinsame skills. Ein skill darf approval boundary (Freigabegrenze), authorized scope (autorisierten Umfang), runtime capability (Fähigkeit der Laufzeitumgebung) oder production/live safety (Produktions-/Live-Sicherheit) nicht abschwächen.
 
+## Rollenbewusste Kommunikation und begrenzte Unteragenten
+
+Der Harness setzt nicht voraus, dass Nutzende CTO, Entwickler oder Product Manager sind. Antworten beginnen mit einer **klaren Empfehlung und den entscheidungsrelevanten Gründen**, angepasst an das technische Vorwissen. Kurze Ausgaben dürfen Analyse, Tests und Codequalität nicht verkürzen. Werkzeugspezifische Ausgabemodi gelten nur, wenn das aktive Werkzeug sie tatsächlich unterstützt.
+
+Beim ersten größeren Planungsgespräch können bei Bedarf **freiwillige Auswahlmöglichkeiten** angeboten werden:
+
+- **Rolle:** Produkt / Product Owner; Entwicklung; technische Leitung / Architektur; Gründung / Business; Design / QA; andere / gemischte Rolle.
+- **Technisches Wissen:** Grundlagen; solide Kenntnisse; fortgeschritten; Experte; themenabhängig.
+- **Arbeitsweise:** Allein mit KI; gelegentliche Zusammenarbeit; Team mit verschiedenen Rollen; keine Angabe.
+- **Entscheidungen:** KI entscheidet routinemäßige technische Details; mich bei Architektur / Technologie fragen; mich bei relevanten Kosten / Infrastruktur fragen; zuständige Teammitglieder bei Produkt / Risiko / Release fragen; anpassen.
+
+Nur mit **ausdrücklicher Zustimmung** werden gemeinsam nutzbare Präferenzen in vorhandenen projektspezifischen Regeln oder Dokumenten festgehalten, die von den eingesetzten Tools und Modellen gelesen werden können. Private Profile gehören nicht ungefragt in gemeinsame Repositories oder in den allgemeinen Harness.
+
+**Unteragenten:** Aufträge brauchen enge Grenzen, Abnahmekriterien, erlaubte Dateien, Prüfungen und Nachweise. Bei wiederholt erfolglosen Versuchen stoppt der Agent und meldet die Blockade an die koordinierende Instanz, statt Umfang und Komplexität unnötig zu erhöhen. Native Zeit-/Schrittgrenzen helfen, sofern verfügbar, ersetzen aber keine Fortschrittsprüfung. Siehe [Hauptdokumentation](../README.md#collaborator-aware-communication-and-bounded-delegation) und `delegation-strategy`.
+
 ## Adoption (Installation) und update (Aktualisierung)
 
 Copy/Paste-Prompts bleiben in einer einzigen canonical source und werden nicht übersetzt:
