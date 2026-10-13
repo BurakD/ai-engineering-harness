@@ -74,6 +74,21 @@ O conjunto compartilhado deve permanecer em aproximadamente 20 skills ou menos; 
 
 Ordem de precedência: rules/policy específicos do projeto > base compartilhada de `AGENTS.md` > skills compartilhados. Um skill não pode afrouxar approval boundary (limite de aprovação), authorized scope (escopo autorizado), runtime capability (capacidade do ambiente de execução) nem production/live safety (segurança em produção/ao vivo).
 
+## Comunicação adaptada e subagentes com limites
+
+O Harness não presume que toda pessoa seja CTO, desenvolvedora ou gerente de produto. Comece pela **recomendação e pela decisão relevante**, com explicações adequadas ao conhecimento técnico do usuário. Ser conciso não significa reduzir o raciocínio, os testes ou a qualidade do código. Controles de estilo específicos de cada ferramenta só devem ser usados quando realmente disponíveis.
+
+No primeiro planejamento relevante, se faltarem informações e o usuário desejar personalização, ofereça opções **curtas e opcionais**:
+
+- **Papel:** Produto / product owner; desenvolvimento; liderança técnica / arquitetura; fundador / negócios; design / QA; outro / misto.
+- **Conhecimento técnico:** Básico; intermediário; avançado; especialista; varia conforme o assunto.
+- **Forma de trabalho:** Sozinho com IA; colaboração ocasional; equipe com funções distintas; prefiro não informar.
+- **Decisões:** IA resolve detalhes rotineiros; consultar-me sobre arquitetura / tecnologias; consultar-me sobre gastos / infraestrutura relevantes; consultar o responsável da equipe sobre produto / riscos / publicação; personalizar.
+
+Com **consentimento explícito**, preferências compartilháveis devem ser registradas nas instruções ou na documentação local do projeto, legíveis pelas ferramentas e modelos em uso. Perfis privados não devem ser publicados em repositórios compartilhados; nenhum perfil pessoal é incorporado ao Harness genérico.
+
+**Subagentes:** Cada tarefa precisa de escopo restrito, critérios de aceitação, arquivos permitidos, testes e evidências. Após tentativas repetidas sem progresso, o agente para e informa o bloqueio ao coordenador, sem ampliar o escopo ou criar código e abstrações desnecessários. Limites nativos de duração/etapas, quando disponíveis, são auxiliares, não detectores infalíveis de travamento. Consulte o [guia principal](../README.md#collaborator-aware-communication-and-bounded-delegation) e `delegation-strategy`.
+
 ## Adoption (instalação) e update (atualização)
 
 Os prompts de copiar/colar ficam em uma única canonical source e não são traduzidos:
