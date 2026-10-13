@@ -74,6 +74,21 @@ Le jeu partagé doit rester autour de 20 skills ou moins ; les champs `descripti
 
 Ordre de priorité : rules/policy propres au projet > base partagée `AGENTS.md` > skills partagés. Un skill ne peut assouplir approval boundary (limite d’approbation), authorized scope (périmètre autorisé), runtime capability (capacité de l’environnement d’exécution) ni production/live safety (sécurité en production/en direct).
 
+## Communication adaptée et sous-agents encadrés
+
+Le Harness ne suppose pas que chaque personne soit CTO, développeur ou responsable produit. Les réponses commencent par une **recommandation claire et les raisons utiles à la décision**, adaptées au niveau technique de la personne. Une présentation concise ne doit pas réduire l'analyse, les tests ou la qualité du code. Les modes de sortie propres à un outil ne sont utilisés que si cet outil les prend en charge.
+
+Lors d'une première planification importante, si les informations manquent et que la personne le souhaite, proposer quelques **choix facultatifs** :
+
+- **Rôle :** Produit / Product Owner ; développement ; direction technique / architecture ; fondateur / gestion ; design / QA ; autre / mixte.
+- **Niveau technique :** Notions de base ; intermédiaire ; avancé ; expert ; variable selon le sujet.
+- **Mode de travail :** Seul avec l'IA ; collaborations ponctuelles ; équipe aux rôles distincts ; préfère ne pas préciser.
+- **Décisions :** L'IA tranche les détails techniques courants ; me consulter pour architecture / technologies ; me consulter pour dépenses / infrastructure importantes ; consulter le responsable de l'équipe pour produit / risques / mise en production ; personnaliser.
+
+Avec **accord explicite**, les préférences partageables sont conservées dans les instructions ou documents propres au projet, lisibles par les outils et modèles utilisés. Ne jamais publier de profil privé dans un dépôt partagé sans consentement, ni intégrer un profil personnel au Harness générique.
+
+**Sous-agents :** Chaque délégation précise un périmètre, des critères d'acceptation, les fichiers autorisés, les validations et les preuves attendues. Après plusieurs tentatives infructueuses, l'agent s'arrête et signale le blocage au coordinateur, sans élargir le périmètre ni ajouter de complexité inutile. Les limites natives de durée/étapes ne constituent pas une détection automatique garantie. Voir le [guide principal](../README.md#collaborator-aware-communication-and-bounded-delegation) et `delegation-strategy`.
+
 ## Adoption (installation) et update (mise à jour)
 
 Les prompts copier/coller restent dans une seule canonical source et ne sont pas traduits :
