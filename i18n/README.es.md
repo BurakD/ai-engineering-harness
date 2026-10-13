@@ -74,6 +74,21 @@ El conjunto compartido debe mantenerse aproximadamente en 20 skills o menos; los
 
 Orden de precedencia: rules/policy específicos del proyecto > base compartida de `AGENTS.md` > skills compartidos. Un skill no puede relajar approval boundary (límite de aprobación), authorized scope (alcance autorizado), runtime capability (capacidad del entorno de ejecución) ni production/live safety (seguridad en producción/en vivo).
 
+## Comunicación adaptada y subagentes con límites
+
+Harness no presupone que la persona sea CTO, desarrolladora o responsable de producto. La respuesta comienza con la **recomendación y la decisión relevante**, explicadas según sus conocimientos técnicos. Ser conciso no significa reducir el razonamiento, las pruebas ni la calidad del código. Los modos de salida específicos de una herramienta solo se usan cuando esa herramienta los admite.
+
+En una primera conversación de planificación, si faltan datos y la persona desea personalización, se pueden ofrecer opciones **breves y voluntarias**:
+
+- **Rol:** Producto / product owner; desarrollo; liderazgo técnico / arquitectura; fundador / negocio; diseño / QA; otro / mixto.
+- **Conocimientos técnicos:** Básicos; intermedios; avanzados; expertos; varían según el tema.
+- **Forma de trabajo:** En solitario con IA; colaboración ocasional; equipo con varios roles; prefiero no decirlo.
+- **Decisiones:** La IA resuelve detalles rutinarios; consultarme arquitectura / tecnologías; consultarme gastos / infraestructura importantes; consultar al responsable del equipo sobre producto / riesgos / publicación; personalizar.
+
+Con **consentimiento explícito**, las preferencias compartibles del proyecto se guardan en instrucciones o documentación local del proyecto, accesible a las herramientas y modelos empleados. No se publican perfiles privados en un repositorio compartido ni se fija el perfil de una persona en Harness.
+
+**Subagentes:** Cada tarea debe definir alcance, criterios de aceptación, archivos permitidos, pruebas y evidencia. Ante intentos repetidos sin progreso, el agente se detiene y comunica el bloqueo al coordinador, sin ampliar el alcance ni añadir complejidad innecesaria. Los límites de tiempo/pasos, si existen, ayudan, pero no garantizan la detección automática de bloqueos. Véase la [guía principal](../README.md#collaborator-aware-communication-and-bounded-delegation) y `delegation-strategy`.
+
 ## Adoption (instalación) y update (actualización)
 
 Los prompts de copiar/pegar se mantienen en una única canonical source y no se traducen:
